@@ -119,10 +119,12 @@
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
         
         .doc-type-btn {
             flex: 1;
+            min-width: 120px;
             text-align: center;
             padding: 1rem;
             background-color: var(--light);
@@ -340,6 +342,46 @@
             background-color: #f8f9fa;
         }
         
+        /* Estilos para a aba de exames */
+        .exames-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .exames-categoria {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--light);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        
+        .categoria-title {
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.5rem;
+        }
+        
+        .exame-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exame-item input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        
+        .exame-item label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
         @media print {
             body * {
                 visibility: hidden;
@@ -382,7 +424,9 @@
                 <div class="doc-type-btn" data-type="atestado">Atestado</div>
                 <div class="doc-type-btn" data-type="receituario">Receituário em Branco</div>
                 <div class="doc-type-btn" data-type="controle-especial">Controle Especial</div>
+                <div class="doc-type-btn" data-type="solicitacao-exames">Solicitação de Exames</div>
                 <div class="doc-type-btn" data-type="configuracao">Configuração</div>
+                <div class="doc-type-btn" data-type="links-uteis">Links Úteis</div>
             </div>
             
             <!-- Formulário para Receita -->
@@ -507,6 +551,423 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 <button id="gerar-controle-especial">Gerar Receituário</button>
             </div>
             
+            <!-- Formulário para Solicitação de Exames -->
+            <div id="solicitacao-exames-form" class="form-section">
+                <div class="form-group">
+                    <label for="paciente-exames">Nome do Paciente</label>
+                    <input type="text" id="paciente-exames" placeholder="Nome completo do paciente">
+                </div>
+                
+<div class="form-group">
+    <h3>Selecione os Exames Solicitados</h3>
+    <div class="exames-container">
+        <!-- Exames de Laboratório -->
+        <div class="exames-categoria">
+            <div class="categoria-title">Exames de Laboratório</div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-1" value="Hemograma completo">
+                <label for="exame-lab-1">Hemograma completo</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-2" value="Glicemia de jejum">
+                <label for="exame-lab-2">Glicemia de jejum</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-3" value="Glicemia capilar ou plasmática">
+                <label for="exame-lab-3">Glicemia capilar ou plasmática</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-4" value="Perfil lipídico (colesterol total, HDL, LDL, triglicerídeos)">
+                <label for="exame-lab-4">Perfil lipídico (colesterol total, HDL, LDL, triglicerídeos)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-5" value="Ureia">
+                <label for="exame-lab-5">Ureia</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-6" value="Creatinina">
+                <label for="exame-lab-6">Creatinina</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-7" value="TGO (AST)">
+                <label for="exame-lab-7">TGO (AST)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-8" value="TGP (ALT)">
+                <label for="exame-lab-8">TGP (ALT)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-9" value="TSH">
+                <label for="exame-lab-9">TSH</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-10" value="T4 livre">
+                <label for="exame-lab-10">T4 livre</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-11" value="EAS (urina tipo I)">
+                <label for="exame-lab-11">EAS (urina tipo I)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-12" value="EPF (parasitológico de fezes)">
+                <label for="exame-lab-12">EPF (parasitológico de fezes)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-13" value="Pesquisa de sangue oculto nas fezes">
+                <label for="exame-lab-13">Pesquisa de sangue oculto nas fezes</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-14" value="Ácido úrico">
+                <label for="exame-lab-14">Ácido úrico</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-15" value="Ferro sérico">
+                <label for="exame-lab-15">Ferro sérico</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-16" value="Ferritina">
+                <label for="exame-lab-16">Ferritina</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-17" value="Vitamina D">
+                <label for="exame-lab-17">Vitamina D</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-18" value="Sorologias (HIV, sífilis, hepatites B e C)">
+                <label for="exame-lab-18">Sorologias (HIV, sífilis, hepatites B e C)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-19" value="Beta-hCG (quantitativo ou qualitativo)">
+                <label for="exame-lab-19">Beta-hCG (quantitativo ou qualitativo)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-20" value="Testes rápidos (HIV, sífilis, hepatites, COVID-19, dengue)">
+                <label for="exame-lab-20">Testes rápidos (HIV, sífilis, hepatites, COVID-19, dengue)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-21" value="PSA total">
+                <label for="exame-lab-21">PSA total</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-22" value="Colpocitologia oncótica (Papanicolau)">
+                <label for="exame-lab-22">Colpocitologia oncótica (Papanicolau)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-23" value="Gasometria arterial ou venosa">
+                <label for="exame-lab-23">Gasometria arterial ou venosa</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-24" value="Sódio">
+                <label for="exame-lab-24">Sódio</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-25" value="Potássio">
+                <label for="exame-lab-25">Potássio</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-26" value="Cloro">
+                <label for="exame-lab-26">Cloro</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-27" value="Cálcio">
+                <label for="exame-lab-27">Cálcio</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-28" value="Bilirrubinas totais e frações">
+                <label for="exame-lab-28">Bilirrubinas totais e frações</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-29" value="Amilase">
+                <label for="exame-lab-29">Amilase</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-30" value="Lipase">
+                <label for="exame-lab-30">Lipase</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-31" value="Troponina I ou T">
+                <label for="exame-lab-31">Troponina I ou T</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-32" value="CK total e CK-MB">
+                <label for="exame-lab-32">CK total e CK-MB</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-33" value="Dímero D">
+                <label for="exame-lab-33">Dímero D</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-34" value="TAP (TP)">
+                <label for="exame-lab-34">TAP (TP)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-35" value="TTPa">
+                <label for="exame-lab-35">TTPa</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-36" value="Lactato">
+                <label for="exame-lab-36">Lactato</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-37" value="Urina tipo I (EAS)">
+                <label for="exame-lab-37">Urina tipo I (EAS)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-38" value="Beta-hCG (teste rápido)">
+                <label for="exame-lab-38">Beta-hCG (teste rápido)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-39" value="PCR (proteína C reativa)">
+                <label for="exame-lab-39">PCR (proteína C reativa)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-40" value="VHS (velocidade de hemossedimentação)">
+                <label for="exame-lab-40">VHS (velocidade de hemossedimentação)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-41" value="Tipagem sanguínea e fator Rh">
+                <label for="exame-lab-41">Tipagem sanguínea e fator Rh</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-42" value="Teste de coagulação (INR)">
+                <label for="exame-lab-42">Teste de coagulação (INR)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-43" value="Exames toxicológicos">
+                <label for="exame-lab-43">Exames toxicológicos</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-lab-44" value="Hemoglobina glicada (HbA1c)">
+                <label for="exame-lab-44">Hemoglobina glicada (HbA1c)</label>
+            </div>
+        </div>
+        
+        <!-- Exames de Imagem -->
+        <div class="exames-categoria">
+            <div class="categoria-title">Exames de Imagem</div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-1" value="Ultrassonografia abdominal total">
+                <label for="exame-img-1">Ultrassonografia abdominal total</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-2" value="Ultrassonografia pélvica (masculina/feminina)">
+                <label for="exame-img-2">Ultrassonografia pélvica (masculina/feminina)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-3" value="Ultrassonografia obstétrica">
+                <label for="exame-img-3">Ultrassonografia obstétrica</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-4" value="Ultrassonografia transvaginal">
+                <label for="exame-img-4">Ultrassonografia transvaginal</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-5" value="Ultrassonografia de tireoide">
+                <label for="exame-img-5">Ultrassonografia de tireoide</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-6" value="Ultrassonografia de mamas">
+                <label for="exame-img-6">Ultrassonografia de mamas</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-7" value="Ultrassonografia de partes moles">
+                <label for="exame-img-7">Ultrassonografia de partes moles</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-8" value="Ultrassonografia de próstata">
+                <label for="exame-img-8">Ultrassonografia de próstata</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-9" value="Ultrassonografia de vias urinárias">
+                <label for="exame-img-9">Ultrassonografia de vias urinárias</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-10" value="Mamografia bilateral">
+                <label for="exame-img-10">Mamografia bilateral</label>
+            </div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-11" value="Radiografia simples tórax">
+    <label for="exame-img-11">Radiografia simples tórax</label>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-12" value="Radiografia simples abdome">
+    <label for="exame-img-12">Radiografia simples abdome</label>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-13" value="Radiografia simples ossos">
+    <label for="exame-img-13">Radiografia simples ossos</label>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-14" value="Radiografia simples articulações">
+    <label for="exame-img-14">Radiografia simples articulações</label>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-15" value="Radiografia simples coluna">
+    <label for="exame-img-15">Radiografia simples coluna</label>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-16" value="Radiografia simples seios da face">
+    <label for="exame-img-16">Radiografia simples seios da face</label>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-17" value="Radiografia simples punho" class="exame-lateralidade">
+    <label for="exame-img-17">Radiografia simples punho</label>
+    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+        <select class="lateralidade-select">
+            <option value="">Selecione a lateralidade</option>
+            <option value="Direito">Direito</option>
+            <option value="Esquerdo">Esquerdo</option>
+            <option value="Bilateral">Bilateral</option>
+        </select>
+    </div>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-18" value="Radiografia simples mão" class="exame-lateralidade">
+    <label for="exame-img-18">Radiografia simples mão</label>
+    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+        <select class="lateralidade-select">
+            <option value="">Selecione a lateralidade</option>
+            <option value="Direito">Direito</option>
+            <option value="Esquerdo">Esquerdo</option>
+            <option value="Bilateral">Bilateral</option>
+        </select>
+    </div>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-19" value="Radiografia simples pé" class="exame-lateralidade">
+    <label for="exame-img-19">Radiografia simples pé</label>
+    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+        <select class="lateralidade-select">
+            <option value="">Selecione a lateralidade</option>
+            <option value="Direito">Direito</option>
+            <option value="Esquerdo">Esquerdo</option>
+            <option value="Bilateral">Bilateral</option>
+        </select>
+    </div>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-20" value="Radiografia simples tornozelo" class="exame-lateralidade">
+    <label for="exame-img-20">Radiografia simples tornozelo</label>
+    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+        <select class="lateralidade-select">
+            <option value="">Selecione a lateralidade</option>
+            <option value="Direito">Direito</option>
+            <option value="Esquerdo">Esquerdo</option>
+            <option value="Bilateral">Bilateral</option>
+        </select>
+    </div>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-21" value="Radiografia simples braço" class="exame-lateralidade">
+    <label for="exame-img-21">Radiografia simples braço</label>
+    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+        <select class="lateralidade-select">
+            <option value="">Selecione a lateralidade</option>
+            <option value="Direito">Direito</option>
+            <option value="Esquerdo">Esquerdo</option>
+            <option value="Bilateral">Bilateral</option>
+        </select>
+    </div>
+</div>
+<div class="exame-item">
+    <input type="checkbox" id="exame-img-22" value="Radiografia simples perna" class="exame-lateralidade">
+    <label for="exame-img-22">Radiografia simples perna</label>
+    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+        <select class="lateralidade-select">
+            <option value="">Selecione a lateralidade</option>
+            <option value="Direito">Direito</option>
+            <option value="Esquerdo">Esquerdo</option>
+            <option value="Bilateral">Bilateral</option>
+        </select>
+    </div>
+</div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-12" value="Eletrocardiograma (ECG)">
+                <label for="exame-img-12">Eletrocardiograma (ECG)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-13" value="Ecocardiograma">
+                <label for="exame-img-13">Ecocardiograma</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-14" value="Densitometria óssea">
+                <label for="exame-img-14">Densitometria óssea</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-15" value="Radiografia de tórax (PA e perfil)">
+                <label for="exame-img-15">Radiografia de tórax (PA e perfil)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-16" value="Radiografia de abdome agudo">
+                <label for="exame-img-16">Radiografia de abdome agudo</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-17" value="Radiografia de ossos e articulações (membros superiores e inferiores)">
+                <label for="exame-img-17">Radiografia de ossos e articulações (membros superiores e inferiores)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-18" value="Radiografia de coluna (cervical, torácica, lombar)">
+                <label for="exame-img-18">Radiografia de coluna (cervical, torácica, lombar)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-19" value="Radiografia de bacia/quadril (trauma)">
+                <label for="exame-img-19">Radiografia de bacia/quadril (trauma)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-20" value="Radiografia de crânio e face (trauma craniofacial)">
+                <label for="exame-img-20">Radiografia de crânio e face (trauma craniofacial)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-21" value="Ultrassonografia de abdome total ou superior (em casos de dor abdominal aguda)">
+                <label for="exame-img-21">Ultrassonografia de abdome total ou superior (em casos de dor abdominal aguda)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-22" value="Ultrassonografia pélvica ou obstétrica (em emergências ginecológicas/obstétricas)">
+                <label for="exame-img-22">Ultrassonografia pélvica ou obstétrica (em emergências ginecológicas/obstétricas)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-23" value="Ultrassonografia de partes moles (abscessos, coleções, trauma)">
+                <label for="exame-img-23">Ultrassonografia de partes moles (abscessos, coleções, trauma)</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-24" value="Ecocardiograma de urgência">
+                <label for="exame-img-24">Ecocardiograma de urgência</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-25" value="Tomografia computadorizada tórax">
+                <label for="exame-img-25">Tomografia computadorizada tórax</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-26" value="Tomografia computadorizada crânio">
+                <label for="exame-img-26">Tomografia computadorizada crânio</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-27" value="Tomografia computadorizada abdome">
+                <label for="exame-img-27">Tomografia computadorizada abdome</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-28" value="Holter 24h">
+                <label for="exame-img-28">Holter 24h</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-29" value="Ressonância magnética">
+                <label for="exame-img-29">Ressonância magnética</label>
+            </div>
+            <div class="exame-item">
+                <input type="checkbox" id="exame-img-30" value="Doppler vascular">
+                <label for="exame-img-30">Doppler vascular</label>
+            </div>
+        </div>
+    </div>
+</div>                
+                <div class="form-group">
+                    <label for="observacoes-exames">Observações Adicionais</label>
+                    <textarea id="observacoes-exames" rows="3" placeholder="Digite observações adicionais sobre os exames solicitados..."></textarea>
+                </div>
+                
+                <button id="gerar-solicitacao-exames">Gerar Solicitação de Exames</button>
+            </div>
+            
             <!-- Formulário para Configuração -->
             <div id="configuracao-form" class="form-section">
                 <div class="form-group">
@@ -595,6 +1056,19 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 </div>
                 
                 <button id="salvar-configuracao">Salvar Configuração</button>
+            </div>
+            
+            <!-- Formulário para Links Úteis -->
+            <div id="links-uteis-form" class="form-section">
+                <div class="form-group">
+                    <h3>Links Úteis para Profissionais de Saúde</h3>
+                    <p>Acesse recursos adicionais para auxiliar na sua prática clínica:</p>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://homeropereira07.github.io/sismed/links.html" target="_blank" style="display: inline-block; padding: 1rem 2rem; background-color: var(--secondary); color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                            Acessar Links Úteis
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1215,7 +1689,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
             }
         };
-
         // Dados das receitas
         const receitas = {
             "LOMBALGIA": {
@@ -1473,7 +1946,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 ]
             }
         };
-
         // Elementos DOM
         const docTypeButtons = document.querySelectorAll('.doc-type-btn');
         const formSections = document.querySelectorAll('.form-section');
@@ -1517,6 +1989,11 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         const printData = document.getElementById('print-data');
         const printData2 = document.getElementById('print-data2');
 
+        // Elementos para Solicitação de Exames
+        const pacienteExamesInput = document.getElementById('paciente-exames');
+        const observacoesExamesInput = document.getElementById('observacoes-exames');
+        const btnGerarSolicitacaoExames = document.getElementById('gerar-solicitacao-exames');
+
         // Variáveis para controle de edição
         let isEditMode = false;
 
@@ -1533,6 +2010,12 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         docTypeButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const type = button.getAttribute('data-type');
+                
+                // Se for Links Úteis, redirecionar para a página
+                if (type === 'links-uteis') {
+                    window.open('https://homeropereira07.github.io/sismed/links.html', '_blank');
+                    return;
+                }
                 
                 // Ativar botão selecionado
                 docTypeButtons.forEach(btn => btn.classList.remove('active'));
@@ -1665,9 +2148,22 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             
             // Converter número para extenso
             const numeroExtenso = {
-                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
-                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
-            };
+    '1': 'UM',
+    '2': 'DOIS', 
+    '3': 'TRÊS',
+    '4': 'QUATRO',
+    '5': 'CINCO',
+    '6': 'SEIS',
+    '7': 'SETE',
+    '8': 'OITO',
+    '9': 'NOVE',
+    '10': 'DEZ',
+    '11': 'ONZE',
+    '12': 'DOZE',
+    '13': 'TREZE',
+    '14': 'QUATORZE',
+    '15': 'QUINZE'
+}
             
             const diasExtenso = numeroExtenso[dias] || dias;
             
@@ -1782,6 +2278,104 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             btnSave.style.display = 'none';
         });
 
+// Controle da lateralidade para exames de imagem
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const lateralidadeDiv = this.parentElement.querySelector('.lateralidade-options');
+            if (this.checked) {
+                lateralidadeDiv.style.display = 'block';
+            } else {
+                lateralidadeDiv.style.display = 'none';
+                lateralidadeDiv.querySelector('.lateralidade-select').value = '';
+            }
+        });
+    });
+});
+
+// Gerar Solicitação de Exames
+btnGerarSolicitacaoExames.addEventListener('click', () => {
+    if (!unidadeSelecionada) {
+        alert('Por favor, configure a unidade de trabalho primeiro.');
+        return;
+    }
+    
+    const paciente = pacienteExamesInput.value;
+    const observacoes = observacoesExamesInput.value;
+    
+    if (!paciente) {
+        alert('Por favor, preencha o nome do paciente.');
+        return;
+    }
+    
+    // Coletar exames selecionados COM LATERALIDADE
+    const examesSelecionados = [];
+    const checkboxes = document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]:checked');
+    
+    if (checkboxes.length === 0) {
+        alert('Por favor, selecione pelo menos um exame.');
+        return;
+    }
+    
+    checkboxes.forEach(checkbox => {
+        let exameTexto = checkbox.value;
+        
+        // Verificar se é um exame com lateralidade
+        if (checkbox.classList.contains('exame-lateralidade')) {
+            const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
+            const lateralidade = lateralidadeSelect ? lateralidadeSelect.value : '';
+            
+            if (lateralidade) {
+                exameTexto += ` - ${lateralidade}`;
+            }
+        }
+        
+        examesSelecionados.push(exameTexto);
+    });
+    
+    documentTitle.textContent = 'SOLICITAÇÃO DE EXAMES';
+    printPaciente.textContent = paciente;
+    unidadeNome.textContent = unidadeSelecionada;
+    
+    // Atualizar dados da unidade no documento
+    atualizarDadosUnidade(unidadeSelecionada);
+    
+    let contentHTML = `
+        <div class="prescription-item">
+            <div class="prescription-header">Exames Solicitados:</div>
+            <ul>
+    `;
+    
+    examesSelecionados.forEach(exame => {
+        contentHTML += `<li>${exame}</li>`;
+    });
+    
+    contentHTML += `
+            </ul>
+        </div>
+    `;
+    
+    if (observacoes) {
+        contentHTML += `
+            <div class="prescription-item">
+                <div class="prescription-header">Observações:</div>
+                <p>${observacoes.replace(/\n/g, '<br>')}</p>
+            </div>
+        `;
+    }
+    
+    contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
+    
+    printContent.innerHTML = contentHTML;
+    printArea.style.display = 'block';
+    printAreaControleEspecial.style.display = 'none';
+    editControls.style.display = 'flex';
+    isEditMode = false;
+    printContent.contentEditable = 'false';
+    printArea.classList.remove('edit-mode');
+    btnEdit.style.display = 'inline-block';
+    btnSave.style.display = 'none';
+});
         // Função para atualizar dados da unidade no documento
         function atualizarDadosUnidade(unidade) {
             if (unidades[unidade]) {
@@ -1819,5 +2413,4 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
     </script>
 </body>
 </html>
-
-
+		
