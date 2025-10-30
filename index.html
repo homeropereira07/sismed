@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Saúde - Controle de Atendimento</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #34a853;
+            --danger: #ea4335;
+            --warning: #fbbc05;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --light-gray: #dadce0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: var(--primary-dark);
+            text-align: center;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-menu a.active {
+            background-color: rgba(255,255,255,0.2);
+            border-left: 4px solid white;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--light-gray);
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2d8c47;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #d33426;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e6a700;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Tables */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .table th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+        
+        .table tr:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background-color: #e6f4ea;
+            color: var(--secondary);
+        }
+        
+        .badge-warning {
+            background-color: #fef7e0;
+            color: var(--warning);
+        }
+        
+        .badge-danger {
+            background-color: #fce8e6;
+            color: var(--danger);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
+            .sidebar-menu li {
+                flex: 1 0 auto;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sistema de Saúde</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" data-tab="dashboard"><i>📊</i> Dashboard</a></li>
+                <li><a href="#" data-tab="triagem"><i>👥</i> Triagem</a></li>
+                <li><a href="#" data-tab="atendimento"><i>🩺</i> Atendimento</a></li>
+                <li><a href="#" data-tab="exames"><i>🔬</i> Solicitar Exames</a></li>
+                <li><a href="#" data-tab="receitas"><i>💊</i> Receitas</a></li>
+                <li><a href="#" data-tab="internacao"><i>🏥</i> Internação</a></li>
+                <li><a href="#" data-tab="documentos"><i>📄</i> Documentos</a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar">MD</div>
+                    <span>Dr. Médico</span>
+                </div>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        Resumo do Dia
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            <div style="text-align: center; padding: 15px; background-color: #e8f0fe; border-radius: 8px;">
+                                <h3 style="font-size: 2rem; color: var(--primary);">12</h3>
+                                <p>Pacientes em Espera</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background-color: #e6f4ea; border-radius: 8px;">
+                                <h3 style="font-size: 2rem; color: var(--secondary);">8</h3>
+                                <p>Atendimentos Realizados</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background-color: #fef7e0; border-radius: 8px;">
+                                <h3 style="font-size: 2rem; color: var(--warning);">3</h3>
+                                <p>Exames Solicitados</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background-color: #fce8e6; border-radius: 8px;">
+                                <h3 style="font-size: 2rem; color: var(--danger);">2</h3>
+                                <p>Internações</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        Pacientes em Espera
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Idade</th>
+                                    <th>Prioridade</th>
+                                    <th>Tempo de Espera</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Maria Silva</td>
+                                    <td>45</td>
+                                    <td><span class="badge badge-danger">Alta</span></td>
+                                    <td>15 min</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;">Atender</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>João Santos</td>
+                                    <td>32</td>
+                                    <td><span class="badge badge-warning">Média</span></td>
+                                    <td>25 min</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;">Atender</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ana Oliveira</td>
+                                    <td>68</td>
+                                    <td><span class="badge badge-danger">Alta</span></td>
+                                    <td>10 min</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;">Atender</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Triagem Tab -->
+            <div id="triagem" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        Ficha de Triagem
+                    </div>
+                    <div class="card-body">
+                        <form id="triagem-form">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="paciente">Paciente</label>
+                                        <input type="text" id="paciente" placeholder="Nome completo do paciente">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="data-nascimento">Data de Nascimento</label>
+                                        <input type="date" id="data-nascimento">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cpf">CPF</label>
+                                        <input type="text" id="cpf" placeholder="000.000.000-00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telefone">Telefone</label>
+                                        <input type="text" id="telefone" placeholder="(00) 00000-0000">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group">
+                                        <label for="pressao-arterial">Pressão Arterial</label>
+                                        <input type="text" id="pressao-arterial" placeholder="Ex: 120/80">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temperatura">Temperatura</label>
+                                        <input type="text" id="temperatura" placeholder="Ex: 36.5°C">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="frequencia-cardiaca">Frequência Cardíaca</label>
+                                        <input type="text" id="frequencia-cardiaca" placeholder="Ex: 75 bpm">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="saturacao">Saturação de O2</label>
+                                        <input type="text" id="saturacao" placeholder="Ex: 98%">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="queixa-principal">Queixa Principal</label>
+                                <textarea id="queixa-principal" placeholder="Descreva a queixa principal do paciente"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="alergias">Alergias Conhecidas</label>
+                                <input type="text" id="alergias" placeholder="Liste as alergias do paciente">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medicamentos">Medicamentos em Uso</label>
+                                <textarea id="medicamentos" placeholder="Liste os medicamentos em uso"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="prioridade">Prioridade de Atendimento</label>
+                                <select id="prioridade">
+                                    <option value="baixa">Baixa</option>
+                                    <option value="media">Média</option>
+                                    <option value="alta">Alta</option>
+                                    <option value="emergencia">Emergência</option>
+                                </select>
+                            </div>
+                            
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-secondary">Salvar Triagem</button>
+                                <button type="button" class="btn">Limpar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Atendimento Tab -->
+            <div id="atendimento" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        Atendimento Médico
+                    </div>
+                    <div class="card-body">
+                        <div class="tabs">
+                            <div class="tab active" data-subtab="dados-paciente">Dados do Paciente</div>
+                            <div class="tab" data-subtab="anamnese">Anamnese</div>
+                            <div class="tab" data-subtab="exame-fisico">Exame Físico</div>
+                            <div class="tab" data-subtab="diagnostico">Diagnóstico</div>
+                        </div>
+                        
+                        <div id="dados-paciente" class="tab-content active">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <h3>Informações Pessoais</h3>
+                                    <p><strong>Nome:</strong> Maria Silva</p>
+                                    <p><strong>Idade:</strong> 45 anos</p>
+                                    <p><strong>CPF:</strong> 123.456.789-00</p>
+                                    <p><strong>Telefone:</strong> (11) 99999-9999</p>
+                                </div>
+                                <div>
+                                    <h3>Sinais Vitais (Triagem)</h3>
+                                    <p><strong>Pressão Arterial:</strong> 150/95 mmHg</p>
+                                    <p><strong>Temperatura:</strong> 37.2°C</p>
+                                    <p><strong>Frequência Cardíaca:</strong> 88 bpm</p>
+                                    <p><strong>Saturação O2:</strong> 96%</p>
+                                    <p><strong>Queixa Principal:</strong> Cefaleia intensa há 2 dias</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="anamnese" class="tab-content">
+                            <div class="form-group">
+                                <label for="historia-doenca">História da Doença Atual</label>
+                                <textarea id="historia-doenca" placeholder="Descreva a história da doença atual"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="antecedentes">Antecedentes Pessoais</label>
+                                <textarea id="antecedentes" placeholder="Descreva os antecedentes pessoais"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="habitos">Hábitos de Vida</label>
+                                <textarea id="habitos" placeholder="Descreva os hábitos de vida"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div id="exame-fisico" class="tab-content">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="inspecao">Inspeção</label>
+                                        <textarea id="inspecao"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="palpacao">Palpação</label>
+                                        <textarea id="palpacao"></textarea>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group">
+                                        <label for="percussao">Percussão</label>
+                                        <textarea id="percussao"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ausculta">Ausculta</label>
+                                        <textarea id="ausculta"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="diagnostico" class="tab-content">
+                            <div class="form-group">
+                                <label for="diagnostico-presuntivo">Diagnóstico Presuntivo</label>
+                                <input type="text" id="diagnostico-presuntivo">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cid">CID-10</label>
+                                <input type="text" id="cid" placeholder="Código CID-10">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="conduta">Conduta</label>
+                                <textarea id="conduta"></textarea>
+                            </div>
+                            
+                            <div class="btn-group">
+                                <button class="btn btn-secondary">Finalizar Atendimento</button>
+                                <button class="btn">Solicitar Exames</button>
+                                <button class="btn">Prescrever Medicamentos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exames Tab -->
+            <div id="exames" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        Solicitação de Exames
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="paciente-exame">Paciente</label>
+                            <select id="paciente-exame">
+                                <option value="">Selecione um paciente</option>
+                                <option value="1">Maria Silva</option>
+                                <option value="2">João Santos</option>
+                                <option value="3">Ana Oliveira</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Exames Solicitados</label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                                <div>
+                                    <input type="checkbox" id="hemograma">
+                                    <label for="hemograma">Hemograma</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="glicemia">
+                                    <label for="glicemia">Glicemia</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="colesterol">
+                                    <label for="colesterol">Colesterol</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="eletrocardiograma">
+                                    <label for="eletrocardiograma">Eletrocardiograma</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="radiografia-torax">
+                                    <label for="radiografia-torax">Radiografia de Tórax</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="ultrassom-abdomen">
+                                    <label for="ultrassom-abdomen">Ultrassom de Abdômen</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="tomografia-cranio">
+                                    <label for="tomografia-cranio">Tomografia de Crânio</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="ressonancia-magnetica">
+                                    <label for="ressonancia-magnetica">Ressonância Magnética</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="observacoes-exame">Observações</label>
+                            <textarea id="observacoes-exame" placeholder="Observações sobre os exames solicitados"></textarea>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button class="btn btn-secondary">Solicitar Exames</button>
+                            <button class="btn">Imprimir Solicitação</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Receitas Tab -->
+            <div id="receitas" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        Prescrição de Medicamentos
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="paciente-receita">Paciente</label>
+                            <select id="paciente-receita">
+                                <option value="">Selecione um paciente</option>
+                                <option value="1">Maria Silva</option>
+                                <option value="2">João Santos</option>
+                                <option value="3">Ana Oliveira</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diagnostico-receita">Diagnóstico</label>
+                            <input type="text" id="diagnostico-receita">
+                        </div>
+                        
+                        <div id="medicamentos-container">
+                            <div class="medicamento-item" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px;">
+                                <input type="text" placeholder="Medicamento">
+                                <input type="text" placeholder="Dose">
+                                <input type="text" placeholder="Via">
+                                <input type="text" placeholder="Frequência">
+                                <button class="btn btn-danger" style="padding: 5px 10px;">×</button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn" id="adicionar-medicamento" style="margin-bottom: 15px;">+ Adicionar Medicamento</button>
+                        
+                        <div class="form-group">
+                            <label for="observacoes-receita">Observações</label>
+                            <textarea id="observacoes-receita" placeholder="Observações sobre a prescrição"></textarea>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button class="btn btn-secondary">Emitir Receita</button>
+                            <button class="btn">Imprimir Receita</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Internação Tab -->
+            <div id="internacao" class="tab-content">
+                <div class="tabs">
+                    <div class="tab active" data-subtab="solicitacao-internacao">Solicitação de Internação</div>
+                    <div class="tab" data-subtab="aih">Autorização de Internação Hospitalar (AIH)</div>
+                    <div class="tab" data-subtab="apac">Autorização de Procedimento Ambulatorial (APAC)</div>
+                    <div class="tab" data-subtab="prescricao">Prescrição Médica</div>
+                </div>
+                
+                <div id="solicitacao-internacao" class="tab-content active">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="paciente-internacao">Paciente</label>
+                                <select id="paciente-internacao">
+                                    <option value="">Selecione um paciente</option>
+                                    <option value="1">Maria Silva</option>
+                                    <option value="2">João Santos</option>
+                                    <option value="3">Ana Oliveira</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="motivo-internacao">Motivo da Internação</label>
+                                <textarea id="motivo-internacao"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="diagnostico-internacao">Diagnóstico</label>
+                                <input type="text" id="diagnostico-internacao">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cid-internacao">CID-10</label>
+                                <input type="text" id="cid-internacao">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="previsao-alta">Previsão de Alta</label>
+                                <input type="date" id="previsao-alta">
+                            </div>
+                            
+                            <div class="btn-group">
+                                <button class="btn btn-secondary">Solicitar Internação</button>
+                                <button class="btn">Gerar AIH</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="aih" class="tab-content">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <h2>AUTORIZAÇÃO DE INTERNAÇÃO HOSPITALAR - AIH</h2>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <p><strong>Número da AIH:</strong> 123456789</p>
+                                    <p><strong>Data de Emissão:</strong> 15/10/2023</p>
+                                    <p><strong>Paciente:</strong> Maria Silva</p>
+                                    <p><strong>CPF:</strong> 123.456.789-00</p>
+                                    <p><strong>Data de Nascimento:</strong> 15/05/1978</p>
+                                </div>
+                                <div>
+                                    <p><strong>Médico Solicitante:</strong> Dr. Médico</p>
+                                    <p><strong>CRM:</strong> 12345/SP</p>
+                                    <p><strong>Diagnóstico:</strong> Hipertensão arterial não controlada</p>
+                                    <p><strong>CID-10:</strong> I10</p>
+                                    <p><strong>Previsão de Alta:</strong> 20/10/2023</p>
+                                </div>
+                            </div>
+                            
+                            <div class="btn-group" style="margin-top: 20px;">
+                                <button class="btn btn-secondary">Imprimir AIH</button>
+                                <button class="btn">Salvar PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="apac" class="tab-content">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <h2>AUTORIZAÇÃO DE PROCEDIMENTO AMBULATORIAL - APAC</h2>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <p><strong>Número da APAC:</strong> 987654321</p>
+                                    <p><strong>Data de Emissão:</strong> 15/10/2023</p>
+                                    <p><strong>Paciente:</strong> João Santos</p>
+                                    <p><strong>CPF:</strong> 987.654.321-00</p>
+                                    <p><strong>Data de Nascimento:</strong> 20/08/1991</p>
+                                </div>
+                                <div>
+                                    <p><strong>Médico Solicitante:</strong> Dr. Médico</p>
+                                    <p><strong>CRM:</strong> 12345/SP</p>
+                                    <p><strong>Procedimento:</strong> Quimioterapia</p>
+                                    <p><strong>CID-10:</strong> C50.9</p>
+                                    <p><strong>Número de Sessões:</strong> 6</p>
+                                </div>
+                            </div>
+                            
+                            <div class="btn-group" style="margin-top: 20px;">
+                                <button class="btn btn-secondary">Imprimir APAC</button>
+                                <button class="btn">Salvar PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="prescricao" class="tab-content">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="paciente-prescricao">Paciente Internado</label>
+                                <select id="paciente-prescricao">
+                                    <option value="">Selecione um paciente</option>
+                                    <option value="1">Maria Silva</option>
+                                    <option value="2">João Santos</option>
+                                </select>
+                            </div>
+                            
+                            <div id="prescricao-medicamentos-container">
+                                <div class="medicamento-item" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="Medicamento">
+                                    <input type="text" placeholder="Dose">
+                                    <input type="text" placeholder="Via">
+                                    <input type="text" placeholder="Frequência">
+                                    <button class="btn btn-danger" style="padding: 5px 10px;">×</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn" id="adicionar-medicamento-prescricao" style="margin-bottom: 15px;">+ Adicionar Medicamento</button>
+                            
+                            <div class="form-group">
+                                <label for="dieta">Dieta</label>
+                                <select id="dieta">
+                                    <option value="">Selecione a dieta</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="liquida">Líquida</option>
+                                    <option value="pastosa">Pastosa</option>
+                                    <option value="hipossodica">Hipossódica</option>
+                                    <option value="diabetica">Para Diabéticos</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cuidados-especiais">Cuidados Especiais</label>
+                                <textarea id="cuidados-especiais"></textarea>
+                            </div>
+                            
+                            <div class="btn-group">
+                                <button class="btn btn-secondary">Salvar Prescrição</button>
+                                <button class="btn">Imprimir Prescrição</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documentos Tab -->
+            <div id="documentos" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        Documentos e Impressões
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                            <div style="text-align: center; padding: 15px; border: 1px solid var(--light-gray); border-radius: 8px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📋</div>
+                                <h3>Ficha de Triagem</h3>
+                                <button class="btn" style="margin-top: 10px;">Imprimir</button>
+                            </div>
+                            <div style="text-align: center; padding: 15px; border: 1px solid var(--light-gray); border-radius: 8px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🩺</div>
+                                <h3>Atestado Médico</h3>
+                                <button class="btn" style="margin-top: 10px;">Imprimir</button>
+                            </div>
+                            <div style="text-align: center; padding: 15px; border: 1px solid var(--light-gray); border-radius: 8px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">💊</div>
+                                <h3>Receituário</h3>
+                                <button class="btn" style="margin-top: 10px;">Imprimir</button>
+                            </div>
+                            <div style="text-align: center; padding: 15px; border: 1px solid var(--light-gray); border-radius: 8px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🔬</div>
+                                <h3>Solicitação de Exames</h3>
+                                <button class="btn" style="margin-top: 10px;">Imprimir</button>
+                            </div>
+                            <div style="text-align: center; padding: 15px; border: 1px solid var(--light-gray); border-radius: 8px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🏥</div>
+                                <h3>AIH</h3>
+                                <button class="btn" style="margin-top: 10px;">Imprimir</button>
+                            </div>
+                            <div style="text-align: center; padding: 15px; border: 1px solid var(--light-gray); border-radius: 8px;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📄</div>
+                                <h3>APAC</h3>
+                                <button class="btn" style="margin-top: 10px;">Imprimir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navegação entre abas principais
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove classe active de todos os links
+                document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Adiciona classe active ao link clicado
+                this.classList.add('active');
+                
+                // Oculta todas as abas de conteúdo
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // Mostra a aba de conteúdo correspondente
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+                
+                // Atualiza o título da página
+                document.querySelector('.page-title').textContent = this.textContent.trim();
+            });
+        });
+        
+        // Navegação entre subtabs
+        document.querySelectorAll('.tab[data-subtab]').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const parent = this.closest('.card-body') || this.closest('.main-content');
+                
+                // Remove classe active de todas as tabs
+                parent.querySelectorAll('.tab').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Adiciona classe active à tab clicada
+                this.classList.add('active');
+                
+                // Oculta todos os conteúdos de tab
+                parent.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Mostra o conteúdo correspondente
+                const subtabId = this.getAttribute('data-subtab');
+                parent.querySelector('#' + subtabId).classList.add('active');
+            });
+        });
+        
+        // Adicionar medicamento na receita
+        document.getElementById('adicionar-medicamento').addEventListener('click', function() {
+            const container = document.getElementById('medicamentos-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'medicamento-item';
+            newItem.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px;';
+            newItem.innerHTML = `
+                <input type="text" placeholder="Medicamento">
+                <input type="text" placeholder="Dose">
+                <input type="text" placeholder="Via">
+                <input type="text" placeholder="Frequência">
+                <button class="btn btn-danger" style="padding: 5px 10px;">×</button>
+            `;
+            container.appendChild(newItem);
+            
+            // Adiciona evento para remover o medicamento
+            newItem.querySelector('.btn-danger').addEventListener('click', function() {
+                container.removeChild(newItem);
+            });
+        });
+        
+        // Adicionar medicamento na prescrição de internação
+        document.getElementById('adicionar-medicamento-prescricao').addEventListener('click', function() {
+            const container = document.getElementById('prescricao-medicamentos-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'medicamento-item';
+            newItem.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px;';
+            newItem.innerHTML = `
+                <input type="text" placeholder="Medicamento">
+                <input type="text" placeholder="Dose">
+                <input type="text" placeholder="Via">
+                <input type="text" placeholder="Frequência">
+                <button class="btn btn-danger" style="padding: 5px 10px;">×</button>
+            `;
+            container.appendChild(newItem);
+            
+            // Adiciona evento para remover o medicamento
+            newItem.querySelector('.btn-danger').addEventListener('click', function() {
+                container.removeChild(newItem);
+            });
+        });
+        
+        // Simular envio de formulário de triagem
+        document.getElementById('triagem-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Triagem salva com sucesso!');
+        });
+    </script>
+</body>
+</html>
