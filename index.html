@@ -118,14 +118,14 @@
         .document-type-selector {
         display: flex;
         justify-content: center; /* Centraliza horizontalmente */
-        //align-items: center;     /* Centraliza verticalmente */
+        align-items: center;     /* Centraliza verticalmente */
         gap: 1rem;
         margin-bottom: 1.5rem;
         flex-wrap: wrap;
         }
         
         .doc-type-btn {
-            flex: 1;
+            flex: 0;
             min-width: 120px;
             text-align: center;
             padding: 1rem;
@@ -2216,10 +2216,11 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             
             // Atualizar dados da unidade no documento
             atualizarDadosUnidade(unidadeSelecionada);
-            
+			
+            // ENCAMINHAR RECEITO RELATÓRIO
             let contentHTML = `
                 <div class="prescription-item">
-                    <div class="prescription-header">Medicamentos Prescritos:</div>
+                    <div class="prescription-header">     </div> 
                     <p>${medicamentos.replace(/\n/g, '<br>')}</p>
                     <br>
                 </div>
@@ -2416,4 +2417,5 @@ btnGerarSolicitacaoExames.addEventListener('click', () => {
 </body>
 </html>
 		
+
 
