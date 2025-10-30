@@ -107,6 +107,14 @@
             background-color: #c0392b;
         }
         
+        .btn-edit {
+            background-color: #f39c12;
+        }
+        
+        .btn-edit:hover {
+            background-color: #e67e22;
+        }
+        
         .document-type-selector {
             display: flex;
             gap: 1rem;
@@ -313,6 +321,25 @@
             }
         }
         
+        /* Estilos para edição */
+        .editable-content {
+            border: 1px dashed #ccc;
+            padding: 10px;
+            min-height: 100px;
+            margin-bottom: 15px;
+        }
+        
+        .edit-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .edit-mode .editable-content {
+            border: 1px solid #3498db;
+            background-color: #f8f9fa;
+        }
+        
         @media print {
             body * {
                 visibility: hidden;
@@ -329,6 +356,9 @@
                 border: none;
             }
             .no-print {
+                display: none;
+            }
+            .edit-controls {
                 display: none;
             }
         }
@@ -445,12 +475,12 @@
             <div id="controle-especial-form" class="form-section">
                 <div class="form-group">
                     <label for="medico">Nome do Médico</label>
-                    <input type="text" id="medico" placeholder="Nome completo do médico" value="HOMERO PEREIRA">
+                    <input type="text" id="medico" placeholder="Nome completo do médico" value="CARLOS ALBERTO">
                 </div>
                 
                 <div class="form-group">
                     <label for="crm">CRM</label>
-                    <input type="text" id="crm" placeholder="Número do CRM" value="CRM-MA: 16XXX">
+                    <input type="text" id="crm" placeholder="Número do CRM" value="CRM-MA: 14922">
                 </div>
                 
                 <div class="form-group">
@@ -586,7 +616,7 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             
             <div class="print-content">
                 <p><strong>Paciente:</strong> <span id="print-paciente"></span></p>
-                <div id="print-content">
+                <div id="print-content" class="editable-content" contenteditable="false">
                     <!-- Conteúdo será inserido aqui via JavaScript -->
                 </div>
                 
@@ -607,7 +637,7 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                     <div class="emitente-section">
                         <div class="via-title">IDENTIFICAÇÃO DO EMITENTE</div>
                         <div class="emitente-line">
-                            <span id="print-medico">HOMERO PEREIRA</span>
+                            <span id="print-medico">CARLOS ALBERTO</span>
                             <span>1ª VIA FARMÁCIA</span>
                         </div>
                         <div class="emitente-line">
@@ -615,7 +645,7 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                             <span>2ª VIA PACIENTE</span>
                         </div>
                         <div class="emitente-line">
-                            <span id="print-crm">CRM-MA: 16XXX</span>
+                            <span id="print-crm">CRM-MA: 14922</span>
                             <span></span>
                         </div>
                         <div class="emitente-line">
@@ -712,7 +742,7 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                     <div class="emitente-section">
                         <div class="via-title">IDENTIFICAÇÃO DO EMITENTE</div>
                         <div class="emitente-line">
-                            <span id="print-medico2">HOMERO PEREIRA</span>
+                            <span id="print-medico2">CARLOS ALBERTO</span>
                             <span>1ª VIA FARMÁCIA</span>
                         </div>
                         <div class="emitente-line">
@@ -720,7 +750,7 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                             <span>2ª VIA PACIENTE</span>
                         </div>
                         <div class="emitente-line">
-                            <span id="print-crm2">CRM-MA: 16XXX</span>
+                            <span id="print-crm2">CRM-MA: 14922</span>
                             <span></span>
                         </div>
                         <div class="emitente-line">
@@ -813,7 +843,11 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         </div>
         
         <div class="no-print" style="text-align: center; margin-top: 1rem;">
-            <button id="btn-print" class="btn-print" style="display: none;">Imprimir Documento</button>
+            <div class="edit-controls" id="edit-controls" style="display: none;">
+                <button id="btn-edit" class="btn-edit">Editar Documento</button>
+                <button id="btn-save" class="btn-edit" style="display: none;">Salvar Alterações</button>
+                <button id="btn-print" class="btn-print">Imprimir Documento</button>
+            </div>
         </div>
     </div>
 
@@ -1446,6 +1480,9 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         const printArea = document.getElementById('print-area');
         const printAreaControleEspecial = document.getElementById('print-area-controle-especial');
         const btnPrint = document.getElementById('btn-print');
+        const btnEdit = document.getElementById('btn-edit');
+        const btnSave = document.getElementById('btn-save');
+        const editControls = document.getElementById('edit-controls');
         const documentTitle = document.getElementById('document-title');
         const printPaciente = document.getElementById('print-paciente');
         const printContent = document.getElementById('print-content');
@@ -1480,6 +1517,9 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         const printData = document.getElementById('print-data');
         const printData2 = document.getElementById('print-data2');
 
+        // Variáveis para controle de edição
+        let isEditMode = false;
+
         // Carregar configuração salva
         let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
         
@@ -1505,7 +1545,10 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 // Ocultar área de impressão
                 printArea.style.display = 'none';
                 printAreaControleEspecial.style.display = 'none';
-                btnPrint.style.display = 'none';
+                editControls.style.display = 'none';
+                isEditMode = false;
+                printContent.contentEditable = 'false';
+                printArea.classList.remove('edit-mode');
             });
         });
 
@@ -1587,7 +1630,12 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             printContent.innerHTML = contentHTML;
             printArea.style.display = 'block';
             printAreaControleEspecial.style.display = 'none';
-            btnPrint.style.display = 'inline-block';
+            editControls.style.display = 'flex';
+            isEditMode = false;
+            printContent.contentEditable = 'false';
+            printArea.classList.remove('edit-mode');
+            btnEdit.style.display = 'inline-block';
+            btnSave.style.display = 'none';
         });
 
         // Gerar Atestado
@@ -1641,7 +1689,12 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             printContent.innerHTML = contentHTML;
             printArea.style.display = 'block';
             printAreaControleEspecial.style.display = 'none';
-            btnPrint.style.display = 'inline-block';
+            editControls.style.display = 'flex';
+            isEditMode = false;
+            printContent.contentEditable = 'false';
+            printArea.classList.remove('edit-mode');
+            btnEdit.style.display = 'inline-block';
+            btnSave.style.display = 'none';
         });
 
         // Gerar Receituário em Branco
@@ -1678,7 +1731,12 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             printContent.innerHTML = contentHTML;
             printArea.style.display = 'block';
             printAreaControleEspecial.style.display = 'none';
-            btnPrint.style.display = 'inline-block';
+            editControls.style.display = 'flex';
+            isEditMode = false;
+            printContent.contentEditable = 'false';
+            printArea.classList.remove('edit-mode');
+            btnEdit.style.display = 'inline-block';
+            btnSave.style.display = 'none';
         });
 
         // Gerar Receituário de Controle Especial
@@ -1718,7 +1776,10 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             
             printArea.style.display = 'none';
             printAreaControleEspecial.style.display = 'block';
-            btnPrint.style.display = 'inline-block';
+            editControls.style.display = 'flex';
+            isEditMode = false;
+            btnEdit.style.display = 'inline-block';
+            btnSave.style.display = 'none';
         });
 
         // Função para atualizar dados da unidade no documento
@@ -1732,6 +1793,24 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 `;
             }
         }
+
+        // Botão Editar
+        btnEdit.addEventListener('click', () => {
+            isEditMode = true;
+            printContent.contentEditable = 'true';
+            printArea.classList.add('edit-mode');
+            btnEdit.style.display = 'none';
+            btnSave.style.display = 'inline-block';
+        });
+
+        // Botão Salvar
+        btnSave.addEventListener('click', () => {
+            isEditMode = false;
+            printContent.contentEditable = 'false';
+            printArea.classList.remove('edit-mode');
+            btnEdit.style.display = 'inline-block';
+            btnSave.style.display = 'none';
+        });
 
         // Imprimir documento
         btnPrint.addEventListener('click', () => {
