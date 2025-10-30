@@ -197,6 +197,12 @@
             padding-top: 0.5rem;
         }
         
+        .unidade-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
         @media print {
             body * {
                 visibility: hidden;
@@ -235,6 +241,7 @@
                 <div class="doc-type-btn active" data-type="receita">Receita</div>
                 <div class="doc-type-btn" data-type="atestado">Atestado</div>
                 <div class="doc-type-btn" data-type="receituario">Receituário em Branco</div>
+                <div class="doc-type-btn" data-type="configuracao">Configuração</div>
             </div>
             
             <!-- Formulário para Receita -->
@@ -322,6 +329,96 @@
                 
                 <button id="gerar-receituario">Gerar Receituário</button>
             </div>
+            
+            <!-- Formulário para Configuração -->
+            <div id="configuracao-form" class="form-section">
+                <div class="form-group">
+                    <label for="unidade-trabalho">Selecione a Unidade de Trabalho</label>
+                    <select id="unidade-trabalho">
+                        <option value="">Selecione uma unidade</option>
+                        <!-- Hospitais -->
+                        <optgroup label="HOSPITAIS">
+                            <option value="HOSPITAL AQUILES LISBOA">HOSPITAL AQUILES LISBOA</option>
+                            <option value="HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI">HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI</option>
+                            <option value="HOSPITAL DA CRIANÇA E MULHER DE COLINAS">HOSPITAL DA CRIANÇA E MULHER DE COLINAS</option>
+                            <option value="HOSPITAL DA ILHA">HOSPITAL DA ILHA</option>
+                            <option value="HOSPITAL DE CUIDADOS INTENSIVOS – HCI">HOSPITAL DE CUIDADOS INTENSIVOS – HCI</option>
+                            <option value="HOSPITAL DE ONCOLOGIA DO MARANHÃO DR. TARQUINIO LOPES FILHO">HOSPITAL DE ONCOLOGIA DO MARANHÃO DR. TARQUINIO LOPES FILHO</option>
+                            <option value="HOSPITAL DE REFERÊNCIA ESTADUAL DE ALTA COMPLEXIDADE DR. CARLOS MACIEIRA">HOSPITAL DE REFERÊNCIA ESTADUAL DE ALTA COMPLEXIDADE DR. CARLOS MACIEIRA</option>
+                            <option value="HOSPITAL DE RETAGUARDA DE BACABAL">HOSPITAL DE RETAGUARDA DE BACABAL</option>
+                            <option value="HOSPITAL DE TRAUMA E ORTOPEDIA – HTO">HOSPITAL DE TRAUMA E ORTOPEDIA – HTO</option>
+                            <option value="HOSPITAL DE TRAUMA E ORTOPEDIA DE CAXIAS">HOSPITAL DE TRAUMA E ORTOPEDIA DE CAXIAS</option>
+                            <option value="HOSPITAL DR GENÉSIO REGO">HOSPITAL DR GENÉSIO REGO</option>
+                            <option value="HOSPITAL DR. JOSÉ DA COSTA ALMEIDA – CHAPADINHA">HOSPITAL DR. JOSÉ DA COSTA ALMEIDA – CHAPADINHA</option>
+                            <option value="HOSPITAL DR. RAIMUNDO LIMA">HOSPITAL DR. RAIMUNDO LIMA</option>
+                            <option value="HOSPITAL INFANTIL DR. JUVÊNCIO MATOS (COMPLEXO)">HOSPITAL INFANTIL DR. JUVÊNCIO MATOS (COMPLEXO)</option>
+                            <option value="HOSPITAL JOSÉ FERREIRA DOS REIS – PAULINO NEVES">HOSPITAL JOSÉ FERREIRA DOS REIS – PAULINO NEVES</option>
+                            <option value="HOSPITAL MACRORREGIONAL ALEXANDRE MAMEDE TROVÃO DE COROATÁ">HOSPITAL MACRORREGIONAL ALEXANDRE MAMEDE TROVÃO DE COROATÁ</option>
+                            <option value="HOSPITAL MACRORREGIONAL DA BAIXADA MARANHENSE DR JACKSON LAGO">HOSPITAL MACRORREGIONAL DA BAIXADA MARANHENSE DR JACKSON LAGO</option>
+                            <option value="HOSPITAL MACRORREGIONAL DE CAXIAS DR EVERALDO FERREIRA ARAGÃO">HOSPITAL MACRORREGIONAL DE CAXIAS DR EVERALDO FERREIRA ARAGÃO</option>
+                            <option value="HOSPITAL MACRORREGIONAL DE URGÊNCIA E EMERGÊNCIA DE PRESIDENTE DUTRA">HOSPITAL MACRORREGIONAL DE URGÊNCIA E EMERGÊNCIA DE PRESIDENTE DUTRA</option>
+                            <option value="HOSPITAL MACRORREGIONAL DRA. RUTH NOLETO">HOSPITAL MACRORREGIONAL DRA. RUTH NOLETO</option>
+                            <option value="HOSPITAL MACRORREGIONAL TOMÁS MARTINS">HOSPITAL MACRORREGIONAL TOMÁS MARTINS</option>
+                            <option value="HOSPITAL NINA RODRIGUES">HOSPITAL NINA RODRIGUES</option>
+                            <option value="HOSPITAL PRESIDENTE VARGAS">HOSPITAL PRESIDENTE VARGAS</option>
+                            <option value="HOSPITAL REGIONAL ADÉLIA MATOS FONSECA">HOSPITAL REGIONAL ADÉLIA MATOS FONSECA</option>
+                            <option value="HOSPITAL REGIONAL ALARICO NUNES PACHECO">HOSPITAL REGIONAL ALARICO NUNES PACHECO</option>
+                            <option value="HOSPITAL REGIONAL DE AÇAILÂNDIA">HOSPITAL REGIONAL DE AÇAILÂNDIA</option>
+                            <option value="HOSPITAL REGIONAL DE ALTO ALEGRE DO MARANHÃO">HOSPITAL REGIONAL DE ALTO ALEGRE DO MARANHÃO</option>
+                            <option value="HOSPITAL REGIONAL DE BALSAS">HOSPITAL REGIONAL DE BALSAS</option>
+                            <option value="HOSPITAL REGIONAL DE BARRA DO CORDA DR. JOSÉ DE ABREU SILVA">HOSPITAL REGIONAL DE BARRA DO CORDA DR. JOSÉ DE ABREU SILVA</option>
+                            <option value="HOSPITAL REGIONAL DE BARREIRINHAS">HOSPITAL REGIONAL DE BARREIRINHAS</option>
+                            <option value="HOSPITAL REGIONAL DE CARUTAPERA">HOSPITAL REGIONAL DE CARUTAPERA</option>
+                            <option value="HOSPITAL REGIONAL DE GRAJAÚ">HOSPITAL REGIONAL DE GRAJAÚ</option>
+                            <option value="HOSPITAL REGIONAL DE MONÇÃO">HOSPITAL REGIONAL DE MONÇÃO</option>
+                            <option value="HOSPITAL REGIONAL DE MORROS">HOSPITAL REGIONAL DE MORROS</option>
+                            <option value="HOSPITAL REGIONAL DE PERITORÓ">HOSPITAL REGIONAL DE PERITORÓ</option>
+                            <option value="HOSPITAL REGIONAL DE SANTA LUZIA DO PARUÁ">HOSPITAL REGIONAL DE SANTA LUZIA DO PARUÁ</option>
+                            <option value="HOSPITAL REGIONAL DE SÃO MATEUS DO MARANHÃO">HOSPITAL REGIONAL DE SÃO MATEUS DO MARANHÃO</option>
+                            <option value="HOSPITAL REGIONAL DE TIMBIRAS">HOSPITAL REGIONAL DE TIMBIRAS</option>
+                            <option value="HOSPITAL REGIONAL DR ANTONIO HADADE">HOSPITAL REGIONAL DR ANTONIO HADADE</option>
+                            <option value="HOSPITAL REGIONAL DR KLEBER CARVALHO BRANCO">HOSPITAL REGIONAL DR KLEBER CARVALHO BRANCO</option>
+                            <option value="HOSPITAL REGIONAL DR. RUBENS JORGE">HOSPITAL REGIONAL DR. RUBENS JORGE</option>
+                            <option value="HOSPITAL REGIONAL LAURA VASCONCELOS">HOSPITAL REGIONAL LAURA VASCONCELOS</option>
+                            <option value="HOSPITAL REGIONAL DE CHAPADINHA">HOSPITAL REGIONAL DE CHAPADINHA</option>
+                        </optgroup>
+                        
+                        <!-- Maternidades -->
+                        <optgroup label="MATERNIDADES">
+                            <option value="MATERNIDADE BENEDITO LEITE">MATERNIDADE BENEDITO LEITE</option>
+                            <option value="MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA">MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA</option>
+                            <option value="MATERNIDADE DE ALTO RISCO DE IMPERATRIZ">MATERNIDADE DE ALTO RISCO DE IMPERATRIZ</option>
+                            <option value="MATERNIDADE ESTADUAL HUMBERTO COUTINHO">MATERNIDADE ESTADUAL HUMBERTO COUTINHO</option>
+                            <option value="MATERNIDADE NOSSA SENHORA DA PENHA">MATERNIDADE NOSSA SENHORA DA PENHA</option>
+                            <option value="MATERNIDADE PAÇO DO LUMIAR">MATERNIDADE PAÇO DO LUMIAR</option>
+                        </optgroup>
+                        
+                        <!-- UPAs -->
+                        <optgroup label="UNIDADES DE PRONTO ATENDIMENTO – UPAs">
+                            <option value="UPA ARAÇAGY">UPA ARAÇAGY</option>
+                            <option value="UPA CIDADE OPERÁRIA">UPA CIDADE OPERÁRIA</option>
+                            <option value="UPA CODÓ">UPA CODÓ</option>
+                            <option value="UPA COROATÁ">UPA COROATÁ</option>
+                            <option value="UPA DO PAÇO DO LUMIAR">UPA DO PAÇO DO LUMIAR</option>
+                            <option value="UPA IMPERATRIZ">UPA IMPERATRIZ</option>
+                            <option value="UPA ITAQUI BACANGA">UPA ITAQUI BACANGA</option>
+                            <option value="UPA PARQUE VITÓRIA">UPA PARQUE VITÓRIA</option>
+                            <option value="UPA SÃO JOÃO DOS PATOS">UPA SÃO JOÃO DOS PATOS</option>
+                            <option value="UPA TIMON">UPA TIMON</option>
+                            <option value="UPA VINHAIS">UPA VINHAIS</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div id="unidade-detalhes" style="display: none;">
+                    <div class="form-group">
+                        <h3>Detalhes da Unidade Selecionada</h3>
+                        <div id="unidade-info"></div>
+                    </div>
+                </div>
+                
+                <button id="salvar-configuracao">Salvar Configuração</button>
+            </div>
         </div>
         
         <!-- Área de Impressão -->
@@ -331,9 +428,12 @@
                     <img src="https://raw.githubusercontent.com/homeropereira07/sismed/refs/heads/main/LOGOMA.jpg" alt="Estado do Maranhão" class="print-logo">
                     <div class="print-title">
                         <h2 id="document-title">RECEITA MÉDICA</h2>
-                        <p>UNIDADE DE PRONTO ATENDIMENTO</p>
+                        <p id="unidade-nome">UNIDADE DE PRONTO ATENDIMENTO</p>
                     </div>
                     <img src="https://raw.githubusercontent.com/homeropereira07/sismed/refs/heads/main/LOGOUPA.jpg" alt="Governo do Maranhão" class="print-logo">
+                </div>
+                <div id="unidade-dados" class="unidade-info">
+                    <!-- Dados da unidade serão inseridos aqui via JavaScript -->
                 </div>
             </div>
             
@@ -356,6 +456,370 @@
     </div>
 
     <script>
+        // Dados das unidades
+        const unidades = {
+            "HOSPITAL AQUILES LISBOA": {
+                endereco: "Av. José Sarney S/N – Ponta do Bonfim – Bairro Vila Nova, SÃO LUIS – MA",
+                telefone: "(98) 3242-6902",
+                horario: "24 Horas",
+                especialidades: "RETAGUARDA CLÍNICA MÉDICA E CIRÚRGICA; CARDIOLOGIA; COLOPROCTOLOGIA; CIRURGIA GERAL; CLÍNICA MÉDICA; DERMATOLOGIA; ENDOCRINOLOGIA; GINECOLOGIA; MASTOLOGIA; NEUROLOGIA; ORTOPEDIA; PEDIATRIA; REUMATOLOGIA; UROLOGIA."
+            },
+            "HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI": {
+                endereco: "Av. Santa Teresa, s/n, Bairro Alto Alegria, PRESIDENTE MEDICI – MA, CEP: 65279-000",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "PEDIATRIA CLÍNICA E CIRÚRGICA."
+            },
+            "HOSPITAL DA CRIANÇA E MULHER DE COLINAS": {
+                endereco: "Rua Rui Barbosa, 321, Centro, COLINAS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "GENICOLOGIA CLÍNICA E CIRÚRGICA; PEDIATRIA CLÍNICA E CIRÚRGICA."
+            },
+            "HOSPITAL DA ILHA": {
+                endereco: "Av. São Luis Rei de França, s/n, Bairro Turu, SÃO LUIS – MA, CEP: 65065-470",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; NEUROCIRURGIA; NEUROLOGIA (AVC); ORTOPEDIA; PEDIATRIA CLÍNICA; QUEIMADOS ADULTO; QUEIMADOS PEDIATRIA; VASCULAR; CABEÇA E PESCOÇO; CARDIOLOGIA; CIRURGIA GERAL; CIRURGIA PLÁSTICA; CLÍNICA GERAL (Doenças Raras); GASTROENTEROLOGIA (Doenças Raras); GENETICISTA (Doenças Raras); NEUROCIRURGIA; NEUROLOGIA (Programa AVC e Doenças Raras); ORTOPEDIA; PEDIATRIA CLÍNICA (Doenças Raras); PNEUMOLOGIA (Doenças Raras)."
+            },
+            "HOSPITAL DE CUIDADOS INTENSIVOS – HCI": {
+                endereco: "Av. Jerônimo de Albuquerque, nº 210, Residencial São Domingos II, SÃO LUÍS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA."
+            },
+            "HOSPITAL DE ONCOLOGIA DO MARANHÃO DR. TARQUINIO LOPES FILHO": {
+                endereco: "Praça Neto Guterres, nº 02, Bairro Madre Deus, SÃO LUIS – MA",
+                telefone: "(98) 3218-8600 / 3218-8618",
+                horario: "24 Horas",
+                especialidades: "ONCOLOGIA CLÍNICA E CIRÚRGICA; CARDIOLOGIA; CIRURGIA GERAL; CIRURGIA PLÁSTICA; CIRURGIA TORÁXICA; CLÍNICA DA DOR; CLÍNICA CABEÇA E PESCOÇO; COLOPROCTOLOGIA; DERMATOLOGIA; ENDOCRINOLOGIA; GINECOLOGIA CIRÚRGICA; GINECOLOGIA CLÍNICA; HEMATOLOGIA; MASTOLOGIA; NEUROCIRURGIA; NEUROLOGIA; ORTOPEDIA ONCOLÓGICA; OTORRINOLARINGOLOGIA; RADIOLOGIA INTERVENCIONISTA; UROLOGIA."
+            },
+            "HOSPITAL DE REFERÊNCIA ESTADUAL DE ALTA COMPLEXIDADE DR. CARLOS MACIEIRA": {
+                endereco: "Av. Jerônimo de Albuquerque, s/n, Bairro Calhau",
+                telefone: "",
+                horario: "",
+                especialidades: "CARDIOLOGIA; CIRURGIA CABEÇA E PESCOÇO; CIRURGIA GERAL; CIRURGIA PLÁSTICA REPARADORA; CIRURGIA TORÁXICA; CIRURGIA VASCULAR; CLÍNICA MÉDICA; DERMATOLOGIA; ENDOCRINOLOGIA; GINECOLOGIA; NEFROLOGIA; NEUROCIRURGIA; NEUROLOGIA; OFTALMOLOGIA; OTORRINOLARINGOLOGIA; PNEUMOLOGIA; PROCTOLOGIA; PSIQUIATRIA; RADIOLOGIA INTERVENCIONISTA; UROLOGIA."
+            },
+            "HOSPITAL DE RETAGUARDA DE BACABAL": {
+                endereco: "Residencial José Lisboa, s/n, Bairro Mutirão, BACABAL-MA, CEP:65700-000",
+                telefone: "",
+                horario: "",
+                especialidades: "CLÍNICA MÉDICA."
+            },
+            "HOSPITAL DE TRAUMA E ORTOPEDIA – HTO": {
+                endereco: "Rua Cantanhede, Qda. 44, nº 03, Bairro Turu, SÃO LUIS – MA",
+                telefone: "(98) 3252-0285",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA ORTOPÉDICA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL DE TRAUMA E ORTOPEDIA DE CAXIAS": {
+                endereco: "Trav. Quininha, Pires, Nº 805 – Centro, CAXIAS – MA, CEP: 65608-040",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; CLÍNICA ORTOPÉDICA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL DR GENÉSIO REGO": {
+                endereco: "Av. dos franceses, s/n, Bairro Vila Palmeira, SÃO LUIS – MA",
+                telefone: "(98) 3243-0711",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA."
+            },
+            "HOSPITAL DR. JOSÉ DA COSTA ALMEIDA – CHAPADINHA": {
+                endereco: "",
+                telefone: "",
+                horario: "",
+                especialidades: "CIRURGIA GERAL; CIRURGIA VASCULAR; CIRURGIA UROLÓGICA; CLÍNICA MÉDICA; ORTOPEDIA; CARDIOLOGIA; GINECOLOGIA; MASTOLOGIA; NEFROLOGIA; NEUROCIRURGIA; UROLOGIA."
+            },
+            "HOSPITAL DR. RAIMUNDO LIMA": {
+                endereco: "Av. Getúlio Vargas, nº 2508 A, Bairro Monte Castelo, SÃO LUÍS – MA",
+                telefone: "(98) 3304-5361 / 3233-2569",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA."
+            },
+            "HOSPITAL INFANTIL DR. JUVÊNCIO MATOS (COMPLEXO)": {
+                endereco: "Rua São Paulo, s/n, Bairro Vila Luizão, SÃO LUIS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA GERAL; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL JOSÉ FERREIRA DOS REIS – PAULINO NEVES": {
+                endereco: "",
+                telefone: "",
+                horario: "",
+                especialidades: "OBSTETRÍCIA CIRURGICA; OBSTETRÍCIA CLÍNICA."
+            },
+            "HOSPITAL MACRORREGIONAL ALEXANDRE MAMEDE TROVÃO DE COROATÁ": {
+                endereco: "Tv. do Buriti, nº 122, Bairro Trizidela, COROATÁ – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; NEUROCIRURGIA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; ORTOPEDIA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA; CARDIOLOGIA; CIRURGIA GERAL; GINECOLOGIA; MASTOLOGIA; NEUROCIRURGIA; NEUROLOGIA; OBSTETRÍCIA (Alto Risco); UROLOGIA."
+            },
+            "HOSPITAL MACRORREGIONAL DA BAIXADA MARANHENSE DR JACKSON LAGO": {
+                endereco: "Rod MA-106, Estrada de Pacas, s/n, Bairro Enseada, PINHEIRO – MA",
+                telefone: "(98) 3381-1123",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; NEUROCIRURGIA; ORTOPEDIA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA; UROLOGIA; CARDIOLOGIA; CIRURGIA GERAL; CIRURGIA PEDIÁTRICA; CIRURGIA VASCULAR; GASTROENTEROLOGIA; MASTOLOGIA; NEUROCIRURGIA; ORTOPEDIA; UROLOGIA."
+            },
+            "HOSPITAL MACRORREGIONAL DE CAXIAS DR EVERALDO FERREIRA ARAGÃO": {
+                endereco: "BR 316, s/n, CAXIAS – MA",
+                telefone: "(99) 3421-7250",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CIRURGIA GÁSTRICA; CIRURGIA UROLÓGICA; CLÍNICA MÉDICA; NEUROCIRURGIA; CARDIOLOGIA; CIRURGIA CABEÇA E PESCOÇO; CIRURGIA PLÁSTICA; CIRURGIA TORÁXICA; CIRURGIA VASCULAR; GASTROENTEREOLOGIA; NEFROLOGIA; NEUROLOGIA; PROCTOLOGIA; UROLOGIA."
+            },
+            "HOSPITAL MACRORREGIONAL DE URGÊNCIA E EMERGÊNCIA DE PRESIDENTE DUTRA": {
+                endereco: "Rua Honorato Gomes, s/n, Centro, PRESIDENTE DUTRA – MA",
+                telefone: "(99) 3663-1334",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; ORTOPEDIA; CLÍNICA MÉDICA; NEUROCIRURGIA; PEDIATRIA; CARDIOLOGIA; CIRURGIA GERAL; CLÍNICA GERAL; GASTROENTEROLOGIA; NEFROLOGIA; NEUROCIRURGIA."
+            },
+            "HOSPITAL MACRORREGIONAL DRA. RUTH NOLETO": {
+                endereco: "Av. Pedro Neiva de Santana, nº 3557, Vila Machado, IMPERATRIZ – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; GINECOLOGIA; ORTOPEDIA; CARDIOLOGIA; CIRURGIA CABEÇA E PESCOÇO; CIRURGIA ORTOPÉDICA; CIRURGIA VASCULAR; ENDOCRINOLOGIA; GASTROENTEROLOGIA; HEMATOLOGIA; INFECTOLOGIA; MASTOLOGIA; NEUROLOGIA; UROLOGIA."
+            },
+            "HOSPITAL MACRORREGIONAL TOMÁS MARTINS": {
+                endereco: "KM 261, BR 316, s/n, SANTA INÊS – MA",
+                telefone: "(98) 3202-1600",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA GERAL; NEUROCIRURGIA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; ORTOPEDIA; PEDIATRIA CLÍNICA; CARDIOLOGIA; GASTROENTEROLOGIA; NEFROLOGIA; UROLOGIA; VASCULAR."
+            },
+            "HOSPITAL NINA RODRIGUES": {
+                endereco: "Av Getúlio Vagas, nº 2508, Monte Castelo, SÃO LUÍS – MA",
+                telefone: "3232-5080 / 3232-3420",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA EM CUIDADOS PROLONGADOS; PSIQUIATRIA; CLÍNICA GERAL; NEUROLOFGIA."
+            },
+            "HOSPITAL PRESIDENTE VARGAS": {
+                endereco: "Rua 5 de Janeiro, nº 166, Bairro Jordoa, SÃO LUIS – MA",
+                telefone: "(98) 3243-9809",
+                horario: "24 horas",
+                especialidades: "CLÍNICA GERAL; HIV (DIP); PNEUMOLOGIA SANITÁRIA; INFECTOLOGIA."
+            },
+            "HOSPITAL REGIONAL ADÉLIA MATOS FONSECA": {
+                endereco: "Rua Humberto de Campos, s/n, Centro, ITAPECURU MIRIM – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA; GINECOLOGIA."
+            },
+            "HOSPITAL REGIONAL ALARICO NUNES PACHECO": {
+                endereco: "Av. Luís Firmino de Sousa, nº 2258, Bairro São Benedito, TIMON – MA",
+                telefone: "(99) 3212-4009",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA; CARDIOLOGIA; CIRURGIA GERAL; GINECOLOGIA; OBSTETRÍCIA (Alto Risco); PEDIATRIA CIRÚRGICA; UROLOGIA."
+            },
+            "HOSPITAL REGIONAL DE AÇAILÂNDIA": {
+                endereco: "Av. santa Luzia, s/n, Bairro Progresso 2, IMPERATRIZ – MA, CEP: 65930-000",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA;"
+            },
+            "HOSPITAL REGIONAL DE ALTO ALEGRE DO MARANHÃO": {
+                endereco: "Rua Tereza Murad, s/n, Centro, ALTO ALEGRE DO MARANHÃO – MA",
+                telefone: "(98) 99142-9400",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL REGIONAL DE BALSAS": {
+                endereco: "Av. 2, lote 107, Conjunto Habitacional, Centro, BALSAS-MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; NEUROCIRURGIA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA; CARDIOLOGIA; CIRURGIA GERAL; ENDOCRINOLOGIA; GASTROENTERELOGIA; NEUROCIRURGIA; OTORRINOLRINGOLOGIA; PEDIATRIA; PSIQUIATRIA."
+            },
+            "HOSPITAL REGIONAL DE BARRA DO CORDA DR. JOSÉ DE ABREU SILVA": {
+                endereco: "Rua Antonio Leite Brasil, s/n, Bairro Vila Nair, BARRA DO CORDA – MA, CEP: 65950-000",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CIRURGIA ORTOPÉDICA; CLÍNICA MÉDICA."
+            },
+            "HOSPITAL REGIONAL DE BARREIRINHAS": {
+                endereco: "Loteamento Parque das Dunas, nº 15, Bairro Cidade Nova, BARREIRINHAS – MA",
+                telefone: "(98) 99145-4537",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA GERAL; OBSTETRÍCIA; ORTOPEDIA; PEDIATRIA; CARDIOLOGIA; NEUROCIRURGIA."
+            },
+            "HOSPITAL REGIONAL DE CARUTAPERA": {
+                endereco: "Rua Dep. Manoel Ribeiro, s/n, CARUTAPERA – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA; GINECOLOGIA; NEFROLOGIA."
+            },
+            "HOSPITAL REGIONAL DE GRAJAÚ": {
+                endereco: "Avenida Aruda Filho, s/n, Vila São Roque, GRAJAU – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; ORTOPEDIA; NEUROCIRURGIA."
+            },
+            "HOSPITAL REGIONAL DE MONÇÃO": {
+                endereco: "Rua da Jaqueira, s/n, Bairro Cidade Nova, MONÇÃO – MA",
+                telefone: "(98) 99145-6411",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA GERAL; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL REGIONAL DE MORROS": {
+                endereco: "Rua Principal, s/n, Bairro Coelho, MORROS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL REGIONAL DE PERITORÓ": {
+                endereco: "Av. da Rodoviária, BR 316, PERITORÓ – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; ORTOPEDIA; PEDIATRIA."
+            },
+            "HOSPITAL REGIONAL DE SANTA LUZIA DO PARUÁ": {
+                endereco: "Rua São Francisco, s/n, Centro, SANTA LUZIA DO PARUÁ – MA",
+                telefone: "(98) 98572-7997 / 99122-7870",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL REGIONAL DE SÃO MATEUS DO MARANHÃO": {
+                endereco: "BR-135, S/N, Centro, SÃO MATEUS DO MARANHÃO – MA, CEP: 65470-000",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA."
+            },
+            "HOSPITAL REGIONAL DE TIMBIRAS": {
+                endereco: "Rua da Mangueira, s/n, Anjo da Guarda, TIMBIRAS – MA",
+                telefone: "(98) 99137-9152",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CLÍNICA; OBSTETRÍCIA CIRÚRGICA; PEDIATRIA CLÍNICA; PEDIATRIA CIRÚRGICA."
+            },
+            "HOSPITAL REGIONAL DR ANTONIO HADADE": {
+                endereco: "MA 014, KM 4.5, Santa Eulália, VIANA – MA",
+                telefone: "(98) 3351-0777 / 3351-1938",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; ORTOPEDIA."
+            },
+            "HOSPITAL REGIONAL DR KLEBER CARVALHO BRANCO": {
+                endereco: "Av. Principal, s/n, PEDREIRAS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CIRURGIA ORTOPÉDICA; CLÍNICA MÉDICA."
+            },
+            "HOSPITAL REGIONAL DR. RUBENS JORGE": {
+                endereco: "Rua 7 de Setembro, s/n°, Bairro Vila Mangueira, LAGO DA PEDRA – MA",
+                telefone: "(99) 98148-1508",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; PEDIATRIA CLÍNICA."
+            },
+            "HOSPITAL REGIONAL LAURA VASCONCELOS": {
+                endereco: "Rua Maranhão Sobrinho, s/n, Centro, BACABAL – MA",
+                telefone: "(99) 93621-1740",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; NEUROCIRURGIA; ORTOPEDIA E TRAUMATOLOGIA; CARDIOLOGIA; GASTROENTEROLOGIA."
+            },
+            "HOSPITAL REGIONAL DE CHAPADINHA": {
+                endereco: "BR 222, s/n, CHAPADINHA – MA",
+                telefone: "(98) 99139-0691",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL, CLÍNICA MÉDICA, TERAPIA INTENSIVA ADULTO, ORTOPEDIA, ODONTOLOGIA (UTI)"
+            },
+            "MATERNIDADE BENEDITO LEITE": {
+                endereco: "Av. Jerônimo de Albuquerque, s/n, Bairro Cohab Anil, SÃO LUÍS – MA",
+                telefone: "(98) 98423-8793",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA."
+            },
+            "MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA": {
+                endereco: "Av Jeronimo de Albuquerque, s/n, Bairro Cohab Anil, SÃO LUÍS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA; CARDIOLOGIA; GASTROENTEROLOGIA; GINECOLOGIA; GENÉTICA; NEUROLOGIA; OBSTETRÍCIA; OFTALMOLOGIA; PEDIATRIA."
+            },
+            "MATERNIDADE DE ALTO RISCO DE IMPERATRIZ": {
+                endereco: "Rua Coriolano Milhomem, nº 42, Centro, IMPERATRIZ-MA",
+                telefone: "(99) 3525-4518",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA; CARDIOLOGIA; CARDIOPEDIATRIA; ENDOCRINOLOGIA; GINECOLOGIA E OBSTETRÍCIA; INFECTOLOGIA; NEUROPEDIATRIA."
+            },
+            "MATERNIDADE ESTADUAL HUMBERTO COUTINHO": {
+                endereco: "BR 135, s/n, Bairro Chapadinha, COLINAS – MA",
+                telefone: "(98) 3552-0313",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; NEONATOLOGIA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CIRÚRGICA; PEDIATRIA CLÍNICA."
+            },
+            "MATERNIDADE NOSSA SENHORA DA PENHA": {
+                endereco: "Rua Dinamarca, s/n, Qda. 39-A, Bairro Anjo da Guarda, SÃO LUÍS – MA",
+                telefone: "(98) 99137-1158 / 3228-9763",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA; PEDIATRIA CLÍNICA."
+            },
+            "MATERNIDADE PAÇO DO LUMIAR": {
+                endereco: "Av. 13, s/n, Bairro Maiobão, PAÇO DO LUMIAR – MA, CEP: 65130-000",
+                telefone: "",
+                horario: "",
+                especialidades: "OBSTETRÍCIA (Alto risco)."
+            },
+            "UPA ARAÇAGY": {
+                endereco: "Av. Conselheiro Hilton Rodrigues, s/n, Bairro Araçagi, SÃO JOSÉ DE RIBAMAR – MA",
+                telefone: "(98) 3226-9700 / 3246-1168",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA; ODONTOLOGIA; ORTOPEDIA."
+            },
+            "UPA CIDADE OPERÁRIA": {
+                endereco: "Av. Principal, s/n, Bairro Cidade Operária, SÃO LUÍS – MA",
+                telefone: "(98) 3247-2393",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA; ODONTOLOGIA."
+            },
+            "UPA CODÓ": {
+                endereco: "Rua Santa Rita, s/n, Bairro Santa Terezinha, CODÓ – MA",
+                telefone: "(99) 98154-4325",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA COROATÁ": {
+                endereco: "Avenida da Bandeira, s/n, Bairro Americanos, COROATÁ – MA",
+                telefone: "(99) 3641-0362",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA DO PAÇO DO LUMIAR": {
+                endereco: "Avenida 8, s/n, Conjunto Maiobão, PAÇO DO LUMIAR – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA IMPERATRIZ": {
+                endereco: "Av. Bernardo Sayão, nº 968, Centro, IMPERATRIZ – MA",
+                telefone: "(99) 3525-3611",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA ITAQUI BACANGA": {
+                endereco: "Avenida dos Portugueses, s/n, Bairro Itaqui Bacanga, SÃO LUÍS – MA",
+                telefone: "(98) 3272-0346",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA PARQUE VITÓRIA": {
+                endereco: "Rua José Santana, nº 20, Qd-38, Residencial Canudos, Bairro Turu, SÃO LUÍS – MA",
+                telefone: "(98) 3190-8076 / 99116-1976",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA SÃO JOÃO DOS PATOS": {
+                endereco: "Rua São Jorge, nº 01, Bairro Santiago, SÃO JOÃO DOS PATOS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA TIMON": {
+                endereco: "Rua São Sebastião, s/n, Bairro Santo Antônio, TIMON – MA.",
+                telefone: "(99) 3212-4077",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "UPA VINHAIS": {
+                endereco: "Avenida 2, s/n, Bairro Vinhais, SÃO LUÍS – MA",
+                telefone: "(98) 3246-0531",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            }
+        };
+
         // Dados das receitas
         const receitas = {
             "LOMBALGIA": {
@@ -622,6 +1086,20 @@
         const documentTitle = document.getElementById('document-title');
         const printPaciente = document.getElementById('print-paciente');
         const printContent = document.getElementById('print-content');
+        const unidadeNome = document.getElementById('unidade-nome');
+        const unidadeDados = document.getElementById('unidade-dados');
+        const unidadeTrabalhoSelect = document.getElementById('unidade-trabalho');
+        const unidadeDetalhes = document.getElementById('unidade-detalhes');
+        const unidadeInfo = document.getElementById('unidade-info');
+
+        // Carregar configuração salva
+        let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
+        
+        // Inicializar interface
+        if (unidadeSelecionada) {
+            unidadeTrabalhoSelect.value = unidadeSelecionada;
+            mostrarDetalhesUnidade(unidadeSelecionada);
+        }
 
         // Alternar entre tipos de documento
         docTypeButtons.forEach(button => {
@@ -642,8 +1120,48 @@
             });
         });
 
+        // Mostrar detalhes da unidade selecionada
+        unidadeTrabalhoSelect.addEventListener('change', function() {
+            const unidade = this.value;
+            mostrarDetalhesUnidade(unidade);
+        });
+
+        function mostrarDetalhesUnidade(unidade) {
+            if (unidade && unidades[unidade]) {
+                const dados = unidades[unidade];
+                unidadeInfo.innerHTML = `
+                    <p><strong>Endereço:</strong> ${dados.endereco}</p>
+                    ${dados.telefone ? `<p><strong>Telefone:</strong> ${dados.telefone}</p>` : ''}
+                    <p><strong>Horário de Funcionamento:</strong> ${dados.horario}</p>
+                    <p><strong>Especialidades:</strong> ${dados.especialidades}</p>
+                `;
+                unidadeDetalhes.style.display = 'block';
+            } else {
+                unidadeDetalhes.style.display = 'none';
+            }
+        }
+
+        // Salvar configuração
+        document.getElementById('salvar-configuracao').addEventListener('click', () => {
+            const unidade = unidadeTrabalhoSelect.value;
+            
+            if (!unidade) {
+                alert('Por favor, selecione uma unidade de trabalho.');
+                return;
+            }
+            
+            localStorage.setItem('unidadeSelecionada', unidade);
+            unidadeSelecionada = unidade;
+            alert('Configuração salva com sucesso!');
+        });
+
         // Gerar Receita
         document.getElementById('gerar-receita').addEventListener('click', () => {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
             const paciente = document.getElementById('paciente').value;
             const doenca = document.getElementById('doenca').value;
             
@@ -654,8 +1172,12 @@
             
             documentTitle.textContent = 'RECEITA MÉDICA';
             printPaciente.textContent = paciente;
+            unidadeNome.textContent = unidadeSelecionada;
             
-            let contentHTML = ''; // Removido o título da doença
+            // Atualizar dados da unidade no documento
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            let contentHTML = '';
             
             if (receitas[doenca]) {
                 for (const [tipoUso, medicamentos] of Object.entries(receitas[doenca])) {
@@ -680,6 +1202,11 @@
 
         // Gerar Atestado
         document.getElementById('gerar-atestado').addEventListener('click', () => {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
             const paciente = document.getElementById('paciente-atestado').value;
             const dias = document.getElementById('dias-afastamento').value;
             const cid = document.getElementById('cid').value;
@@ -691,6 +1218,10 @@
             
             documentTitle.textContent = 'ATESTADO MÉDICO';
             printPaciente.textContent = paciente;
+            unidadeNome.textContent = unidadeSelecionada;
+            
+            // Atualizar dados da unidade no documento
+            atualizarDadosUnidade(unidadeSelecionada);
             
             const dataAtual = new Date().toLocaleDateString('pt-BR');
             
@@ -703,7 +1234,7 @@
             const diasExtenso = numeroExtenso[dias] || dias;
             
             let contentHTML = `
-                <p>ATESTO PARA OS DEVIDOS FINS, QUE A SR(A). <strong>${paciente}</strong> COMPARECEU A ESSA UNIDADE DE PRONTO ATENDIMENTO DIA ${dataAtual} ONDE FOI ATENDIDO, MEDICADO, NECESSITANDO DE ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} DE AFASTAMENTO DE SUAS ATIVIDADES LABORAIS POR MOTIVO DE DOENÇA A CONTAR DA DATA DE EXPEDIÇÃO DESTE DOCUMENTO.</p>
+                <p>ATESTO PARA OS DEVIDOS FINS, QUE A SR(A). <strong>${paciente}</strong> COMPARECEU A ESTA UNIDADE DIA ${dataAtual} ONDE FOI ATENDIDO, MEDICADO, NECESSITANDO DE ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} DE AFASTAMENTO DE SUAS ATIVIDADES LABORAIS POR MOTIVO DE DOENÇA A CONTAR DA DATA DE EXPEDIÇÃO DESTE DOCUMENTO.</p>
                 
                 <p>ALÉM DISSO, CONFORME ART. 5º DA RESOLUÇÃO 1685/2002 DO CFM, INFORMO O DIAGNÓSTICO CODIFICADO (CID), DEVIDO A SOLICITAÇÃO DO PRÓPRIO PACIENTE, CONFORME ASSINATURA DE CONCORDÂNCIA ABAIXO.</p>
                 
@@ -724,6 +1255,11 @@
 
         // Gerar Receituário em Branco
         document.getElementById('gerar-receituario').addEventListener('click', () => {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
             const paciente = document.getElementById('paciente-receituario').value;
             const medicamentos = document.getElementById('medicamentos').value;
             
@@ -734,12 +1270,16 @@
             
             documentTitle.textContent = 'RECEITUÁRIO MÉDICO';
             printPaciente.textContent = paciente;
+            unidadeNome.textContent = unidadeSelecionada;
+            
+            // Atualizar dados da unidade no documento
+            atualizarDadosUnidade(unidadeSelecionada);
             
             let contentHTML = `
                 <div class="prescription-item">
                     <div class="prescription-header">Medicamentos Prescritos:</div>
                     <p>${medicamentos.replace(/\n/g, '<br>')}</p>
-                <br><br>
+                    <br>
                 </div>
                 <p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
             `;
@@ -749,6 +1289,18 @@
             btnPrint.style.display = 'inline-block';
         });
 
+        // Função para atualizar dados da unidade no documento
+        function atualizarDadosUnidade(unidade) {
+            if (unidades[unidade]) {
+                const dados = unidades[unidade];
+                unidadeDados.innerHTML = `
+                    <p><strong>Endereço:</strong> ${dados.endereco}</p>
+                    ${dados.telefone ? `<p><strong>Telefone:</strong> ${dados.telefone}</p>` : ''}
+                    <p><strong>Horário de Funcionamento:</strong> ${dados.horario}</p>
+                `;
+            }
+        }
+
         // Imprimir documento
         btnPrint.addEventListener('click', () => {
             window.print();
@@ -756,5 +1308,3 @@
     </script>
 </body>
 </html>
-
-
