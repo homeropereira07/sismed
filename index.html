@@ -165,6 +165,22 @@
             padding-bottom: 1rem;
         }
         
+        .print-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .print-logo {
+            max-height: 80px;
+        }
+        
+        .print-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+        
         .print-content {
             line-height: 1.8;
         }
@@ -311,8 +327,14 @@
         <!-- Área de Impressão -->
         <div id="print-area" class="print-area">
             <div class="print-header">
-                <h2 id="document-title">RECEITA MÉDICA</h2>
-                <p> </p>
+                <div class="print-header-content">
+                    <img src="https://raw.githubusercontent.com/homeropereira07/sismed/refs/heads/main/LOGOMA.jpg" alt="Estado do Maranhão" class="print-logo">
+                    <div class="print-title">
+                        <h2 id="document-title">RECEITA MÉDICA</h2>
+                        <p>UNIDADE DE PRONTO ATENDIMENTO</p>
+                    </div>
+                    <img src="https://raw.githubusercontent.com/homeropereira07/sismed/refs/heads/main/LOGOUPA.jpg" alt="Governo do Maranhão" class="print-logo">
+                </div>
             </div>
             
             <div class="print-content">
@@ -656,49 +678,50 @@
             btnPrint.style.display = 'inline-block';
         });
 
-// Gerar Atestado
-document.getElementById('gerar-atestado').addEventListener('click', () => {
-    const paciente = document.getElementById('paciente-atestado').value;
-    const dias = document.getElementById('dias-afastamento').value;
-    const cid = document.getElementById('cid').value;
-    
-    if (!paciente || !dias || !cid) {
-        alert('Por favor, preencha todos os campos do atestado.');
-        return;
-    }
-    
-    documentTitle.textContent = 'ATESTADO MÉDICO';
-    printPaciente.textContent = paciente;
-    
-    const dataAtual = new Date().toLocaleDateString('pt-BR');
-    
-    // Converter número para extenso
-    const numeroExtenso = {
-        '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
-        '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
-    };
-    
-    const diasExtenso = numeroExtenso[dias] || dias;
-    
-    let contentHTML = `
-        <p>ATESTO PARA OS DEVIDOS FINS, QUE A SR(A). <strong>${paciente}</strong> COMPARECEU A ESSA UNIDADE DE PRONTO ATENDIMENTO DIA ${dataAtual} ONDE FOI ATENDIDO, MEDICADO, NECESSITANDO DE ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} DE AFASTAMENTO DE SUAS ATIVIDADES LABORAIS POR MOTIVO DE DOENÇA A CONTAR DA DATA DE EXPEDIÇÃO DESTE DOCUMENTO.</p>
-        
-        <p>ALÉM DISSO, CONFORME ART. 5º DA RESOLUÇÃO 1685/2002 DO CFM, INFORMO O DIAGNÓSTICO CODIFICADO (CID), DEVIDO A SOLICITAÇÃO DO PRÓPRIO PACIENTE, CONFORME ASSINATURA DE CONCORDÂNCIA ABAIXO.</p>
-        
-        <p><strong>CID: ${cid}</strong></p>
-        
-        <div style="margin-top: 40px;">
-            <p>_________________________________________</p>
-            <p>Assinatura de concordância do paciente para informação do CID</p>
-        </div>
-        
-        <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
-    `;
-    
-    printContent.innerHTML = contentHTML;
-    printArea.style.display = 'block';
-    btnPrint.style.display = 'inline-block';
-});
+        // Gerar Atestado
+        document.getElementById('gerar-atestado').addEventListener('click', () => {
+            const paciente = document.getElementById('paciente-atestado').value;
+            const dias = document.getElementById('dias-afastamento').value;
+            const cid = document.getElementById('cid').value;
+            
+            if (!paciente || !dias || !cid) {
+                alert('Por favor, preencha todos os campos do atestado.');
+                return;
+            }
+            
+            documentTitle.textContent = 'ATESTADO MÉDICO';
+            printPaciente.textContent = paciente;
+            
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            // Converter número para extenso
+            const numeroExtenso = {
+                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
+                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
+            };
+            
+            const diasExtenso = numeroExtenso[dias] || dias;
+            
+            let contentHTML = `
+                <p>ATESTO PARA OS DEVIDOS FINS, QUE A SR(A). <strong>${paciente}</strong> COMPARECEU A ESSA UNIDADE DE PRONTO ATENDIMENTO DIA ${dataAtual} ONDE FOI ATENDIDO, MEDICADO, NECESSITANDO DE ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} DE AFASTAMENTO DE SUAS ATIVIDADES LABORAIS POR MOTIVO DE DOENÇA A CONTAR DA DATA DE EXPEDIÇÃO DESTE DOCUMENTO.</p>
+                
+                <p>ALÉM DISSO, CONFORME ART. 5º DA RESOLUÇÃO 1685/2002 DO CFM, INFORMO O DIAGNÓSTICO CODIFICADO (CID), DEVIDO A SOLICITAÇÃO DO PRÓPRIO PACIENTE, CONFORME ASSINATURA DE CONCORDÂNCIA ABAIXO.</p>
+                
+                <p><strong>CID: ${cid}</strong></p>
+                
+                <div style="margin-top: 40px;">
+                    <p>_________________________________________</p>
+                    <p>Assinatura de concordância do paciente para informação do CID</p>
+                </div>
+                
+                <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
+            `;
+            
+            printContent.innerHTML = contentHTML;
+            printArea.style.display = 'block';
+            btnPrint.style.display = 'inline-block';
+        });
+
         // Gerar Receituário em Branco
         document.getElementById('gerar-receituario').addEventListener('click', () => {
             const paciente = document.getElementById('paciente-receituario').value;
