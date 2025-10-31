@@ -408,6 +408,31 @@
             color: var(--gray);
         }
         
+        /* Estilo específico para lista de medicamentos numerada */
+        .medicamentos-list {
+            font-size: 14px;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        
+        .medicamentos-list li {
+            margin-bottom: 8px;
+            list-style-type: decimal;
+        }
+        
+        .prescription-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .prescription-header {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        
         /* Controle especial */
         .receituario-container {
             display: flex;
@@ -537,6 +562,52 @@
             margin-bottom: 0.75rem;
         }
         
+        /* Links Úteis */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .link-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .link-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .link-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .link-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
         /* Controles de edição */
         .edit-controls {
             display: flex;
@@ -556,18 +627,6 @@
         .edit-mode .editable-content {
             border: 2px solid var(--primary);
             background-color: #f8f9fa;
-        }
-        
-        .prescription-item {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .prescription-header {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
         }
         
         /* Responsividade */
@@ -623,6 +682,10 @@
             .form-actions, .edit-controls {
                 flex-direction: column;
             }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         /* CSS para impressão corrigido */
@@ -656,6 +719,20 @@
                 border: none !important;
                 background: white !important;
                 page-break-inside: avoid;
+            }
+            
+            /* Fonte menor para medicamentos na impressão */
+            .medicamentos-list {
+                font-size: 12px !important;
+            }
+            
+            .medicamentos-list li {
+                margin-bottom: 6px !important;
+                font-size: 12px !important;
+            }
+            
+            .prescription-header {
+                font-size: 14px !important;
             }
             
             /* Para o controle especial com duas vias */
@@ -745,6 +822,11 @@
                 <div class="doc-type-btn" data-type="solicitacao-exames">
                     <i class="fas fa-microscope"></i>
                     Solicitação de Exames
+                </div>
+                
+                <div class="doc-type-btn" data-type="links-uteis">
+                    <i class="fas fa-link"></i>
+                    Links Úteis
                 </div>
                 
                 <div class="doc-type-btn" data-type="configuracao">
@@ -1076,6 +1158,82 @@
                             <i class="fas fa-microscope"></i>
                             Gerar Solicitação de Exames
                         </button>
+                    </div>
+                </div>
+                
+                <!-- Links Úteis -->
+                <div id="links-uteis-form" class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-link"></i>
+                        Links Úteis para Médicos
+                    </h2>
+                    
+                    <p class="form-label">Recursos e ferramentas úteis para a prática médica:</p>
+                    
+                    <div class="links-grid">
+                        <a href="https://portal.cfm.org.br/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="link-title">Conselho Federal de Medicina</div>
+                            <div class="link-description">Site oficial do CFM com resoluções, normas e informações para médicos</div>
+                        </a>
+                        
+                        <a href="https://www.gov.br/saude/pt-br" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="link-title">Ministério da Saúde</div>
+                            <div class="link-description">Informações sobre políticas de saúde, programas e campanhas</div>
+                        </a>
+                        
+                        <a href="https://www.who.int/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <div class="link-title">Organização Mundial da Saúde</div>
+                            <div class="link-description">Diretrizes internacionais de saúde e informações epidemiológicas</div>
+                        </a>
+                        
+                        <a href="https://www.drugs.com/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="link-title">Drugs.com</div>
+                            <div class="link-description">Base de dados completa sobre medicamentos e interações</div>
+                        </a>
+                        
+                        <a href="https://www.uptodate.com/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-book-medical"></i>
+                            </div>
+                            <div class="link-title">UpToDate</div>
+                            <div class="link-description">Recursos baseados em evidências para decisões clínicas</div>
+                        </a>
+                        
+                        <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="link-title">PubMed</div>
+                            <div class="link-description">Base de dados de artigos científicos em medicina</div>
+                        </a>
+                        
+                        <a href="https://www.amb.org.br/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <div class="link-title">Associação Médica Brasileira</div>
+                            <div class="link-description">Entidade representativa dos médicos no Brasil</div>
+                        </a>
+                        
+                        <a href="https://bvsms.saude.gov.br/" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="link-title">Biblioteca Virtual em Saúde</div>
+                            <div class="link-description">Recursos de informação científica e técnica em saúde</div>
+                        </a>
                     </div>
                 </div>
                 
@@ -1810,13 +1968,16 @@
             
             if (receitas[doenca]) {
                 for (const [tipoUso, medicamentos] of Object.entries(receitas[doenca])) {
-                    contentHTML += `<div class="prescription-item"><div class="prescription-header">${tipoUso}:</div></ol>`;
+                    contentHTML += `<div class="prescription-item"><div class="prescription-header">${tipoUso}:</div>`;
+                    
+                    // Criar lista numerada em vez de com pontos
+                    contentHTML += `<ol class="medicamentos-list">`;
                     
                     medicamentos.forEach(med => {
                         contentHTML += `<li>${med}</li>`;
                     });
                     
-                    contentHTML += '</ul></div>';
+                    contentHTML += '</ol></div>';
                 }
             } else {
                 contentHTML += '<p>Receita não encontrada para esta condição.</p>';
@@ -2028,7 +2189,7 @@
             let contentHTML = `
                 <div class="prescription-item">
                     <div class="prescription-header">Exames Solicitados:</div>
-                    </ol>
+                    <ul>
             `;
             
             examesSelecionados.forEach(exame => {
