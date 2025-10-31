@@ -1491,17 +1491,17 @@
                 </div>
                 
                 <div class="exame-item">
-                    <input type="checkbox" id="exame-img-29" value="Radiografia de coluna (cervical, torácica, lombar)">
+                    <input type="checkbox" id="exame-img-291" value="Radiografia de coluna torácica)">
                     <label for="exame-img-29">Radiografia de coluna torácica</label>
                 </div>
                 
                 <div class="exame-item">
-                    <input type="checkbox" id="exame-img-29" value="Radiografia de coluna (cervical, torácica, lombar)">
+                    <input type="checkbox" id="exame-img-292" value="Radiografia de coluna cervical">
                     <label for="exame-img-29">Radiografia de coluna cervical</label>
                 </div>
                 
                 <div class="exame-item">
-                    <input type="checkbox" id="exame-img-29" value="Radiografia de coluna (cervical, torácica, lombar)">
+                    <input type="checkbox" id="exame-img-293" value="Radiografia de coluna lombar">
                     <label for="exame-img-29">Radiografia de coluna lombar</label>
                 </div>                
                 
@@ -2662,6 +2662,39 @@
                 ]
             }
         };
+
+                // Controle de lateralidade para exames
+        document.addEventListener('click', function(e) {
+            // Verifica se o clique foi em um checkbox de exame com lateralidade
+            if (e.target.classList.contains('exame-lateralidade')) {
+                const checkbox = e.target;
+                const lateralidadeOptions = checkbox.parentElement.querySelector('.lateralidade-options');
+                
+                if (checkbox.checked) {
+                    lateralidadeOptions.style.display = 'block';
+                } else {
+                    lateralidadeOptions.style.display = 'none';
+                    // Limpa a seleção quando desmarcar
+                    const select = lateralidadeOptions.querySelector('.lateralidade-select');
+                    select.value = '';
+                }
+            }
+        });
+        
+        // Também adicione para os exames que já existem (punho, mão, pé, etc.)
+        document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const lateralidadeOptions = this.parentElement.querySelector('.lateralidade-options');
+                
+                if (this.checked) {
+                    lateralidadeOptions.style.display = 'block';
+                } else {
+                    lateralidadeOptions.style.display = 'none';
+                    const select = lateralidadeOptions.querySelector('.lateralidade-select');
+                    select.value = '';
+                }
+            });
+        });
         
         // Elementos DOM
         let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
@@ -3154,81 +3187,91 @@
             document.getElementById('edit-controls').style.display = 'flex';
         }
 
-        function gerarSolicitacaoExames() {
-            const dadosMedico = obterDadosMedico();
-            
-            if (!unidadeSelecionada) {
-                alert('Por favor, configure a unidade de trabalho primeiro.');
-                return;
-            }
-            
-            const paciente = document.getElementById('paciente-exames').value;
-            const observacoes = document.getElementById('observacoes-exames').value;
-            
-            if (!paciente) {
-                alert('Por favor, preencha o nome do paciente.');
-                return;
-            }
-            
-            // Coletar exames selecionados
-            const examesSelecionados = [];
-            const checkboxes = document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]:checked');
-            
-            if (checkboxes.length === 0) {
-                alert('Por favor, selecione pelo menos um exame.');
-                return;
-            }
-            
-            checkboxes.forEach(checkbox => {
-                examesSelecionados.push(checkbox.value);
-            });
-            
-            document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
-            
-            // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
-            
-            atualizarDadosUnidade(unidadeSelecionada);
-            
-            let contentHTML = `
-                <div class="prescription-item">
-                    <div class="prescription-header">Exames Solicitados:</div>
-                    <ul>
-            `;
-            
-            examesSelecionados.forEach(exame => {
-                contentHTML += `<li>${exame}</li>`;
-            });
-            
-            contentHTML += `
-                    </ul>
-                </div>
-            `;
-            
-            if (observacoes) {
-                contentHTML += `
+            function gerarSolicitacaoExames() {
+                const dadosMedico = obterDadosMedico();
+                
+                if (!unidadeSelecionada) {
+                    alert('Por favor, configure a unidade de trabalho primeiro.');
+                    return;
+                }
+                
+                const paciente = document.getElementById('paciente-exames').value;
+                const observacoes = document.getElementById('observacoes-exames').value;
+                
+                if (!paciente) {
+                    alert('Por favor, preencha o nome do paciente.');
+                    return;
+                }
+                
+                // Coletar exames selecionados
+                const examesSelecionados = [];
+                const checkboxes = document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]:checked');
+                
+                if (checkboxes.length === 0) {
+                    alert('Por favor, selecione pelo menos um exame.');
+                    return;
+                }
+                
+                checkboxes.forEach(checkbox => {
+                    let exameTexto = checkbox.value;
+                    
+                    // Verificar se é um exame com lateralidade
+                    if (checkbox.classList.contains('exame-lateralidade')) {
+                        const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
+                        if (lateralidadeSelect && lateralidadeSelect.value) {
+                            exameTexto += ` - ${lateralidadeSelect.value}`;
+                        }
+                    }
+                    
+                    examesSelecionados.push(exameTexto);
+                });
+                
+                document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
+                document.getElementById('print-paciente').textContent = paciente;
+                document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+                
+                // Atualizar assinatura com dados do médico
+                document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
+                document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+                
+                atualizarDadosUnidade(unidadeSelecionada);
+                
+                let contentHTML = `
                     <div class="prescription-item">
-                        <div class="prescription-header">Observações:</div>
-                        <p>${observacoes.replace(/\n/g, '<br>')}</p>
+                        <div class="prescription-header">Exames Solicitados:</div>
+                        <ul>
+                `;
+                
+                examesSelecionados.forEach(exame => {
+                    contentHTML += `<li>${exame}</li>`;
+                });
+                
+                contentHTML += `
+                        </ul>
                     </div>
                 `;
+                
+                if (observacoes) {
+                    contentHTML += `
+                        <div class="prescription-item">
+                            <div class="prescription-header">Observações:</div>
+                            <p>${observacoes.replace(/\n/g, '<br>')}</p>
+                        </div>
+                    `;
+                }
+                
+                contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
+                
+                document.getElementById('print-content').innerHTML = contentHTML;
+                
+                // Ocultar todas as áreas de impressão primeiro
+                document.querySelectorAll('.print-area').forEach(area => {
+                    area.style.display = 'none';
+                });
+                
+                document.getElementById('print-area').style.display = 'block';
+                document.getElementById('edit-controls').style.display = 'flex';
             }
-            
-            contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
-            
-            document.getElementById('print-content').innerHTML = contentHTML;
-            
-            // Ocultar todas as áreas de impressão primeiro
-            document.querySelectorAll('.print-area').forEach(area => {
-                area.style.display = 'none';
-            });
-            
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
-        }
     </script>
 </body>
 </html>
