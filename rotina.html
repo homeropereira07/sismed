@@ -625,26 +625,50 @@
             }
         }
         
+        /* CSS para impressão corrigido */
         @media print {
+            body, html {
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
             body * {
                 visibility: hidden;
+                background: white !important;
+                box-shadow: none !important;
             }
+            
             .print-area, .print-area * {
                 visibility: visible;
+                background: white !important;
+                box-shadow: none !important;
             }
+            
             .print-area {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
-                box-shadow: none;
-                border: none;
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                page-break-after: avoid;
+                page-break-inside: avoid;
             }
-            .no-print {
-                display: none;
+            
+            .no-print, .edit-controls {
+                display: none !important;
             }
-            .edit-controls {
-                display: none;
+            
+            /* Garantir que não haja quebras de página desnecessárias */
+            .receituario-container {
+                page-break-inside: avoid;
+            }
+            
+            .via {
+                page-break-inside: avoid;
             }
         }
     </style>
