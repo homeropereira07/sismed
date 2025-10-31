@@ -4,19 +4,33 @@
       "username": "demo",
       "password": "medico123",
       "nome": "Usuário Demonstração",
-      "licenca_valida": true
+      "licenca_valida": true,
+      "email": "demo@sismed.com",
+      "tipo": "demonstracao"
     },
     {
       "username": "dr.homero",
       "password": "sismed2023",
-      "nome": "Dr. Homero Pereira", 
-      "licenca_valida": true
+      "nome": "Dr. Homero Pereira",
+      "licenca_valida": true,
+      "email": "homeropereira@outlook.com",
+      "tipo": "desenvolvedor"
     },
     {
       "username": "teste",
       "password": "teste123",
       "nome": "Usuário Teste",
-      "licenca_valida": false
+      "licenca_valida": false,
+      "email": "teste@sismed.com",
+      "tipo": "avaliacao"
+    },
+    {
+      "username": "medico",
+      "password": "clinica2023",
+      "nome": "Médico Clínico",
+      "licenca_valida": true,
+      "email": "medico@clinica.com",
+      "tipo": "profissional"
     }
   ]
 }
