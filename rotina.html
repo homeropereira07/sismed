@@ -1244,29 +1244,83 @@
                         Configuração do Sistema
                     </h2>
                     
-                    <div class="form-group">
-                        <label for="unidade-trabalho" class="form-label">Selecione a Unidade de Trabalho</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-hospital input-icon"></i>
-                            <select id="unidade-trabalho" class="form-select">
-                                <option value="">Selecione uma unidade</option>
-                                <optgroup label="HOSPITAIS">
-                                    <option value="HOSPITAL AQUILES LISBOA">HOSPITAL AQUILES LISBOA</option>
-                                    <option value="HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI">HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI</option>
-                                    <option value="HOSPITAL DA CRIANÇA E MULHER DE COLINAS">HOSPITAL DA CRIANÇA E MULHER DE COLINAS</option>
-                                </optgroup>
-                                <optgroup label="MATERNIDADES">
-                                    <option value="MATERNIDADE BENEDITO LEITE">MATERNIDADE BENEDITO LEITE</option>
-                                    <option value="MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA">MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA</option>
-                                </optgroup>
-                                <optgroup label="UNIDADES DE PRONTO ATENDIMENTO – UPAs">
-                                    <option value="UPA ARAÇAGY">UPA ARAÇAGY</option>
-                                    <option value="UPA CIDADE OPERÁRIA">UPA CIDADE OPERÁRIA</option>
-                                    <option value="UPA PARQUE VITÓRIA">UPA PARQUE VITÓRIA</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="unidade-trabalho">Selecione a Unidade de Trabalho</label>
+                    <select id="unidade-trabalho">
+                        <option value="">Selecione uma unidade</option>
+                        <!-- Hospitais -->
+                        <optgroup label="HOSPITAIS">
+                            <option value="HOSPITAL AQUILES LISBOA">HOSPITAL AQUILES LISBOA</option>
+                            <option value="HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI">HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI</option>
+                            <option value="HOSPITAL DA CRIANÇA E MULHER DE COLINAS">HOSPITAL DA CRIANÇA E MULHER DE COLINAS</option>
+                            <option value="HOSPITAL DA ILHA">HOSPITAL DA ILHA</option>
+                            <option value="HOSPITAL DE CUIDADOS INTENSIVOS – HCI">HOSPITAL DE CUIDADOS INTENSIVOS – HCI</option>
+                            <option value="HOSPITAL DE ONCOLOGIA DO MARANHÃO DR. TARQUINIO LOPES FILHO">HOSPITAL DE ONCOLOGIA DO MARANHÃO DR. TARQUINIO LOPES FILHO</option>
+                            <option value="HOSPITAL DE REFERÊNCIA ESTADUAL DE ALTA COMPLEXIDADE DR. CARLOS MACIEIRA">HOSPITAL DE REFERÊNCIA ESTADUAL DE ALTA COMPLEXIDADE DR. CARLOS MACIEIRA</option>
+                            <option value="HOSPITAL DE RETAGUARDA DE BACABAL">HOSPITAL DE RETAGUARDA DE BACABAL</option>
+                            <option value="HOSPITAL DE TRAUMA E ORTOPEDIA – HTO">HOSPITAL DE TRAUMA E ORTOPEDIA – HTO</option>
+                            <option value="HOSPITAL DE TRAUMA E ORTOPEDIA DE CAXIAS">HOSPITAL DE TRAUMA E ORTOPEDIA DE CAXIAS</option>
+                            <option value="HOSPITAL DR GENÉSIO REGO">HOSPITAL DR GENÉSIO REGO</option>
+                            <option value="HOSPITAL DR. JOSÉ DA COSTA ALMEIDA – CHAPADINHA">HOSPITAL DR. JOSÉ DA COSTA ALMEIDA – CHAPADINHA</option>
+                            <option value="HOSPITAL DR. RAIMUNDO LIMA">HOSPITAL DR. RAIMUNDO LIMA</option>
+                            <option value="HOSPITAL INFANTIL DR. JUVÊNCIO MATOS (COMPLEXO)">HOSPITAL INFANTIL DR. JUVÊNCIO MATOS (COMPLEXO)</option>
+                            <option value="HOSPITAL JOSÉ FERREIRA DOS REIS – PAULINO NEVES">HOSPITAL JOSÉ FERREIRA DOS REIS – PAULINO NEVES</option>
+                            <option value="HOSPITAL MACRORREGIONAL ALEXANDRE MAMEDE TROVÃO DE COROATÁ">HOSPITAL MACRORREGIONAL ALEXANDRE MAMEDE TROVÃO DE COROATÁ</option>
+                            <option value="HOSPITAL MACRORREGIONAL DA BAIXADA MARANHENSE DR JACKSON LAGO">HOSPITAL MACRORREGIONAL DA BAIXADA MARANHENSE DR JACKSON LAGO</option>
+                            <option value="HOSPITAL MACRORREGIONAL DE CAXIAS DR EVERALDO FERREIRA ARAGÃO">HOSPITAL MACRORREGIONAL DE CAXIAS DR EVERALDO FERREIRA ARAGÃO</option>
+                            <option value="HOSPITAL MACRORREGIONAL DE URGÊNCIA E EMERGÊNCIA DE PRESIDENTE DUTRA">HOSPITAL MACRORREGIONAL DE URGÊNCIA E EMERGÊNCIA DE PRESIDENTE DUTRA</option>
+                            <option value="HOSPITAL MACRORREGIONAL DRA. RUTH NOLETO">HOSPITAL MACRORREGIONAL DRA. RUTH NOLETO</option>
+                            <option value="HOSPITAL MACRORREGIONAL TOMÁS MARTINS">HOSPITAL MACRORREGIONAL TOMÁS MARTINS</option>
+                            <option value="HOSPITAL NINA RODRIGUES">HOSPITAL NINA RODRIGUES</option>
+                            <option value="HOSPITAL PRESIDENTE VARGAS">HOSPITAL PRESIDENTE VARGAS</option>
+                            <option value="HOSPITAL REGIONAL ADÉLIA MATOS FONSECA">HOSPITAL REGIONAL ADÉLIA MATOS FONSECA</option>
+                            <option value="HOSPITAL REGIONAL ALARICO NUNES PACHECO">HOSPITAL REGIONAL ALARICO NUNES PACHECO</option>
+                            <option value="HOSPITAL REGIONAL DE AÇAILÂNDIA">HOSPITAL REGIONAL DE AÇAILÂNDIA</option>
+                            <option value="HOSPITAL REGIONAL DE ALTO ALEGRE DO MARANHÃO">HOSPITAL REGIONAL DE ALTO ALEGRE DO MARANHÃO</option>
+                            <option value="HOSPITAL REGIONAL DE BALSAS">HOSPITAL REGIONAL DE BALSAS</option>
+                            <option value="HOSPITAL REGIONAL DE BARRA DO CORDA DR. JOSÉ DE ABREU SILVA">HOSPITAL REGIONAL DE BARRA DO CORDA DR. JOSÉ DE ABREU SILVA</option>
+                            <option value="HOSPITAL REGIONAL DE BARREIRINHAS">HOSPITAL REGIONAL DE BARREIRINHAS</option>
+                            <option value="HOSPITAL REGIONAL DE CARUTAPERA">HOSPITAL REGIONAL DE CARUTAPERA</option>
+                            <option value="HOSPITAL REGIONAL DE GRAJAÚ">HOSPITAL REGIONAL DE GRAJAÚ</option>
+                            <option value="HOSPITAL REGIONAL DE MONÇÃO">HOSPITAL REGIONAL DE MONÇÃO</option>
+                            <option value="HOSPITAL REGIONAL DE MORROS">HOSPITAL REGIONAL DE MORROS</option>
+                            <option value="HOSPITAL REGIONAL DE PERITORÓ">HOSPITAL REGIONAL DE PERITORÓ</option>
+                            <option value="HOSPITAL REGIONAL DE SANTA LUZIA DO PARUÁ">HOSPITAL REGIONAL DE SANTA LUZIA DO PARUÁ</option>
+                            <option value="HOSPITAL REGIONAL DE SÃO MATEUS DO MARANHÃO">HOSPITAL REGIONAL DE SÃO MATEUS DO MARANHÃO</option>
+                            <option value="HOSPITAL REGIONAL DE TIMBIRAS">HOSPITAL REGIONAL DE TIMBIRAS</option>
+                            <option value="HOSPITAL REGIONAL DR ANTONIO HADADE">HOSPITAL REGIONAL DR ANTONIO HADADE</option>
+                            <option value="HOSPITAL REGIONAL DR KLEBER CARVALHO BRANCO">HOSPITAL REGIONAL DR KLEBER CARVALHO BRANCO</option>
+                            <option value="HOSPITAL REGIONAL DR. RUBENS JORGE">HOSPITAL REGIONAL DR. RUBENS JORGE</option>
+                            <option value="HOSPITAL REGIONAL LAURA VASCONCELOS">HOSPITAL REGIONAL LAURA VASCONCELOS</option>
+                            <option value="HOSPITAL REGIONAL DE CHAPADINHA">HOSPITAL REGIONAL DE CHAPADINHA</option>
+                        </optgroup>
+                        
+                        <!-- Maternidades -->
+                        <optgroup label="MATERNIDADES">
+                            <option value="MATERNIDADE BENEDITO LEITE">MATERNIDADE BENEDITO LEITE</option>
+                            <option value="MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA">MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA</option>
+                            <option value="MATERNIDADE DE ALTO RISCO DE IMPERATRIZ">MATERNIDADE DE ALTO RISCO DE IMPERATRIZ</option>
+                            <option value="MATERNIDADE ESTADUAL HUMBERTO COUTINHO">MATERNIDADE ESTADUAL HUMBERTO COUTINHO</option>
+                            <option value="MATERNIDADE NOSSA SENHORA DA PENHA">MATERNIDADE NOSSA SENHORA DA PENHA</option>
+                            <option value="MATERNIDADE PAÇO DO LUMIAR">MATERNIDADE PAÇO DO LUMIAR</option>
+                        </optgroup>
+                        
+                        <!-- UPAs -->
+                        <optgroup label="UNIDADES DE PRONTO ATENDIMENTO – UPAs">
+                            <option value="UPA ARAÇAGY">UPA ARAÇAGY</option>
+                            <option value="UPA CIDADE OPERÁRIA">UPA CIDADE OPERÁRIA</option>
+                            <option value="UPA CODÓ">UPA CODÓ</option>
+                            <option value="UPA COROATÁ">UPA COROATÁ</option>
+                            <option value="UPA DO PAÇO DO LUMIAR">UPA DO PAÇO DO LUMIAR</option>
+                            <option value="UPA IMPERATRIZ">UPA IMPERATRIZ</option>
+                            <option value="UPA ITAQUI BACANGA">UPA ITAQUI BACANGA</option>
+                            <option value="UPA PARQUE VITÓRIA">UPA PARQUE VITÓRIA</option>
+                            <option value="UPA SÃO JOÃO DOS PATOS">UPA SÃO JOÃO DOS PATOS</option>
+                            <option value="UPA TIMON">UPA TIMON</option>
+                            <option value="UPA VINHAIS">UPA VINHAIS</option>
+                        </optgroup>
+                    </select>
+                </div>
                     
                     <div id="unidade-detalhes" class="config-info" style="display: none;">
                         <h3>Detalhes da Unidade Selecionada</h3>
