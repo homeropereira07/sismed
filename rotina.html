@@ -1362,7 +1362,7 @@
                         
                         <div class="signature-area">
                             <p><strong id="print-medico-assinatura">DR. HOMERO PEREIRA</strong></p>
-                            <p id="print-crm-assinatura">CRM-MA: 16XXX</p>
+                            <p id="print-crm-assinatura">CRM: </p>
                             <div class="signature-line"></div>
                             <p>Assinatura do Médico</p>
                         </div>
@@ -1387,7 +1387,7 @@
                                     <span>2ª VIA PACIENTE</span>
                                 </div>
                                 <div class="emitente-line">
-                                    <span id="print-crm">CRM-MA: 16XXX</span>
+                                    <span id="print-crm">CRM: </span>
                                     <span></span>
                                 </div>
                                 <div class="emitente-line">
@@ -1492,7 +1492,7 @@
                                     <span>2ª VIA PACIENTE</span>
                                 </div>
                                 <div class="emitente-line">
-                                    <span id="print-crm2">CRM-MA: 16XXX</span>
+                                    <span id="print-crm2">CRM: </span>
                                     <span></span>
                                 </div>
                                 <div class="emitente-line">
@@ -2366,17 +2366,23 @@
         });
 
         function carregarDadosMedico(medico) {
+            console.log('Carregando dados do médico:', medico);
+            
             // Preencher automaticamente os campos do médico nos formulários
             const camposMedico = document.querySelectorAll('#medico, #print-medico, #print-medico2, #print-medico-assinatura');
             const camposCRM = document.querySelectorAll('#crm, #print-crm, #print-crm2, #print-crm-assinatura');
             
             // Usar os dados reais do médico logado
             let nomeMedico = medico.nome || 'MÉDICO RESPONSÁVEL';
-            let crmMedico = medico.crm || 'CRM: XXXXXX';
+            let crmMedico = medico.crm || 'CRM: ';
+            
+            console.log('Nome médico:', nomeMedico);
+            console.log('CRM médico:', crmMedico);
             
             // Garantir que o nome esteja em maiúsculas (padrão médico)
             nomeMedico = nomeMedico.toUpperCase();
             
+            // Preencher campos do médico
             camposMedico.forEach(campo => {
                 if (campo.tagName === 'INPUT') {
                     campo.value = nomeMedico;
@@ -2385,6 +2391,7 @@
                 }
             });
             
+            // Preencher campos do CRM
             camposCRM.forEach(campo => {
                 if (campo.tagName === 'INPUT') {
                     campo.value = crmMedico;
@@ -2394,10 +2401,40 @@
             });
             
             // Salvar dados do médico para uso nos documentos
-            localStorage.setItem('dadosMedico', JSON.stringify({
+            const dadosMedico = {
                 nome: nomeMedico,
                 crm: crmMedico
-            }));
+            };
+            
+            localStorage.setItem('dadosMedico', JSON.stringify(dadosMedico));
+            console.log('Dados salvos no localStorage:', dadosMedico);
+        }
+
+        function obterDadosMedico() {
+            // Primeiro tenta obter do localStorage
+            const dadosSalvos = localStorage.getItem('dadosMedico');
+            if (dadosSalvos) {
+                const dados = JSON.parse(dadosSalvos);
+                console.log('Dados obtidos do localStorage:', dados);
+                return dados;
+            }
+            
+            // Se não encontrar, tenta obter do médico logado
+            const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
+            if (medicoLogado) {
+                console.log('Dados obtidos do médico logado:', medicoLogado);
+                return {
+                    nome: medicoLogado.nome.toUpperCase(),
+                    crm: medicoLogado.crm || 'CRM: '
+                };
+            }
+            
+            // Fallback para dados padrão
+            console.log('Usando dados padrão');
+            return {
+                nome: 'MÉDICO RESPONSÁVEL',
+                crm: 'CRM: '
+            };
         }
 
         function mostrarDetalhesUnidade(unidade) {
@@ -2430,31 +2467,6 @@
             }
         }
 
-        // Função para obter dados do médico para assinatura
-        function obterDadosMedico() {
-            // Primeiro tenta obter do localStorage
-            const dadosSalvos = localStorage.getItem('dadosMedico');
-            if (dadosSalvos) {
-                return JSON.parse(dadosSalvos);
-            }
-            
-            // Se não encontrar, tenta obter do médico logado
-            const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
-            if (medicoLogado) {
-                return {
-                    nome: medicoLogado.nome.toUpperCase(),
-                    crm: medicoLogado.crm || 'CRM: XXXXXX'
-                };
-            }
-            
-            // Fallback para dados padrão
-            return {
-                nome: 'MÉDICO RESPONSÁVEL',
-                crm: 'CRM: XXXXXX'
-            };
-        }
-
-        // Função para resetar todos os formulários
         function resetarFormularios() {
             // Resetar formulário de receita
             document.getElementById('paciente').value = '';
