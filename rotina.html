@@ -1810,7 +1810,7 @@
             
             if (receitas[doenca]) {
                 for (const [tipoUso, medicamentos] of Object.entries(receitas[doenca])) {
-                    contentHTML += `<div class="prescription-item"><div class="prescription-header">${tipoUso}:</div><ol>`;
+                    contentHTML += `<div class="prescription-item"><div class="prescription-header">${tipoUso}:</div></ol>`;
                     
                     medicamentos.forEach(med => {
                         contentHTML += `<li>${med}</li>`;
@@ -2028,7 +2028,7 @@
             let contentHTML = `
                 <div class="prescription-item">
                     <div class="prescription-header">Exames Solicitados:</div>
-                    <ol>
+                    </ol>
             `;
             
             examesSelecionados.forEach(exame => {
