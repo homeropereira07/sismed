@@ -35,6 +35,15 @@
       "licenca_valida": true,
       "email": "medico@clinica.com",
       "tipo": "profissional"
+    },
+    {
+      "username": "olivia",
+      "password": "1234",
+      "nome": "Dra Olivia de Alencar",
+      "crm": "CRM: 12345",
+      "licenca_valida": true,
+      "email": "medico@clinica.com",
+      "tipo": "profissional"
     }
   ]
 }
