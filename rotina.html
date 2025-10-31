@@ -547,20 +547,20 @@
             font-size: 0.85rem;
         }
         
-        /* Configuração */
-        .config-info {
+        /* Unidade */
+        .unidade-info {
             background: var(--light);
             border-radius: 10px;
             padding: 1.5rem;
             margin-top: 1.5rem;
         }
         
-        .config-info h3 {
+        .unidade-info h3 {
             margin-bottom: 1rem;
             color: var(--primary);
         }
         
-        .config-info p {
+        .unidade-info p {
             margin-bottom: 0.75rem;
         }
         
@@ -831,9 +831,14 @@
                     Links Úteis
                 </div>
                 
-                <div class="doc-type-btn" data-type="configuracao">
+                <div class="doc-type-btn" data-type="unidade">
+                    <i class="fas fa-hospital"></i>
+                    Unidade
+                </div>
+                
+                <div class="doc-type-btn" data-type="configuracoes" id="configuracoes-btn" style="display: none;">
                     <i class="fas fa-cog"></i>
-                    Configuração
+                    Configurações
                 </div>
             </div>
             
@@ -1670,11 +1675,11 @@
                     </div>
                 </div>
                 
-                <!-- Formulário para Configuração -->
-                <div id="configuracao-form" class="form-section">
+                <!-- Formulário para Unidade -->
+                <div id="unidade-form" class="form-section">
                     <h2 class="section-title">
-                        <i class="fas fa-cog"></i>
-                        Configuração do Sistema
+                        <i class="fas fa-hospital"></i>
+                        Configuração da Unidade
                     </h2>
                     
                 <div class="form-group">
@@ -1758,16 +1763,60 @@
                     </div>
                 </div>
                     
-                    <div id="unidade-detalhes" class="config-info" style="display: none;">
+                    <div id="unidade-detalhes" class="unidade-info" style="display: none;">
                         <h3>Detalhes da Unidade Selecionada</h3>
                         <div id="unidade-info"></div>
                     </div>
                     
                     <div class="form-actions">
-                        <button id="salvar-configuracao" class="btn btn-primary">
+                        <button id="salvar-unidade" class="btn btn-primary">
                             <i class="fas fa-save"></i>
                             Salvar Configuração
                         </button>
+                    </div>
+                </div>
+                
+                <!-- Formulário para Configurações -->
+                <div id="configuracoes-form" class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-cog"></i>
+                        Configurações do Sistema
+                    </h2>
+                    
+                    <p class="form-label">Configurações avançadas do sistema (acesso restrito):</p>
+                    
+                    <div class="links-grid">
+                        <a href="https://homeropereira07.github.io/sismed/teste2.html" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="link-title">Teste 2</div>
+                            <div class="link-description">Página de teste para configurações avançadas</div>
+                        </a>
+                        
+                        <a href="#" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="link-title">Gerenciar Dados</div>
+                            <div class="link-description">Configurações de banco de dados e backup</div>
+                        </a>
+                        
+                        <a href="#" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <div class="link-title">Gerenciar Usuários</div>
+                            <div class="link-description">Configurações de permissões e acessos</div>
+                        </a>
+                        
+                        <a href="#" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="link-title">Relatórios</div>
+                            <div class="link-description">Relatórios avançados e estatísticas</div>
+                        </a>
                     </div>
                 </div>
                 
@@ -2665,39 +2714,6 @@
             }
         };
 
-                // Controle de lateralidade para exames
-        document.addEventListener('click', function(e) {
-            // Verifica se o clique foi em um checkbox de exame com lateralidade
-            if (e.target.classList.contains('exame-lateralidade')) {
-                const checkbox = e.target;
-                const lateralidadeOptions = checkbox.parentElement.querySelector('.lateralidade-options');
-                
-                if (checkbox.checked) {
-                    lateralidadeOptions.style.display = 'block';
-                } else {
-                    lateralidadeOptions.style.display = 'none';
-                    // Limpa a seleção quando desmarcar
-                    const select = lateralidadeOptions.querySelector('.lateralidade-select');
-                    select.value = '';
-                }
-            }
-        });
-        
-        // Também adicione para os exames que já existem (punho, mão, pé, etc.)
-        document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const lateralidadeOptions = this.parentElement.querySelector('.lateralidade-options');
-                
-                if (this.checked) {
-                    lateralidadeOptions.style.display = 'block';
-                } else {
-                    lateralidadeOptions.style.display = 'none';
-                    const select = lateralidadeOptions.querySelector('.lateralidade-select');
-                    select.value = '';
-                }
-            });
-        });
-        
         // Elementos DOM
         let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
 
@@ -2714,6 +2730,11 @@
             
             // Exibir nome do médico logado
             document.getElementById('user-name').textContent = medicoLogado.nome;
+            
+            // Verificar se é desenvolvedor para mostrar a aba Configurações
+            if (medicoLogado.tipo === 'desenvolvedor') {
+                document.getElementById('configuracoes-btn').style.display = 'flex';
+            }
             
             // Configurar menu de logout
             const userMenu = document.getElementById('user-menu');
@@ -2755,7 +2776,7 @@
             });
 
             // Botão salvar configuração
-            document.getElementById('salvar-configuracao').addEventListener('click', () => {
+            document.getElementById('salvar-unidade').addEventListener('click', () => {
                 const unidade = unidadeTrabalhoSelect.value;
                 
                 if (!unidade) {
@@ -2829,6 +2850,39 @@
 
             // Botão novo paciente
             document.getElementById('btn-new-patient').addEventListener('click', resetarFormularios);
+            
+            // Controle de lateralidade para exames
+            document.addEventListener('click', function(e) {
+                // Verifica se o clique foi em um checkbox de exame com lateralidade
+                if (e.target.classList.contains('exame-lateralidade')) {
+                    const checkbox = e.target;
+                    const lateralidadeOptions = checkbox.parentElement.querySelector('.lateralidade-options');
+                    
+                    if (checkbox.checked) {
+                        lateralidadeOptions.style.display = 'block';
+                    } else {
+                        lateralidadeOptions.style.display = 'none';
+                        // Limpa a seleção quando desmarcar
+                        const select = lateralidadeOptions.querySelector('.lateralidade-select');
+                        select.value = '';
+                    }
+                }
+            });
+            
+            // Também adicione para os exames que já existem (punho, mão, pé, etc.)
+            document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const lateralidadeOptions = this.parentElement.querySelector('.lateralidade-options');
+                    
+                    if (this.checked) {
+                        lateralidadeOptions.style.display = 'block';
+                    } else {
+                        lateralidadeOptions.style.display = 'none';
+                        const select = lateralidadeOptions.querySelector('.lateralidade-select');
+                        select.value = '';
+                    }
+                });
+            });
         });
 
         function carregarDadosMedico(medico) {
@@ -3189,91 +3243,91 @@
             document.getElementById('edit-controls').style.display = 'flex';
         }
 
-            function gerarSolicitacaoExames() {
-                const dadosMedico = obterDadosMedico();
+        function gerarSolicitacaoExames() {
+            const dadosMedico = obterDadosMedico();
+            
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-exames').value;
+            const observacoes = document.getElementById('observacoes-exames').value;
+            
+            if (!paciente) {
+                alert('Por favor, preencha o nome do paciente.');
+                return;
+            }
+            
+            // Coletar exames selecionados
+            const examesSelecionados = [];
+            const checkboxes = document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]:checked');
+            
+            if (checkboxes.length === 0) {
+                alert('Por favor, selecione pelo menos um exame.');
+                return;
+            }
+            
+            checkboxes.forEach(checkbox => {
+                let exameTexto = checkbox.value;
                 
-                if (!unidadeSelecionada) {
-                    alert('Por favor, configure a unidade de trabalho primeiro.');
-                    return;
-                }
-                
-                const paciente = document.getElementById('paciente-exames').value;
-                const observacoes = document.getElementById('observacoes-exames').value;
-                
-                if (!paciente) {
-                    alert('Por favor, preencha o nome do paciente.');
-                    return;
-                }
-                
-                // Coletar exames selecionados
-                const examesSelecionados = [];
-                const checkboxes = document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]:checked');
-                
-                if (checkboxes.length === 0) {
-                    alert('Por favor, selecione pelo menos um exame.');
-                    return;
-                }
-                
-                checkboxes.forEach(checkbox => {
-                    let exameTexto = checkbox.value;
-                    
-                    // Verificar se é um exame com lateralidade
-                    if (checkbox.classList.contains('exame-lateralidade')) {
-                        const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
-                        if (lateralidadeSelect && lateralidadeSelect.value) {
-                            exameTexto += ` - ${lateralidadeSelect.value}`;
-                        }
+                // Verificar se é um exame com lateralidade
+                if (checkbox.classList.contains('exame-lateralidade')) {
+                    const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
+                    if (lateralidadeSelect && lateralidadeSelect.value) {
+                        exameTexto += ` - ${lateralidadeSelect.value}`;
                     }
-                    
-                    examesSelecionados.push(exameTexto);
-                });
+                }
                 
-                document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
-                document.getElementById('print-paciente').textContent = paciente;
-                document.getElementById('unidade-nome').textContent = unidadeSelecionada;
-                
-                // Atualizar assinatura com dados do médico
-                document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-                document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
-                
-                atualizarDadosUnidade(unidadeSelecionada);
-                
-                let contentHTML = `
-                    <div class="prescription-item">
-                        <div class="prescription-header">Exames Solicitados:</div>
-                        <ul>
-                `;
-                
-                examesSelecionados.forEach(exame => {
-                    contentHTML += `<li>${exame}</li>`;
-                });
-                
+                examesSelecionados.push(exameTexto);
+            });
+            
+            document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
+            document.getElementById('print-paciente').textContent = paciente;
+            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            
+            // Atualizar assinatura com dados do médico
+            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
+            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            let contentHTML = `
+                <div class="prescription-item">
+                    <div class="prescription-header">Exames Solicitados:</div>
+                    <ul>
+            `;
+            
+            examesSelecionados.forEach(exame => {
+                contentHTML += `<li>${exame}</li>`;
+            });
+            
+            contentHTML += `
+                    </ul>
+                </div>
+            `;
+            
+            if (observacoes) {
                 contentHTML += `
-                        </ul>
+                    <div class="prescription-item">
+                        <div class="prescription-header">Observações:</div>
+                        <p>${observacoes.replace(/\n/g, '<br>')}</p>
                     </div>
                 `;
-                
-                if (observacoes) {
-                    contentHTML += `
-                        <div class="prescription-item">
-                            <div class="prescription-header">Observações:</div>
-                            <p>${observacoes.replace(/\n/g, '<br>')}</p>
-                        </div>
-                    `;
-                }
-                
-                contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
-                
-                document.getElementById('print-content').innerHTML = contentHTML;
-                
-                // Ocultar todas as áreas de impressão primeiro
-                document.querySelectorAll('.print-area').forEach(area => {
-                    area.style.display = 'none';
-                });
-                
-                document.getElementById('print-area').style.display = 'block';
-                document.getElementById('edit-controls').style.display = 'flex';
             }
+            
+            contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
+            
+            document.getElementById('print-content').innerHTML = contentHTML;
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
+            document.getElementById('print-area').style.display = 'block';
+            document.getElementById('edit-controls').style.display = 'flex';
+        }
     </script>
 </body>
 </html>
