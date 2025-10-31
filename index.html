@@ -33,7 +33,7 @@
         
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             padding: 20px;
         }
         
@@ -44,6 +44,7 @@
             padding: 2.5rem;
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
         }
         
         .login-card:hover {
@@ -135,11 +136,119 @@
             color: var(--secondary);
             margin-bottom: 1rem;
         }
+        
+        .license-message {
+            display: none;
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        
+        .license-message h3 {
+            color: #856404;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        .license-message p {
+            color: #856404;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+        
+        .contact-info {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .contact-info strong {
+            color: var(--primary);
+        }
+        
+        .attempts-counter {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        
+        .feature-item::before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .offer-link {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .offer-link:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+        
+        .purchase-option {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .purchase-option a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .purchase-option a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-card">
+            <a href="https://homeropereira07.github.io/sismed/sismed_oferta.html" class="offer-link" target="_blank">
+                🔥 Oferta Especial
+            </a>
+            
             <div class="login-header">
                 <div class="login-icon">⚕️</div>
                 <div class="logo">Sistema de Prescrição Médica</div>
@@ -158,33 +267,88 @@
                 </div>
                 
                 <div class="error-message" id="error-message">
-                    Usuário ou senha incorretos. Tente novamente.
+                    Usuário ou senha incorretos. Tentativas restantes: <span id="attempts-left">3</span>
                 </div>
                 
                 <button type="submit">Entrar</button>
+                
+                <div class="attempts-counter" id="attempts-counter">
+                    Tentativa <span id="current-attempt">1</span> de 3
+                </div>
+                
+                <div class="purchase-option">
+                    <a href="https://homeropereira07.github.io/sismed/sismed_oferta.html" target="_blank">
+                        Adquirir licença do sistema
+                    </a>
+                </div>
             </form>
             
+            <div class="license-message" id="license-message">
+                <h3>Licença Necessária</h3>
+                <p>Para acessar todas as funcionalidades do Sistema de Prescrição Médica, é necessário adquirir uma licença válida.</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">Prescrição de medicamentos</div>
+                    <div class="feature-item">Atestados médicos</div>
+                    <div class="feature-item">Receituários em branco</div>
+                    <div class="feature-item">Controle especial</div>
+                    <div class="feature-item">Solicitação de exames</div>
+                    <div class="feature-item">Configuração de unidades</div>
+                </div>
+                
+                <div class="contact-info">
+                    <p><strong>Entre em contato com o desenvolvedor:</strong></p>
+                    <p>👨‍⚕️ <strong>Dr. Homero Pereira</strong></p>
+                    <p>📱 WhatsApp: (98) 98602-0309</p>
+                    <p>📧 Email: homeropereira@outlook.com</p>
+                    <p style="margin-top: 0.75rem; text-align: center;">
+                        <a href="https://homeropereira07.github.io/sismed/sismed_oferta.html" target="_blank" style="color: var(--secondary); font-weight: 500; text-decoration: none;">
+                            🌟 Conheça nossa oferta especial!
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
             <div class="footer">
-                © 2025 Sistema de Prescrição Médica.<br>Homero Pereira™.<br>Todos os direitos reservados.  
+                © 2023 Sistema de Prescrição Médica. Todos os direitos reservados.
             </div>
         </div>
     </div>
 
     <script>
+        let loginAttempts = 0;
+        const maxAttempts = 3;
+        
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
+            const attemptsLeft = document.getElementById('attempts-left');
+            const currentAttempt = document.getElementById('current-attempt');
+            const licenseMessage = document.getElementById('license-message');
+            
+            loginAttempts++;
+            currentAttempt.textContent = loginAttempts;
             
             // Simulação de validação - em um sistema real, isso seria feito no servidor
-            if (username && password) {
-                // Aqui normalmente faríamos uma requisição para validar as credenciais
-                // Por enquanto, vamos apenas redirecionar para a página principal
-                window.location.href = 'https://homeropereira07.github.io/sismed/rotina.html';
-            } else {
+            // Aqui sempre retornará erro para demonstrar a funcionalidade
+            const loginSuccessful = false; // Sempre falso para demonstração
+            
+            if (!loginSuccessful) {
+                const remainingAttempts = maxAttempts - loginAttempts;
+                attemptsLeft.textContent = remainingAttempts;
                 errorMessage.style.display = 'block';
+                
+                if (loginAttempts >= maxAttempts) {
+                    document.getElementById('login-form').style.display = 'none';
+                    licenseMessage.style.display = 'block';
+                    document.querySelector('.subtitle').textContent = 'Licença necessária para acesso';
+                }
+            } else {
+                // Redirecionamento em caso de sucesso
+                window.location.href = 'https://homeropereira07.github.io/sismed/';
             }
         });
         
@@ -199,4 +363,3 @@
     </script>
 </body>
 </html>
-
