@@ -1597,8 +1597,9 @@
                     document.getElementById(`${type}-form`).classList.add('active');
                     
                     // Ocultar área de impressão
-                    document.getElementById('print-area').style.display = 'none';
-                    document.getElementById('print-area-controle-especial').style.display = 'none';
+                    document.querySelectorAll('.print-area').forEach(area => {
+                        area.style.display = 'none';
+                    });
                     document.getElementById('edit-controls').style.display = 'none';
                 });
             });
@@ -1640,19 +1641,6 @@
 
             // Botão novo paciente
             document.getElementById('btn-new-patient').addEventListener('click', resetarFormularios);
-            
-            // Controle da lateralidade para exames
-            document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const lateralidadeDiv = this.parentElement.querySelector('.lateralidade-options');
-                    if (this.checked) {
-                        lateralidadeDiv.style.display = 'block';
-                    } else {
-                        lateralidadeDiv.style.display = 'none';
-                        lateralidadeDiv.querySelector('.lateralidade-select').value = '';
-                    }
-                });
-            });
         });
 
         function carregarDadosMedico(medico) {
@@ -1774,8 +1762,9 @@
             });
             
             // Ocultar áreas de impressão
-            document.getElementById('print-area').style.display = 'none';
-            document.getElementById('print-area-controle-especial').style.display = 'none';
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
             document.getElementById('edit-controls').style.display = 'none';
             
             // Voltar para a primeira aba (receita)
@@ -1836,8 +1825,13 @@
             contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
             
             document.getElementById('print-content').innerHTML = contentHTML;
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
             document.getElementById('print-area').style.display = 'block';
-            document.getElementById('print-area-controle-especial').style.display = 'none';
             document.getElementById('edit-controls').style.display = 'flex';
         }
 
@@ -1893,8 +1887,13 @@
             `;
             
             document.getElementById('print-content').innerHTML = contentHTML;
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
             document.getElementById('print-area').style.display = 'block';
-            document.getElementById('print-area-controle-especial').style.display = 'none';
             document.getElementById('edit-controls').style.display = 'flex';
         }
 
@@ -1932,8 +1931,13 @@
             `;
             
             document.getElementById('print-content').innerHTML = contentHTML;
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
             document.getElementById('print-area').style.display = 'block';
-            document.getElementById('print-area-controle-especial').style.display = 'none';
             document.getElementById('edit-controls').style.display = 'flex';
         }
 
@@ -1973,7 +1977,11 @@
             document.getElementById('print-data').textContent = dataAtual;
             document.getElementById('print-data2').textContent = dataAtual;
             
-            document.getElementById('print-area').style.display = 'none';
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
             document.getElementById('print-area-controle-especial').style.display = 'block';
             document.getElementById('edit-controls').style.display = 'flex';
         }
@@ -2004,19 +2012,7 @@
             }
             
             checkboxes.forEach(checkbox => {
-                let exameTexto = checkbox.value;
-                
-                // Verificar se é um exame com lateralidade
-                if (checkbox.classList.contains('exame-lateralidade')) {
-                    const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
-                    const lateralidade = lateralidadeSelect ? lateralidadeSelect.value : '';
-                    
-                    if (lateralidade) {
-                        exameTexto += ` - ${lateralidade}`;
-                    }
-                }
-                
-                examesSelecionados.push(exameTexto);
+                examesSelecionados.push(checkbox.value);
             });
             
             document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
@@ -2056,8 +2052,13 @@
             contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
             
             document.getElementById('print-content').innerHTML = contentHTML;
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
             document.getElementById('print-area').style.display = 'block';
-            document.getElementById('print-area-controle-especial').style.display = 'none';
             document.getElementById('edit-controls').style.display = 'flex';
         }
     </script>
