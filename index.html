@@ -240,6 +240,12 @@
             color: var(--primary);
             text-decoration: underline;
         }
+        
+        .loading {
+            display: none;
+            color: var(--secondary);
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -270,7 +276,11 @@
                     Usuário ou senha incorretos. Tentativas restantes: <span id="attempts-left">3</span>
                 </div>
                 
-                <button type="submit">Entrar</button>
+                <div class="loading" id="loading">
+                    Validando credenciais...
+                </div>
+                
+                <button type="submit" id="login-button">Entrar</button>
                 
                 <div class="attempts-counter" id="attempts-counter">
                     Tentativa <span id="current-attempt">1</span> de 3
@@ -318,8 +328,61 @@
     <script>
         let loginAttempts = 0;
         const maxAttempts = 3;
-        
-        document.getElementById('login-form').addEventListener('submit', function(e) {
+        let usuarios = [];
+
+        // Carregar usuários do arquivo JSON
+        async function carregarUsuarios() {
+            try {
+                const response = await fetch('./users.json');
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar arquivo de usuários');
+                }
+                const data = await response.json();
+                usuarios = data.usuarios;
+                console.log('Usuários carregados com sucesso:', usuarios.length);
+                return true;
+            } catch (error) {
+                console.error('Erro ao carregar usuários:', error);
+                // Usuários padrão em caso de erro
+                usuarios = [
+                    { 
+                        username: "demo", 
+                        password: "medico123", 
+                        nome: "Usuário Demonstração", 
+                        licenca_valida: true 
+                    },
+                    { 
+                        username: "dr.homero", 
+                        password: "sismed2023", 
+                        nome: "Dr. Homero Pereira", 
+                        licenca_valida: true 
+                    }
+                ];
+                return false;
+            }
+        }
+
+        // Verificar credenciais
+        function verificarCredenciais(username, password) {
+            const usuario = usuarios.find(user => 
+                user.username === username && 
+                user.password === password
+            );
+            
+            if (usuario && usuario.licenca_valida) {
+                return usuario;
+            }
+            return null;
+        }
+
+        // Mostrar/ocultar loading
+        function toggleLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('login-button').disabled = show;
+            document.getElementById('login-button').textContent = show ? 'Validando...' : 'Entrar';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
@@ -329,29 +392,50 @@
             const currentAttempt = document.getElementById('current-attempt');
             const licenseMessage = document.getElementById('license-message');
             
-            loginAttempts++;
-            currentAttempt.textContent = loginAttempts;
+            // Mostrar loading
+            toggleLoading(true);
             
-            // Simulação de validação - em um sistema real, isso seria feito no servidor
-            // Aqui sempre retornará erro para demonstrar a funcionalidade
-            const loginSuccessful = false; // Sempre falso para demonstração
-            
-            if (!loginSuccessful) {
-                const remainingAttempts = maxAttempts - loginAttempts;
-                attemptsLeft.textContent = remainingAttempts;
-                errorMessage.style.display = 'block';
-                
-                if (loginAttempts >= maxAttempts) {
-                    document.getElementById('login-form').style.display = 'none';
-                    licenseMessage.style.display = 'block';
-                    document.querySelector('.subtitle').textContent = 'Licença necessária para acesso';
-                }
-            } else {
-                // Redirecionamento em caso de sucesso
-                window.location.href = 'https://homeropereira07.github.io/sismed/';
+            // Garantir que os usuários foram carregados
+            if (usuarios.length === 0) {
+                await carregarUsuarios();
             }
+            
+            // Pequeno delay para simular processamento
+            setTimeout(async () => {
+                loginAttempts++;
+                currentAttempt.textContent = loginAttempts;
+                
+                const usuario = verificarCredenciais(username, password);
+                
+                if (!usuario) {
+                    const remainingAttempts = maxAttempts - loginAttempts;
+                    attemptsLeft.textContent = remainingAttempts;
+                    errorMessage.style.display = 'block';
+                    
+                    if (loginAttempts >= maxAttempts) {
+                        document.getElementById('login-form').style.display = 'none';
+                        licenseMessage.style.display = 'block';
+                        document.querySelector('.subtitle').textContent = 'Licença necessária para acesso';
+                    }
+                } else {
+                    // Login bem-sucedido
+                    console.log(`Bem-vindo, ${usuario.nome}!`);
+                    errorMessage.style.display = 'none';
+                    
+                    // Redirecionar para o sistema principal
+                    window.location.href = 'https://homeropereira07.github.io/sismed/';
+                }
+                
+                // Ocultar loading
+                toggleLoading(false);
+            }, 1000);
         });
-        
+
+        // Carregar usuários quando a página abrir
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarUsuarios();
+        });
+
         // Esconder mensagem de erro quando o usuário começar a digitar
         document.getElementById('username').addEventListener('input', function() {
             document.getElementById('error-message').style.display = 'none';
