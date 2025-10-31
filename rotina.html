@@ -631,44 +631,62 @@
                 background: white !important;
                 margin: 0 !important;
                 padding: 0 !important;
+                width: 100%;
             }
             
+            /* Esconder todos os elementos exceto a área de impressão */
             body * {
                 visibility: hidden;
-                background: white !important;
-                box-shadow: none !important;
             }
             
-            .print-area, .print-area * {
+            .print-area, 
+            .print-area * {
                 visibility: visible;
-                background: white !important;
-                box-shadow: none !important;
             }
             
+            /* Remover posicionamento absoluto problemático */
             .print-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 20px !important;
                 box-shadow: none !important;
                 border: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                page-break-after: avoid;
+                background: white !important;
                 page-break-inside: avoid;
             }
             
-            .no-print, .edit-controls {
-                display: none !important;
-            }
-            
-            /* Garantir que não haja quebras de página desnecessárias */
+            /* Para o controle especial com duas vias */
             .receituario-container {
+                display: flex !important;
                 page-break-inside: avoid;
             }
             
             .via {
+                width: 48% !important;
                 page-break-inside: avoid;
+            }
+            
+            /* Garantir que não quebre entre as vias */
+            .receituario-container,
+            .via {
+                break-inside: avoid;
+            }
+            
+            /* Esconder controles de edição */
+            .no-print, 
+            .edit-controls,
+            .container > header,
+            .main-content > .sidebar,
+            .content-area > .form-section {
+                display: none !important;
+            }
+            
+            /* Mostrar apenas a área de impressão ativa */
+            .print-area:not([style*="display: block"]):not([style*="display:block"]) {
+                display: none !important;
             }
         }
     </style>
