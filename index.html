@@ -687,51 +687,58 @@
         });
 
         // Processar formulário de login
-        document.getElementById('login-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
+  document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
+        const attemptsLeft = document.getElementById('attempts-left');
+        const licenseMessage = document.getElementById('license-message');
+        
+        // Mostrar loading
+        toggleLoading(true);
+        
+        // Garantir que os usuários foram carregados
+        if (usuarios.length === 0) {
+            await carregarUsuarios();
+        }
+        
+        // Pequeno delay para simular processamento
+        setTimeout(async () => {
+            loginAttempts++;
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
-            const attemptsLeft = document.getElementById('attempts-left');
-            const licenseMessage = document.getElementById('license-message');
+            const usuario = verificarCredenciais(username, password);
             
-            // Mostrar loading
-            toggleLoading(true);
-            
-            // Garantir que os usuários foram carregados
-            if (usuarios.length === 0) {
-                await carregarUsuarios();
+            if (!usuario) {
+                const remainingAttempts = maxAttempts - loginAttempts;
+                attemptsLeft.textContent = remainingAttempts;
+                errorMessage.style.display = 'flex';
+                
+                if (loginAttempts >= maxAttempts) {
+                    document.getElementById('login-form').style.display = 'none';
+                    licenseMessage.style.display = 'block';
+                }
+            } else {
+                // Login bem-sucedido - CORREÇÃO AQUI
+                console.log(`Bem-vindo, ${usuario.nome}!`);
+                errorMessage.style.display = 'none';
+                
+                // Salvar dados do médico no localStorage
+                localStorage.setItem('medicoLogado', JSON.stringify({
+                    nome: usuario.nome,
+                    username: usuario.username,
+                    tipo: usuario.tipo
+                }));
+                
+                // Redirecionar para a página rotina.html
+                window.location.href = 'https://homeropereira07.github.io/sismed/rotina.html';
             }
             
-            // Pequeno delay para simular processamento
-            setTimeout(async () => {
-                loginAttempts++;
-                
-                const usuario = verificarCredenciais(username, password);
-                
-                if (!usuario) {
-                    const remainingAttempts = maxAttempts - loginAttempts;
-                    attemptsLeft.textContent = remainingAttempts;
-                    errorMessage.style.display = 'flex';
-                    
-                    if (loginAttempts >= maxAttempts) {
-                        document.getElementById('login-form').style.display = 'none';
-                        licenseMessage.style.display = 'block';
-                    }
-                } else {
-                    // Login bem-sucedido
-                    console.log(`Bem-vindo, ${usuario.nome}!`);
-                    errorMessage.style.display = 'none';
-                    
-                    // Redirecionar para a página do sistema
-                    window.location.href = 'https://homeropereira07.github.io/sismed/rotina.html';
-                }
-                
-                // Ocultar loading
-                toggleLoading(false);
-            }, 1500);
-        });
+            // Ocultar loading
+            toggleLoading(false);
+        }, 1500);
+    });
 
         // Carregar usuários quando a página abrir
         document.addEventListener('DOMContentLoaded', function() {
@@ -765,4 +772,3 @@
     </script>
 </body>
 </html>
-
