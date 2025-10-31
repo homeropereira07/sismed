@@ -1357,9 +1357,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
     </div>
 
     <script>
-        // JavaScript permanece o mesmo da versão anterior
-        // (Todo o código JavaScript da versão anterior pode ser mantido aqui)
-        
         // Dados das unidades
         const unidades = {
             "HOSPITAL AQUILES LISBOA": {
@@ -1368,10 +1365,86 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 horario: "24 Horas",
                 especialidades: "RETAGUARDA CLÍNICA MÉDICA E CIRÚRGICA; CARDIOLOGIA; COLOPROCTOLOGIA; CIRURGIA GERAL; CLÍNICA MÉDICA; DERMATOLOGIA; ENDOCRINOLOGIA; GINECOLOGIA; MASTOLOGIA; NEUROLOGIA; ORTOPEDIA; PEDIATRIA; REUMATOLOGIA; UROLOGIA."
             },
-            // ... (restante do código JavaScript permanece igual)
+            "HOSPITAL DA CRIANÇA DE PRESIDENTE MÉDICI": {
+                endereco: "Av. Santa Teresa, s/n, Bairro Alto Alegria, PRESIDENTE MEDICI – MA, CEP: 65279-000",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "PEDIATRIA CLÍNICA E CIRÚRGICA."
+            },
+            "HOSPITAL DA CRIANÇA E MULHER DE COLINAS": {
+                endereco: "Rua Rui Barbosa, 321, Centro, COLINAS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "GENICOLOGIA CLÍNICA E CIRÚRGICA; PEDIATRIA CLÍNICA E CIRÚRGICA."
+            },
+            "UPA ARAÇAGY": {
+                endereco: "Av. Conselheiro Hilton Rodrigues, s/n, Bairro Araçagi, SÃO JOSÉ DE RIBAMAR – MA",
+                telefone: "(98) 3226-9700 / 3246-1168",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA; ODONTOLOGIA; ORTOPEDIA."
+            },
+            "UPA CIDADE OPERÁRIA": {
+                endereco: "Av. Principal, s/n, Bairro Cidade Operária, SÃO LUÍS – MA",
+                telefone: "(98) 3247-2393",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA; ODONTOLOGIA."
+            },
+            "UPA PARQUE VITÓRIA": {
+                endereco: "Rua José Santana, nº 20, Qd-38, Residencial Canudos, Bairro Turu, SÃO LUÍS – MA",
+                telefone: "(98) 3190-8076 / 99116-1976",
+                horario: "24 Horas",
+                especialidades: "CLÍNICA MÉDICA; PEDIATRIA."
+            },
+            "MATERNIDADE BENEDITO LEITE": {
+                endereco: "Av. Jerônimo de Albuquerque, s/n, Bairro Cohab Anil, SÃO LUÍS – MA",
+                telefone: "(98) 98423-8793",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA."
+            },
+            "MATERNIDADE DE ALTA COMPLEXIDADE DO MARANHÃO – MACMA": {
+                endereco: "Av Jeronimo de Albuquerque, s/n, Bairro Cohab Anil, SÃO LUÍS – MA",
+                telefone: "",
+                horario: "24 Horas",
+                especialidades: "CIRURGIA GERAL; CLÍNICA MÉDICA; OBSTETRÍCIA CIRÚRGICA; OBSTETRÍCIA CLÍNICA; PEDIATRIA CLÍNICA; CARDIOLOGIA; GASTROENTEROLOGIA; GINECOLOGIA; GENÉTICA; NEUROLOGIA; OBSTETRÍCIA; OFTALMOLOGIA; PEDIATRIA."
+            }
         };
 
-        // Inicialização da interface
+        // Dados das receitas
+        const receitas = {
+            "LOMBALGIA": {
+                "USO ORAL": [
+                    "CETOPROFENO 100MG - 01 caixa - Tomar 01 comprimido de 12/12h por 5 dias",
+                    "MIOSAN CAF - 01 caixa - Tomar 01 comprimido à noite por 5 dias",
+                    "DIPIRONA 1G - 01 caixa - Tomar 1 comprimido de 8/8h em caso de dor ou febre"
+                ]
+            },
+            "DOR AGUDA": {
+                "USO ORAL": [
+                    "KETALGI 500 MG - 01 caixa - Tomar 01 comprimido de 12/12 horas por 05 dias",
+                    "TORAGESIC 10 MG - 01 caixa - Tomar 01 comprimido sublingual se crise. Pode repetir com 2 horas",
+                    "LISADOR DIP 1G - 01 caixa - Tomar 01 comprimido de 08/08h se dor ou febre"
+                ]
+            },
+            "AFTAS": {
+                "USO ORAL": [
+                    "PARACETAMOL 750 MG - 01 caixa - Tomar 01 comprimido de 8/8 horas"
+                ],
+                "USO TÓPICO": [
+                    "OMCILON-A ORABASE - 01 tubo - Aplicar de 08/08h nas lesões antes das refeições"
+                ]
+            },
+            "ALERGIA": {
+                "USO ORAL": [
+                    "ALEKTOS 20 MG - 01 caixa - Tomar 01 comprimido de 12/12h por 5 dias",
+                    "PREDNISOLONA 20 MG - 01 caixa - Tomar 01 comprimido de 12/12h por 5 dias"
+                ]
+            }
+        };
+
+        // Elementos DOM
+        let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
+
+        // Inicializar interface
         document.addEventListener('DOMContentLoaded', function() {
             // Alternar entre tipos de documento
             const docTypeButtons = document.querySelectorAll('.doc-type-btn');
@@ -1395,10 +1468,355 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                     document.getElementById('edit-controls').style.display = 'none';
                 });
             });
+
+            // Configuração da unidade
+            const unidadeTrabalhoSelect = document.getElementById('unidade-trabalho');
+            if (unidadeSelecionada) {
+                unidadeTrabalhoSelect.value = unidadeSelecionada;
+                mostrarDetalhesUnidade(unidadeSelecionada);
+            }
+
+            unidadeTrabalhoSelect.addEventListener('change', function() {
+                const unidade = this.value;
+                mostrarDetalhesUnidade(unidade);
+            });
+
+            // Botão salvar configuração
+            document.getElementById('salvar-configuracao').addEventListener('click', () => {
+                const unidade = unidadeTrabalhoSelect.value;
+                
+                if (!unidade) {
+                    alert('Por favor, selecione uma unidade de trabalho.');
+                    return;
+                }
+                
+                localStorage.setItem('unidadeSelecionada', unidade);
+                unidadeSelecionada = unidade;
+                alert('Configuração salva com sucesso!');
+            });
+
+            // Botão gerar receita
+            document.getElementById('gerar-receita').addEventListener('click', gerarReceita);
             
-            // Inicializar outros componentes conforme necessário
-            // ...
+            // Botão gerar atestado
+            document.getElementById('gerar-atestado').addEventListener('click', gerarAtestado);
+            
+            // Botão gerar receituário
+            document.getElementById('gerar-receituario').addEventListener('click', gerarReceituario);
+            
+            // Botão gerar controle especial
+            document.getElementById('gerar-controle-especial').addEventListener('click', gerarControleEspecial);
+            
+            // Botão gerar solicitação de exames
+            document.getElementById('gerar-solicitacao-exames').addEventListener('click', gerarSolicitacaoExames);
+
+            // Controles de edição
+            document.getElementById('btn-edit').addEventListener('click', () => {
+                document.getElementById('print-content').contentEditable = 'true';
+                document.getElementById('print-area').classList.add('edit-mode');
+                document.getElementById('btn-edit').style.display = 'none';
+                document.getElementById('btn-save').style.display = 'inline-block';
+            });
+
+            document.getElementById('btn-save').addEventListener('click', () => {
+                document.getElementById('print-content').contentEditable = 'false';
+                document.getElementById('print-area').classList.remove('edit-mode');
+                document.getElementById('btn-edit').style.display = 'inline-block';
+                document.getElementById('btn-save').style.display = 'none';
+            });
+
+            // Botão imprimir
+            document.getElementById('btn-print').addEventListener('click', () => {
+                window.print();
+            });
+
+            // Controle da lateralidade para exames
+            document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const lateralidadeDiv = this.parentElement.querySelector('.lateralidade-options');
+                    if (this.checked) {
+                        lateralidadeDiv.style.display = 'block';
+                    } else {
+                        lateralidadeDiv.style.display = 'none';
+                        lateralidadeDiv.querySelector('.lateralidade-select').value = '';
+                    }
+                });
+            });
         });
+
+        function mostrarDetalhesUnidade(unidade) {
+            const unidadeDetalhes = document.getElementById('unidade-detalhes');
+            const unidadeInfo = document.getElementById('unidade-info');
+            
+            if (unidade && unidades[unidade]) {
+                const dados = unidades[unidade];
+                unidadeInfo.innerHTML = `
+                    <p><strong>Endereço:</strong> ${dados.endereco}</p>
+                    ${dados.telefone ? `<p><strong>Telefone:</strong> ${dados.telefone}</p>` : ''}
+                    <p><strong>Horário de Funcionamento:</strong> ${dados.horario}</p>
+                    <p><strong>Especialidades:</strong> ${dados.especialidades}</p>
+                `;
+                unidadeDetalhes.style.display = 'block';
+            } else {
+                unidadeDetalhes.style.display = 'none';
+            }
+        }
+
+        function atualizarDadosUnidade(unidade) {
+            const unidadeDados = document.getElementById('unidade-dados');
+            if (unidades[unidade]) {
+                const dados = unidades[unidade];
+                unidadeDados.innerHTML = `
+                    <p><strong>Endereço:</strong> ${dados.endereco}</p>
+                    ${dados.telefone ? `<p><strong>Telefone:</strong> ${dados.telefone}</p>` : ''}
+                    <p><strong>Horário de Funcionamento:</strong> ${dados.horario}</p>
+                `;
+            }
+        }
+
+        function gerarReceita() {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente').value;
+            const doenca = document.getElementById('doenca').value;
+            
+            if (!paciente || !doenca) {
+                alert('Por favor, preencha o nome do paciente e selecione uma doença.');
+                return;
+            }
+            
+            document.getElementById('document-title').textContent = 'RECEITA MÉDICA';
+            document.getElementById('print-paciente').textContent = paciente;
+            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            let contentHTML = '';
+            
+            if (receitas[doenca]) {
+                for (const [tipoUso, medicamentos] of Object.entries(receitas[doenca])) {
+                    contentHTML += `<div class="prescription-item"><div class="prescription-header">${tipoUso}:</div><ul>`;
+                    
+                    medicamentos.forEach(med => {
+                        contentHTML += `<li>${med}</li>`;
+                    });
+                    
+                    contentHTML += '</ul></div>';
+                }
+            } else {
+                contentHTML += '<p>Receita não encontrada para esta condição.</p>';
+            }
+            
+            contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
+            
+            document.getElementById('print-content').innerHTML = contentHTML;
+            document.getElementById('print-area').style.display = 'block';
+            document.getElementById('print-area-controle-especial').style.display = 'none';
+            document.getElementById('edit-controls').style.display = 'flex';
+        }
+
+        function gerarAtestado() {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-atestado').value;
+            const dias = document.getElementById('dias-afastamento').value;
+            const cid = document.getElementById('cid').value;
+            
+            if (!paciente || !dias || !cid) {
+                alert('Por favor, preencha todos os campos do atestado.');
+                return;
+            }
+            
+            document.getElementById('document-title').textContent = 'ATESTADO MÉDICO';
+            document.getElementById('print-paciente').textContent = paciente;
+            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            const numeroExtenso = {
+                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
+                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
+            };
+            
+            const diasExtenso = numeroExtenso[dias] || dias;
+            
+            let contentHTML = `
+                <p>ATESTO PARA OS DEVIDOS FINS, QUE A SR(A). <strong>${paciente}</strong> COMPARECEU A ESTA UNIDADE DIA ${dataAtual} ONDE FOI ATENDIDO, MEDICADO, NECESSITANDO DE ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} DE AFASTAMENTO DE SUAS ATIVIDADES LABORAIS POR MOTIVO DE DOENÇA A CONTAR DA DATA DE EXPEDIÇÃO DESTE DOCUMENTO.</p>
+                
+                <p>ALÉM DISSO, CONFORME ART. 5º DA RESOLUÇÃO 1685/2002 DO CFM, INFORMO O DIAGNÓSTICO CODIFICADO (CID), DEVIDO A SOLICITAÇÃO DO PRÓPRIO PACIENTE, CONFORME ASSINATURA DE CONCORDÂNCIA ABAIXO.</p>
+                
+                <p><strong>CID: ${cid}</strong></p>
+                
+                <div style="margin-top: 40px;">
+                    <p>_________________________________________</p>
+                    <p>Assinatura de concordância do paciente para informação do CID</p>
+                </div>
+                
+                <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
+            `;
+            
+            document.getElementById('print-content').innerHTML = contentHTML;
+            document.getElementById('print-area').style.display = 'block';
+            document.getElementById('print-area-controle-especial').style.display = 'none';
+            document.getElementById('edit-controls').style.display = 'flex';
+        }
+
+        function gerarReceituario() {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-receituario').value;
+            const medicamentos = document.getElementById('medicamentos').value;
+            
+            if (!paciente || !medicamentos) {
+                alert('Por favor, preencha o nome do paciente e os medicamentos.');
+                return;
+            }
+            
+            document.getElementById('document-title').textContent = 'RECEITUÁRIO MÉDICO';
+            document.getElementById('print-paciente').textContent = paciente;
+            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            let contentHTML = `
+                <div class="prescription-item">
+                    <p>${medicamentos.replace(/\n/g, '<br>')}</p>
+                </div>
+                <p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+            `;
+            
+            document.getElementById('print-content').innerHTML = contentHTML;
+            document.getElementById('print-area').style.display = 'block';
+            document.getElementById('print-area-controle-especial').style.display = 'none';
+            document.getElementById('edit-controls').style.display = 'flex';
+        }
+
+        function gerarControleEspecial() {
+            const medico = document.getElementById('medico').value;
+            const crm = document.getElementById('crm').value;
+            const enderecoMedico = document.getElementById('endereco-medico').value;
+            const paciente = document.getElementById('paciente-controle').value;
+            const enderecoPaciente = document.getElementById('endereco-paciente').value;
+            const medicamentos = document.getElementById('medicamentos-controle').value;
+            
+            if (!medico || !crm || !enderecoMedico || !paciente || !enderecoPaciente || !medicamentos) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            // Atualizar dados na primeira via
+            document.getElementById('print-medico').textContent = medico;
+            document.getElementById('print-medico2').textContent = medico;
+            document.getElementById('print-crm').textContent = crm;
+            document.getElementById('print-crm2').textContent = crm;
+            document.getElementById('print-endereco-medico').textContent = enderecoMedico;
+            document.getElementById('print-endereco-medico2').textContent = enderecoMedico;
+            document.getElementById('print-paciente-controle').textContent = paciente;
+            document.getElementById('print-paciente-controle2').textContent = paciente;
+            document.getElementById('print-endereco-paciente').textContent = enderecoPaciente;
+            document.getElementById('print-endereco-paciente2').textContent = enderecoPaciente;
+            
+            // Formatar os medicamentos com fonte menor
+            document.getElementById('print-medicamentos').innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            document.getElementById('print-medicamentos2').innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            
+            // Atualizar data
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('print-data').textContent = dataAtual;
+            document.getElementById('print-data2').textContent = dataAtual;
+            
+            document.getElementById('print-area').style.display = 'none';
+            document.getElementById('print-area-controle-especial').style.display = 'block';
+            document.getElementById('edit-controls').style.display = 'flex';
+        }
+
+        function gerarSolicitacaoExames() {
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-exames').value;
+            const observacoes = document.getElementById('observacoes-exames').value;
+            
+            if (!paciente) {
+                alert('Por favor, preencha o nome do paciente.');
+                return;
+            }
+            
+            // Coletar exames selecionados
+            const examesSelecionados = [];
+            const checkboxes = document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]:checked');
+            
+            if (checkboxes.length === 0) {
+                alert('Por favor, selecione pelo menos um exame.');
+                return;
+            }
+            
+            checkboxes.forEach(checkbox => {
+                let exameTexto = checkbox.value;
+                
+                // Verificar se é um exame com lateralidade
+                if (checkbox.classList.contains('exame-lateralidade')) {
+                    const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
+                    const lateralidade = lateralidadeSelect ? lateralidadeSelect.value : '';
+                    
+                    if (lateralidade) {
+                        exameTexto += ` - ${lateralidade}`;
+                    }
+                }
+                
+                examesSelecionados.push(exameTexto);
+            });
+            
+            document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
+            document.getElementById('print-paciente').textContent = paciente;
+            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            let contentHTML = `
+                <div class="prescription-item">
+                    <div class="prescription-header">Exames Solicitados:</div>
+                    <ul>
+            `;
+            
+            examesSelecionados.forEach(exame => {
+                contentHTML += `<li>${exame}</li>`;
+            });
+            
+            contentHTML += `
+                    </ul>
+                </div>
+            `;
+            
+            if (observacoes) {
+                contentHTML += `
+                    <div class="prescription-item">
+                        <div class="prescription-header">Observações:</div>
+                        <p>${observacoes.replace(/\n/g, '<br>')}</p>
+                    </div>
+                `;
+            }
+            
+            contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
+            
+            document.getElementById('print-content').innerHTML = contentHTML;
+            document.getElementById('print-area').style.display = 'block';
+            document.getElementById('print-area-controle-especial').style.display = 'none';
+            document.getElementById('edit-controls').style.display = 'flex';
+        }
     </script>
 </body>
 </html>
