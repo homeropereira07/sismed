@@ -75,66 +75,14 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            position: relative;
-        }
-        
-        .user-details {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
             background: var(--light);
             padding: 0.75rem 1.5rem;
             border-radius: 10px;
             font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
         }
         
-        .user-details:hover {
-            background: var(--gray-light);
-        }
-        
-        .user-details i {
+        .user-info i {
             color: var(--primary);
-        }
-        
-        .logout-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            margin-top: 0.5rem;
-            display: none;
-            z-index: 1000;
-            min-width: 200px;
-        }
-        
-        .logout-menu.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border: none;
-            background: var(--accent);
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            width: 100%;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
         }
         
         .main-content {
@@ -526,6 +474,43 @@
             margin-bottom: 0.75rem;
         }
         
+        /* Links úteis */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .link-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .link-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+        
+        .link-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+        
         /* Controles de edição */
         .edit-controls {
             display: flex;
@@ -545,18 +530,6 @@
         .edit-mode .editable-content {
             border: 2px solid var(--primary);
             background-color: #f8f9fa;
-        }
-        
-        .prescription-item {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .prescription-header {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
         }
         
         /* Responsividade */
@@ -598,17 +571,6 @@
                 text-align: center;
             }
             
-            .user-info {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .logout-menu {
-                left: 50%;
-                transform: translateX(-50%);
-                right: auto;
-            }
-            
             .form-actions, .edit-controls {
                 flex-direction: column;
             }
@@ -647,17 +609,8 @@
                     <div class="logo-text">SisMed - Sistema de Prescrição Médica</div>
                 </div>
                 <div class="user-info">
-                    <div class="user-details" id="user-menu">
-                        <i class="fas fa-user-md"></i>
-                        <span id="user-name">Carregando...</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="logout-menu" id="logout-menu">
-                        <button class="logout-btn" id="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Sair do Sistema
-                        </button>
-                    </div>
+                    <i class="fas fa-user-md"></i>
+                    <span>Dr. Homero Pereira</span>
                 </div>
             </div>
         </header>
@@ -697,6 +650,11 @@
                 <div class="doc-type-btn" data-type="configuracao">
                     <i class="fas fa-cog"></i>
                     Configuração
+                </div>
+                
+                <div class="doc-type-btn" data-type="links-uteis">
+                    <i class="fas fa-link"></i>
+                    Links Úteis
                 </div>
             </div>
             
@@ -1071,6 +1029,68 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                     </div>
                 </div>
                 
+                <!-- Formulário para Links Úteis -->
+                <div id="links-uteis-form" class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-link"></i>
+                        Links Úteis para Profissionais de Saúde
+                    </h2>
+                    
+                    <p style="margin-bottom: 2rem; color: var(--gray);">
+                        Acesse recursos adicionais para auxiliar na sua prática clínica:
+                    </p>
+                    
+                    <div class="links-grid">
+                        <div class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-book-medical"></i>
+                            </div>
+                            <div class="link-title">Protocolos Clínicos</div>
+                            <div class="link-description">Acesso a protocolos e diretrizes clínicas atualizadas</div>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i>
+                                Acessar
+                            </a>
+                        </div>
+                        
+                        <div class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="link-title">Bulário Eletrônico</div>
+                            <div class="link-description">Informações completas sobre medicamentos</div>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i>
+                                Acessar
+                            </a>
+                        </div>
+                        
+                        <div class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <div class="link-title">Calculadoras Médicas</div>
+                            <div class="link-description">Ferramentas para cálculos clínicos e de dosagem</div>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i>
+                                Acessar
+                            </a>
+                        </div>
+                        
+                        <div class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-file-medical-alt"></i>
+                            </div>
+                            <div class="link-title">Modelos de Documentos</div>
+                            <div class="link-description">Modelos prontos para diversos documentos médicos</div>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i>
+                                Acessar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Área de Impressão -->
                 <div id="print-area" class="print-area">
                     <div class="print-header">
@@ -1094,8 +1114,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                         </div>
                         
                         <div class="signature-area">
-                            <p><strong id="print-medico-assinatura">DR. HOMERO PEREIRA</strong></p>
-                            <p id="print-crm-assinatura">CRM-MA: 16XXX</p>
                             <div class="signature-line"></div>
                             <p>Assinatura do Médico</p>
                         </div>
@@ -1428,44 +1446,29 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
 
         // Inicializar interface
         document.addEventListener('DOMContentLoaded', function() {
-            // Verificar se o usuário está logado
-            const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
+            // Alternar entre tipos de documento
+            const docTypeButtons = document.querySelectorAll('.doc-type-btn');
+            const formSections = document.querySelectorAll('.form-section');
             
-            if (!medicoLogado) {
-                // Se não estiver logado, redirecionar para a tela de login
-                window.location.href = 'https://homeropereira07.github.io/sismed/';
-                return;
-            }
-            
-            // Exibir nome do médico logado
-            document.getElementById('user-name').textContent = medicoLogado.nome;
-            
-            // Configurar menu de logout
-            const userMenu = document.getElementById('user-menu');
-            const logoutMenu = document.getElementById('logout-menu');
-            const logoutBtn = document.getElementById('logout-btn');
-            
-            userMenu.addEventListener('click', function() {
-                logoutMenu.classList.toggle('show');
+            docTypeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const type = button.getAttribute('data-type');
+                    
+                    // Ativar botão selecionado
+                    docTypeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Mostrar formulário correspondente
+                    formSections.forEach(section => section.classList.remove('active'));
+                    document.getElementById(`${type}-form`).classList.add('active');
+                    
+                    // Ocultar área de impressão
+                    document.getElementById('print-area').style.display = 'none';
+                    document.getElementById('print-area-controle-especial').style.display = 'none';
+                    document.getElementById('edit-controls').style.display = 'none';
+                });
             });
-            
-            logoutBtn.addEventListener('click', function() {
-                // Remover dados do médico do localStorage
-                localStorage.removeItem('medicoLogado');
-                // Redirecionar para a tela de login
-                window.location.href = 'https://homeropereira07.github.io/sismed/';
-            });
-            
-            // Fechar menu ao clicar fora
-            document.addEventListener('click', function(event) {
-                if (!userMenu.contains(event.target) && !logoutMenu.contains(event.target)) {
-                    logoutMenu.classList.remove('show');
-                }
-            });
-            
-            // Carregar dados do médico nos formulários
-            carregarDadosMedico(medicoLogado);
-            
+
             // Configuração da unidade
             const unidadeTrabalhoSelect = document.getElementById('unidade-trabalho');
             if (unidadeSelecionada) {
@@ -1490,29 +1493,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
                 localStorage.setItem('unidadeSelecionada', unidade);
                 unidadeSelecionada = unidade;
                 alert('Configuração salva com sucesso!');
-            });
-
-            // Alternar entre tipos de documento
-            const docTypeButtons = document.querySelectorAll('.doc-type-btn');
-            const formSections = document.querySelectorAll('.form-section');
-            
-            docTypeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const type = button.getAttribute('data-type');
-                    
-                    // Ativar botão selecionado
-                    docTypeButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    // Mostrar formulário correspondente
-                    formSections.forEach(section => section.classList.remove('active'));
-                    document.getElementById(`${type}-form`).classList.add('active');
-                    
-                    // Ocultar área de impressão
-                    document.getElementById('print-area').style.display = 'none';
-                    document.getElementById('print-area-controle-especial').style.display = 'none';
-                    document.getElementById('edit-controls').style.display = 'none';
-                });
             });
 
             // Botão gerar receita
@@ -1564,47 +1544,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             });
         });
 
-        function carregarDadosMedico(medico) {
-            // Preencher automaticamente os campos do médico nos formulários
-            const camposMedico = document.querySelectorAll('#medico, #print-medico, #print-medico2, #print-medico-assinatura');
-            const camposCRM = document.querySelectorAll('#crm, #print-crm, #print-crm2, #print-crm-assinatura');
-            
-            // Definir valores padrão baseados no médico logado
-            let nomeMedico = 'HOMERO PEREIRA';
-            let crmMedico = 'CRM-MA: 16XXX';
-            
-            // Personalizar baseado no usuário logado
-            if (medico.username === 'dr.homero') {
-                nomeMedico = 'DR. HOMERO PEREIRA';
-                crmMedico = 'CRM-MA: 16XXX';
-            } else if (medico.username === 'demo') {
-                nomeMedico = 'MÉDICO RESPONSÁVEL';
-                crmMedico = 'CRM: XXXXXX';
-            }
-            
-            camposMedico.forEach(campo => {
-                if (campo.tagName === 'INPUT') {
-                    campo.value = nomeMedico;
-                } else {
-                    campo.textContent = nomeMedico;
-                }
-            });
-            
-            camposCRM.forEach(campo => {
-                if (campo.tagName === 'INPUT') {
-                    campo.value = crmMedico;
-                } else {
-                    campo.textContent = crmMedico;
-                }
-            });
-            
-            // Salvar dados do médico para uso nos documentos
-            localStorage.setItem('dadosMedico', JSON.stringify({
-                nome: nomeMedico,
-                crm: crmMedico
-            }));
-        }
-
         function mostrarDetalhesUnidade(unidade) {
             const unidadeDetalhes = document.getElementById('unidade-detalhes');
             const unidadeInfo = document.getElementById('unidade-info');
@@ -1635,23 +1574,7 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             }
         }
 
-        // Função para obter dados do médico para assinatura
-        function obterDadosMedico() {
-            const dadosSalvos = localStorage.getItem('dadosMedico');
-            if (dadosSalvos) {
-                return JSON.parse(dadosSalvos);
-            }
-            
-            // Fallback para dados padrão
-            return {
-                nome: 'DR. HOMERO PEREIRA',
-                crm: 'CRM-MA: 16XXX'
-            };
-        }
-
         function gerarReceita() {
-            const dadosMedico = obterDadosMedico();
-            
             if (!unidadeSelecionada) {
                 alert('Por favor, configure a unidade de trabalho primeiro.');
                 return;
@@ -1668,10 +1591,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             document.getElementById('document-title').textContent = 'RECEITA MÉDICA';
             document.getElementById('print-paciente').textContent = paciente;
             document.getElementById('unidade-nome').textContent = unidadeSelecionada;
-            
-            // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -1700,8 +1619,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         }
 
         function gerarAtestado() {
-            const dadosMedico = obterDadosMedico();
-            
             if (!unidadeSelecionada) {
                 alert('Por favor, configure a unidade de trabalho primeiro.');
                 return;
@@ -1719,10 +1636,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             document.getElementById('document-title').textContent = 'ATESTADO MÉDICO';
             document.getElementById('print-paciente').textContent = paciente;
             document.getElementById('unidade-nome').textContent = unidadeSelecionada;
-            
-            // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -1757,8 +1670,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         }
 
         function gerarReceituario() {
-            const dadosMedico = obterDadosMedico();
-            
             if (!unidadeSelecionada) {
                 alert('Por favor, configure a unidade de trabalho primeiro.');
                 return;
@@ -1776,10 +1687,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             document.getElementById('print-paciente').textContent = paciente;
             document.getElementById('unidade-nome').textContent = unidadeSelecionada;
             
-            // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
-            
             atualizarDadosUnidade(unidadeSelecionada);
             
             let contentHTML = `
@@ -1796,8 +1703,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         }
 
         function gerarControleEspecial() {
-            const dadosMedico = obterDadosMedico();
-            
             const medico = document.getElementById('medico').value;
             const crm = document.getElementById('crm').value;
             const enderecoMedico = document.getElementById('endereco-medico').value;
@@ -1811,10 +1716,10 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             }
             
             // Atualizar dados na primeira via
-            document.getElementById('print-medico').textContent = dadosMedico.nome;
-            document.getElementById('print-medico2').textContent = dadosMedico.nome;
-            document.getElementById('print-crm').textContent = dadosMedico.crm;
-            document.getElementById('print-crm2').textContent = dadosMedico.crm;
+            document.getElementById('print-medico').textContent = medico;
+            document.getElementById('print-medico2').textContent = medico;
+            document.getElementById('print-crm').textContent = crm;
+            document.getElementById('print-crm2').textContent = crm;
             document.getElementById('print-endereco-medico').textContent = enderecoMedico;
             document.getElementById('print-endereco-medico2').textContent = enderecoMedico;
             document.getElementById('print-paciente-controle').textContent = paciente;
@@ -1837,8 +1742,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
         }
 
         function gerarSolicitacaoExames() {
-            const dadosMedico = obterDadosMedico();
-            
             if (!unidadeSelecionada) {
                 alert('Por favor, configure a unidade de trabalho primeiro.');
                 return;
@@ -1880,10 +1783,6 @@ TOMAR 01 COMPRIMIDO  DE 8/8 HORAS SE DOR INTENSA.</textarea>
             document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
             document.getElementById('print-paciente').textContent = paciente;
             document.getElementById('unidade-nome').textContent = unidadeSelecionada;
-            
-            // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
