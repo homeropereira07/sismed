@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plantão Rápido – Prescrições</title>
+  <style>
+    :root { --bg:#0b1220; --card:#121b2f; --muted:#9fb0d0; --text:#eaf0ff; --accent:#5aa2ff; --border:#223052; }
+    *{ box-sizing:border-box; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    body{ margin:0; background:linear-gradient(180deg,#070c18, var(--bg)); color:var(--text); }
+    header{ padding:18px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; backdrop-filter: blur(8px); background:rgba(7,12,24,.85); z-index:10;}
+    h1{ margin:0 0 8px 0; font-size:18px; font-weight:700;}
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    select, input{
+      background:#0e1730; color:var(--text); border:1px solid var(--border);
+      padding:10px 12px; border-radius:10px; outline:none; min-width:240px;
+    }
+    input{ min-width:260px; flex:1; }
+    main{ padding:16px; max-width:1100px; margin:0 auto;}
+    .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px; }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--border); border-radius:14px; padding:14px;
+    }
+    .title{ font-weight:800; font-size:14px; margin:0 0 10px 0; letter-spacing:.4px; text-transform:uppercase; color:#dbe6ff;}
+    .badge{ display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--border); color:var(--muted); margin:0 6px 8px 0; }
+    ul{ margin:8px 0 0 18px; padding:0; }
+    li{ margin:7px 0; line-height:1.35; }
+    .muted{ color:var(--muted); font-size:12px; margin-top:10px; }
+    .tools{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    button{
+      background:#0e1730; color:var(--text); border:1px solid var(--border);
+      padding:10px 12px; border-radius:10px; cursor:pointer;
+    }
+    button:hover{ border-color:var(--accent); }
+    .footer{ padding:14px 16px; color:var(--muted); font-size:12px; border-top:1px solid var(--border); margin-top:18px;}
+    .k{ color:#cfe0ff; font-weight:700;}
+    .warn{ color:#ffd38a; }
+    pre{
+      white-space:pre-wrap; word-break:break-word;
+      background:#0e1730; border:1px solid var(--border);
+      border-radius:12px; padding:12px; margin:10px 0 0 0; color:#dce7ff;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Plantão Rápido – Consulta de Prescrições</h1>
+  <div class="row">
+    <select id="condicao">
+      <option value="">Selecione uma condição</option>
+
+      <!-- Lista original (você pode manter/editar) -->
+      <option value="LOMBALGIA">LOMBALGIA</option>
+      <option value="DOR AGUDA">DOR AGUDA</option>
+      <option value="AFTAS">AFTAS</option>
+      <option value="ALERGIA">ALERGIA</option>
+      <option value="ANEMIA MODERADA">ANEMIA MODERADA</option>
+      <option value="CONJUNTIVITE">CONJUNTIVITE</option>
+      <option value="CONSTIPACAO">CONSTIPAÇÃO</option>
+      <option value="CRISE HEMORROIDA">CRISE HEMORROIDA</option>
+      <option value="DIARREIA">DIARREIA</option>
+      <option value="DIARREIA INFECCIOSA">DIARREIA INFECCIOSA</option>
+      <option value="DOR ABDOMINAL">DOR ABDOMINAL</option>
+      <option value="DOR NA GARGANTA">DOR NA GARGANTA</option>
+      <option value="EDEMA">EDEMA</option>
+      <option value="GASTRITE">GASTRITE</option>
+      <option value="GONORREIA 1">GONORREIA 1</option>
+      <option value="GONORREIA 2">GONORREIA 2</option>
+      <option value="GRIPE GESTANTE">GRIPE GESTANTE</option>
+      <option value="GRIPE UBS">GRIPE UBS</option>
+      <option value="INFECCAO PARTES MOLES">INFECÇÃO PARTES MOLES</option>
+      <option value="INFECCAO TGI">INFECÇÃO TGI</option>
+      <option value="ITU">ITU</option>
+      <option value="ITU NORFLOXACINO">ITU NORFLOXACINO</option>
+      <option value="LESAO DE PELE">LESÃO DE PELE</option>
+      <option value="METRORRAGIA">METRORRAGIA</option>
+      <option value="ORDEOLO">ORDEOLO</option>
+      <option value="OTALGIA">OTALGIA</option>
+      <option value="OTALGIA INFECCIOSA">OTALGIA INFECCIOSA</option>
+      <option value="PARALISIA FACIAL">PARALISIA FACIAL</option>
+      <option value="PNEUMONIA E AMIGDALITE">PNEUMONIA E AMIGDALITE</option>
+      <option value="PNEUMONIA ALERGIA PENICILINA">PNEUMONIA ALERGIA PENICILINA</option>
+      <option value="SINDROME GRIPAL">SÍNDROME GRIPAL</option>
+      <option value="SUTURA">SUTURA</option>
+      <option value="VAGINOSE">VAGINOSE</option>
+      <option value="VITAMINA">VITAMINA</option>
+      <option value="VPPB">VPPB (Vertigem Posicional Paroxística Benigna)</option>
+
+      <!-- Adições (que você pediu incluir) -->
+      <option value="ASMA">ASMA</option>
+      <option value="DENGUE">DENGUE</option>
+      <option value="ENXAQUECA">ENXAQUECA</option>
+      <option value="COLICA NEFRETICA">CÓLICA NEFRÉTICA</option>
+      <option value="RINOSSINUSITE">RINOSSINUSITE AGUDA</option>
+      <option value="OTITE EXTERNA">OTITE EXTERNA AGUDA</option>
+      <option value="AMIGDALITE ESTREPTOCOCICA">AMIGDALITE ESTREPTOCÓCICA</option>
+      <option value="HERPES ZOSTER">HERPES ZÓSTER</option>
+      <option value="ESCABIOSE">ESCABIOSE</option>
+      <option value="DISMENORREIA">DISMENORREIA</option>
+      <option value="TOSSE SECA">TOSSE SECA</option>
+
+      <!-- Protocolos clássicos PS (com Dipirona EV + alternativa IM) -->
+      <option value="PS DOR ABDOMINAL SEM NAUSEA">PS – DOR ABDOMINAL (SEM NÁUSEAS)</option>
+      <option value="PS DOR ABDOMINAL COM NAUSEA">PS – DOR ABDOMINAL (COM NÁUSEAS)</option>
+      <option value="PS DOR OSTEOMUSCULAR">PS – DOR OSTEO/MUSCULAR</option>
+      <option value="PS COLICA RENAL">PS – CÓLICA RENAL</option>
+      <option value="PS CEFALEIA">PS – CEFALÉIA AGUDA</option>
+      <option value="PS DOR + ALERGIA">PS – DOR + COMPONENTE ALÉRGICO</option>
+      <option value="PS DOR + NAUSEA">PS – DOR + NÁUSEA ISOLADA</option>
+    </select>
+
+    <input id="busca" type="search" placeholder="Buscar (ex: dipirona, cetoprofeno, bromoprida, IM, EV)..." />
+    <button id="btnCopiar">Copiar prescrição (texto)</button>
+    <button id="btnMostrarJson">Mostrar/ocultar JSON</button>
+  </div>
+</header>
+
+<main>
+  <div id="conteudo" class="grid"></div>
+  <pre id="jsonBox"></pre>
+
+  <div class="footer">
+    <div><span class="k">Dica de uso:</span> selecione a condição e use a busca para filtrar itens. O botão “Copiar” copia o texto exibido.</div>
+    <div class="warn">Observação: conteúdo serve como apoio rápido; ajuste conforme história, exame e contraindicações.</div>
+  </div>
+</main>
+
+<script>
+  // Banco de dados de prescrições (edite livremente)
+  // Padrão: CONDIÇÃO -> VIA -> [ "MEDICAMENTO - QTD - POSOLOGIA/INSTRUÇÃO" ]
+  const RX = {
+    // ===== Protocolos clássicos PS (com Dipirona 1g/2mL e opção IM) =====
+    "PS DOR ABDOMINAL SEM NAUSEA": {
+      "USO EV": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP + 8 mL AD EV",
+        "BUTILBROMETO DE ESCOPOLAMINA 20 MG - 01 ampola - 1 AMP + 10 mL AD EV"
+      ],
+      "ALTERNATIVA IM": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP IM",
+        "BUTILBROMETO DE ESCOPOLAMINA 20 MG - 01 ampola - 1 AMP IM"
+      ]
+    },
+    "PS DOR ABDOMINAL COM NAUSEA": {
+      "USO EV": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP + 8 mL AD EV",
+        "BUTILBROMETO DE ESCOPOLAMINA 20 MG - 01 ampola - 1 AMP + 10 mL AD EV",
+        "BROMOPRIDA 10 MG - 01 ampola - 2 mL + 18 mL AD EV"
+      ],
+      "ALTERNATIVA IM (SEM ACESSO VENOSO)": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP IM",
+        "PROMETAZINA 50 MG - 01 ampola - 1 AMP IM"
+      ]
+    },
+    "PS DOR OSTEOMUSCULAR": {
+      "USO EV": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP + 8 mL AD EV",
+        "CETOPROFENO 100 MG - 01 ampola - 1 AMP + 100 mL SF 0,9% EV"
+      ],
+      "ALTERNATIVA IM": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP IM",
+        "CETOPROFENO 100 MG - 01 ampola - 1 AMP IM"
+      ]
+    },
+    "PS COLICA RENAL": {
+      "USO EV": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP + 8 mL AD EV",
+        "CETOPROFENO 100 MG - 01 ampola - 1 AMP + 100 mL SF 0,9% EV",
+        "BROMOPRIDA 10 MG - 01 ampola - 2 mL + 18 mL AD EV"
+      ],
+      "ALTERNATIVA IM": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP IM",
+        "CETOPROFENO 100 MG - 01 ampola - 1 AMP IM"
+      ],
+      "SE DOR INTENSA": [
+        "MORFINA 10 MG/1 ML - 01 ampola - 1 mL + 9 mL AD (10 mL). Aplicar 3–5 mL EV titulado"
+      ]
+    },
+    "PS CEFALEIA": {
+      "USO EV": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP + 8 mL AD EV",
+        "BROMOPRIDA 10 MG - 01 ampola - 2 mL + 18 mL AD EV"
+      ],
+      "ALTERNATIVA IM": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP IM"
+      ],
+      "SE CRISE RECORRENTE": [
+        "DEXAMETASONA 4–8 MG - 01 ampola - EV (conforme apresentação disponível)"
+      ]
+    },
+    "PS DOR + ALERGIA": {
+      "USO EV / IM": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - EV: 1 AMP + 8 mL AD | IM: 1 AMP IM",
+        "DEXAMETASONA 4–8 MG - 01 ampola - EV (conforme apresentação disponível)",
+        "PROMETAZINA 50 MG - 01 ampola - 1 AMP IM"
+      ]
+    },
+    "PS DOR + NAUSEA": {
+      "USO EV": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP + 8 mL AD EV",
+        "BROMOPRIDA 10 MG - 01 ampola - 2 mL + 18 mL AD EV"
+      ],
+      "ALTERNATIVA IM": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 1 AMP IM"
+      ]
+    },
+
+    // ===== Itens transcritos das suas prescrições (imagens) + diluições comuns =====
+    "DILUICOES COMUNS (EMERGENCIA)": {
+      "ANALGESIA": [
+        "DIPIRONA 1 G/2 ML - 01 ampola - 01 amp + AD 10 mL EV / 01 amp IM",
+        "DIPIRONA 1 G/2 ML - 02 ampolas - 02 amp + AD 20 mL EV",
+        "ESCOPOLAMINA 20 MG - 01 ampola - 01 amp + AD 10 mL EV / 01 amp IM",
+        "ESCOPOLAMINA + DIPIRONA - 01 ampola - 01 amp + AD 20 mL EV (Obs: alguns serviços preferem 15 mL)",
+        "DICLOFENACO 75 MG - 01 ampola - IM",
+        "TENOXICAM 20 MG - 01 ampola - 01 amp + AD 10 mL EV",
+        "CETOPROFENO 100 MG - 01 ampola - + SF 0,9% 100 mL EV",
+        "TRAMADOL 100 MG - 01 ampola - 01 amp + SF 0,9% ou SG 5% 100 mL EV / 01 amp SC",
+        "MORFINA 10 MG/1 ML - 01 ampola - 01 mL + AD 09 mL; aplicar 03–05 mL EV",
+        "FENTANIL - conforme serviço - Pode usar puro; pode diluir conforme necessidade"
+      ]
+    },
+
+    // ===== Prescrições adicionadas anteriormente (completando “faltantes”) =====
+    "ASMA": {
+      "USO ORAL": [
+        "PREDNISONA 20 MG - 05 comprimidos - Tomar 01 comprimido VO pela manhã por 5 dias"
+      ],
+      "USO INALATORIO": [
+        "SALBUTAMOL SPRAY 100 MCG - 01 frasco - Inalar 02 jatos de 6/6h por 5 dias"
+      ]
+    },
+    "DENGUE": {
+      "USO ORAL": [
+        "PARACETAMOL 750 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor ou febre",
+        "DIPIRONA 500 MG - 01 caixa - Tomar 02 comprimidos de 6/6h se dor ou febre"
+      ]
+    },
+    "ENXAQUECA": {
+      "USO ORAL": [
+        "NAPROXENO 500 MG - 01 caixa - Tomar 01 comprimido de 12/12h por até 5 dias",
+        "METOCLOPRAMIDA 10 MG - 01 caixa - Tomar 01 comprimido de 8/8h se náuseas ou vômitos"
+      ]
+    },
+    "COLICA NEFRETICA": {
+      "USO ORAL": [
+        "CETOPROFENO 150 MG - 01 caixa - Tomar 01 comprimido de 12/12h por até 5 dias",
+        "METOCLOPRAMIDA 10 MG - 01 caixa - Tomar 01 comprimido de 8/8h se náuseas ou vômitos"
+      ]
+    },
+    "RINOSSINUSITE": {
+      "USO ORAL": [
+        "LORATADINA 10 MG - 01 caixa - Tomar 01 comprimido ao dia por 10 dias",
+        "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 8/8h se dor ou febre"
+      ],
+      "USO NASAL": [
+        "SORO FISIOLOGICO 0,9% - 01 frasco - Lavar as narinas 3x ao dia"
+      ]
+    },
+    "OTITE EXTERNA": {
+      "USO OTOLOGICO": [
+        "OTOSPORIN - 01 frasco - Aplicar 03 gotas no ouvido afetado de 8/8h por 7 dias"
+      ],
+      "USO ORAL": [
+        "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor"
+      ]
+    },
+    "AMIGDALITE ESTREPTOCOCICA": {
+      "USO ORAL": [
+        "AMOXICILINA 500 MG - 21 comprimidos - Tomar 01 comprimido de 8/8h por 7 dias",
+        "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor ou febre"
+      ]
+    },
+    "HERPES ZOSTER": {
+      "USO ORAL": [
+        "ACICLOVIR 800 MG - 35 comprimidos - Tomar 01 comprimido de 5x/dia por 7 dias",
+        "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor"
+      ]
+    },
+    "ESCABIOSE": {
+      "USO TOPICO": [
+        "PERMETRINA 5% - 01 frasco - Aplicar do pescoço para baixo à noite, repetir após 7 dias"
+      ],
+      "USO ORAL": [
+        "LORATADINA 10 MG - 01 caixa - Tomar 01 comprimido ao dia se prurido"
+      ]
+    },
+    "DISMENORREIA": {
+      "USO ORAL": [
+        "ACIDO MEFENAMICO 500 MG - 01 caixa - Tomar 01 comprimido de 8/8h por até 5 dias"
+      ]
+    },
+    "TOSSE SECA": {
+      "USO ORAL": [
+        "LEVODROPROPIZINA 30 MG/5ML - 01 frasco - Tomar 10 mL de 8/8h por 5 dias"
+      ]
+    },
+
+    // ===== Prescrições transcritas das imagens (conjunto) =====
+    "PRESCRICAO (IMAGEM) 1": {
+      "USO EV / IM": [
+        "BUTILBROMETO DE ESCOPOLAMINA + DIPIRONA 4 MG/ML + 500 MG/ML (AMPOLA) - 01 ampola - 1 AMP + 15 mL AD EV",
+        "PROMETAZINA 50 MG (AMPOLA) - 01 ampola - 1 AMP IM",
+        "SF 0,9% (BOLSA) - 500 mL - 500 mL EV lento"
+      ]
+    },
+    "PRESCRICAO (IMAGEM) 2": {
+      "USO EV / IM": [
+        "DIPIRONA 500 MG/ML (AMPOLA) - 01 ampola - 1 AMP + 8 mL AD EV",
+        "CETOPROFENO 100 MG (FR/AMP) - 01 ampola - 1 AMP IM"
+      ]
+    },
+    "PRESCRICAO (IMAGEM) 3": {
+      "USO EV / VO": [
+        "DEXAMETASONA 8 MG/ML (AMPOLA) - 01 ampola - 1 AMP + 18 mL AD EV",
+        "PARACETAMOL 200 MG/ML (FRASCO) - 01 frasco - 40 gotas VO"
+      ]
+    },
+    "PRESCRICAO (IMAGEM) 4": {
+      "USO EV / VO": [
+        "DIPIRONA 500 MG/ML (AMPOLA) - 01 ampola - 1 AMP + 8 mL AD EV",
+        "ENALAPRIL 20 MG (COMPRIMIDO) - 01 comprimido - 1 CP VO"
+      ]
+    },
+    "PRESCRICAO (IMAGEM) 5": {
+      "USO EV": [
+        "CETOPROFENO 100 MG (FR/AMP) - 01 ampola - 1 AMP + 100 mL SF 0,9% EV"
+      ]
+    },
+    "PRESCRICAO (IMAGEM) 6": {
+      "USO EV": [
+        "SF 0,9% 500 mL (BOLSA) - 01 bolsa - 500 mL EV",
+        "DEXAMETASONA 4 MG/ML (FRASCO) - 01 frasco - 2,5 mL + 7,5 mL AD EV",
+        "DIPIRONA 500 MG/ML (AMPOLA) - 01 ampola - 2 mL + 8 mL AD EV",
+        "BROMOPRIDA 10 MG (AMPOLA) - 01 ampola - 2 mL + 18 mL AD EV"
+      ]
+    }
+  };
+
+  const elCondicao = document.getElementById("condicao");
+  const elBusca = document.getElementById("busca");
+  const elConteudo = document.getElementById("conteudo");
+  const elJsonBox = document.getElementById("jsonBox");
+  const btnCopiar = document.getElementById("btnCopiar");
+  const btnMostrarJson = document.getElementById("btnMostrarJson");
+
+  function normalize(s){
+    return (s || "")
+      .toString()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+      .toLowerCase();
+  }
+
+  function render(){
+    const key = elCondicao.value;
+    const q = normalize(elBusca.value);
+
+    elConteudo.innerHTML = "";
+    if(!key || !RX[key]){
+      elConteudo.innerHTML = `<div class="card"><div class="title">Selecione uma condição</div><div class="muted">Escolha uma condição no menu acima para visualizar as prescrições.</div></div>`;
+      return;
+    }
+
+    const block = RX[key];
+
+    Object.entries(block).forEach(([via, items]) => {
+      // filtro de busca
+      const filtered = items.filter(x => normalize(x).includes(q));
+      if(q && filtered.length === 0) return;
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="title">${key}</div>
+        <div class="badge">${via}</div>
+        <ul>${(q ? filtered : items).map(it => `<li>${it}</li>`).join("")}</ul>
+      `;
+      elConteudo.appendChild(card);
+    });
+
+    if(elConteudo.children.length === 0){
+      elConteudo.innerHTML = `<div class="card"><div class="title">${key}</div><div class="muted">Nenhum item encontrado para a busca atual.</div></div>`;
+    }
+  }
+
+  function buildTextToCopy(){
+    const key = elCondicao.value;
+    if(!key || !RX[key]) return "";
+    const q = normalize(elBusca.value);
+    let out = `CONDICAO: ${key}\n\n`;
+    const block = RX[key];
+
+    for(const [via, items] of Object.entries(block)){
+      const filtered = items.filter(x => normalize(x).includes(q));
+      if(q && filtered.length === 0) continue;
+      out += `${via}:\n`;
+      (q ? filtered : items).forEach(i => out += `- ${i}\n`);
+      out += "\n";
+    }
+    return out.trim();
+  }
+
+  elCondicao.addEventListener("change", render);
+  elBusca.addEventListener("input", render);
+
+  btnCopiar.addEventListener("click", async () => {
+    const txt = buildTextToCopy();
+    if(!txt){ alert("Selecione uma condição antes de copiar."); return; }
+    try{
+      await navigator.clipboard.writeText(txt);
+      alert("Prescrição copiada.");
+    } catch(e){
+      // fallback
+      const ta = document.createElement("textarea");
+      ta.value = txt; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Prescrição copiada.");
+    }
+  });
+
+  btnMostrarJson.addEventListener("click", () => {
+    if(elJsonBox.style.display === "block"){
+      elJsonBox.style.display = "none";
+      return;
+    }
+    elJsonBox.textContent = JSON.stringify(RX, null, 2);
+    elJsonBox.style.display = "block";
+  });
+
+  // render inicial
+  render();
+</script>
+
+</body>
+</html>
