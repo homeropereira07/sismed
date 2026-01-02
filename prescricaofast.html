@@ -51,19 +51,6 @@
   <div class="row">
     <select id="condicao">
       <option value="">Selecione uma condição</option>
-      <option value="ASMA">ASMA</option>
-      <option value="DENGUE">DENGUE</option>
-      <option value="ENXAQUECA">ENXAQUECA</option>
-      <option value="COLICA NEFRETICA">CÓLICA NEFRÉTICA</option>
-      <option value="RINOSSINUSITE">RINOSSINUSITE AGUDA</option>
-      <option value="OTITE EXTERNA">OTITE EXTERNA AGUDA</option>
-      <option value="AMIGDALITE ESTREPTOCOCICA">AMIGDALITE ESTREPTOCÓCICA</option>
-      <option value="HERPES ZOSTER">HERPES ZÓSTER</option>
-      <option value="ESCABIOSE">ESCABIOSE</option>
-      <option value="DISMENORREIA">DISMENORREIA</option>
-      <option value="TOSSE SECA">TOSSE SECA</option>
-
-      <!-- Protocolos clássicos PS (com Dipirona EV + alternativa IM) -->
       <option value="PS DOR ABDOMINAL SEM NAUSEA">PS – DOR ABDOMINAL (SEM NÁUSEAS)</option>
       <option value="PS DOR ABDOMINAL COM NAUSEA">PS – DOR ABDOMINAL (COM NÁUSEAS)</option>
       <option value="PS DOR OSTEOMUSCULAR">PS – DOR OSTEO/MUSCULAR</option>
@@ -71,9 +58,18 @@
       <option value="PS CEFALEIA">PS – CEFALÉIA AGUDA</option>
       <option value="PS DOR + ALERGIA">PS – DOR + COMPONENTE ALÉRGICO</option>
       <option value="PS DOR + NAUSEA">PS – DOR + NÁUSEA ISOLADA</option>
+
+      <!-- NOVO: Modelos de Evolução / Exame Físico / Complementares -->
+      <option value="EXAME FISICO MASCULINO">EXAME FÍSICO – MASCULINO (MODELO)</option>
+      <option value="EXAME FISICO FEMININO">EXAME FÍSICO – FEMININO (MODELO)</option>
+      <option value="CONDUTA (MODELO)">CONDUTA (MODELO)</option>
+      <option value="EXAME FISICO COMPLEMENTAR">EXAME FÍSICO COMPLEMENTAR</option>
+      <option value="OTOSCOPIA (MODELO)">OTOSCOPIA (MODELO)</option>
+      <option value="REAVALIACAO (MODELO)">REAVALIAÇÃO (MODELO)</option>
+      <option value="EXAMES COMPLEMENTARES (MODELO)">EXAMES COMPLEMENTARES (MODELO)</option>
     </select>
 
-    <input id="busca" type="search" placeholder="Buscar (ex: dipirona, cetoprofeno, bromoprida, IM, EV)..." />
+    <input id="busca" type="search" placeholder="Buscar (ex: dipirona, cetoprofeno, Glasgow, Murphy, ECG, Rx, etc.)..." />
     <button id="btnCopiar">Copiar prescrição (texto)</button>
     <button id="btnMostrarJson">Mostrar/ocultar JSON</button>
   </div>
@@ -184,7 +180,7 @@
       ]
     },
 
-    // ===== Prescrições adicionadas anteriormente (completando “faltantes”) =====
+    // ===== Prescrições adicionadas anteriormente =====
     "ASMA": {
       "USO ORAL": [
         "PREDNISONA 20 MG - 05 comprimidos - Tomar 01 comprimido VO pela manhã por 5 dias"
@@ -259,7 +255,7 @@
       ]
     },
 
-    // ===== Prescrições transcritas das imagens (conjunto) =====
+    // ===== Prescrições transcritas das imagens =====
     "PRESCRICAO (IMAGEM) 1": {
       "USO EV / IM": [
         "BUTILBROMETO DE ESCOPOLAMINA + DIPIRONA 4 MG/ML + 500 MG/ML (AMPOLA) - 01 ampola - 1 AMP + 15 mL AD EV",
@@ -297,6 +293,122 @@
         "DIPIRONA 500 MG/ML (AMPOLA) - 01 ampola - 2 mL + 8 mL AD EV",
         "BROMOPRIDA 10 MG (AMPOLA) - 01 ampola - 2 mL + 18 mL AD EV"
       ]
+    },
+
+    // ===== NOVO: Modelos que você enviou (em formato “cards” pesquisável) =====
+    "EXAME FISICO MASCULINO": {
+      "ANAMNESE / AP": [
+        "Paciente refere ____.",
+        "AP: Nega alergias medicamentosas ou demais comorbidades."
+      ],
+      "EXAME FISICO GERAL": [
+        "EF: BEG, hidratado, normocorado, anictérico, acianótico, afebril, eupneico, lúcido e orientado, normocárdico e normotenso.",
+        "PA: __ mmHg | FC: __ bpm | Tax: __ °C | SatO2: __ % em AA | HGT: ___ mg/dL"
+      ],
+      "ACV": [
+        "RCR, sem B3 ou B4, BNF, sem SA."
+      ],
+      "AR": [
+        "MV+ em AHT, sem RA."
+      ],
+      "ABDOME": [
+        "Semigloboso, flácido, RHA+, indolor à palpação superficial ou profunda, DB (-), Murphy (-), Giordano (-), sem VMG ou MP."
+      ],
+      "NEUROLOGICO": [
+        "Glasgow 15, PIFR, força muscular grau V, sem sinais de irritação meníngea, nistagmo ou ataxia."
+      ],
+      "EXTREMIDADES": [
+        "Aquecidas, sem edemas, com pulsos periféricos cheios e simétricos, tempo de reenchimento capilar < 2 seg."
+      ]
+    },
+
+    "EXAME FISICO FEMININO": {
+      "ANAMNESE / AP": [
+        "Paciente refere ____.",
+        "AP: Nega alergias medicamentosas ou demais comorbidades.",
+        "Nega atraso menstrual, gestação ou amamentação."
+      ],
+      "EXAME FISICO GERAL": [
+        "EF: BEG, hidratada, normocorada, anictérica, acianótica, afebril, eupneica, lúcida e orientada, normocárdica e normotensa.",
+        "PA: __ mmHg | FC: __ bpm | Tax: __ °C | SatO2: __ % em AA | HGT: ___ mg/dL"
+      ],
+      "ACV": [
+        "RCR, sem B3 ou B4, BNF, sem SA."
+      ],
+      "AR": [
+        "MV+ em AHT, sem RA."
+      ],
+      "ABDOME": [
+        "Semigloboso, flácido, RHA+, indolor à palpação superficial ou profunda, DB (-), Murphy (-), Giordano (-), sem VMG ou MP."
+      ],
+      "NEUROLOGICO": [
+        "Glasgow 15, PIFR, força muscular grau V, sem sinais de irritação meníngea, nistagmo ou ataxia."
+      ],
+      "EXTREMIDADES": [
+        "Aquecidas, sem edemas, com pulsos periféricos cheios e simétricos, tempo de reenchimento capilar < 2 seg."
+      ]
+    },
+
+    "CONDUTA (MODELO)": {
+      "CONDUTA": [
+        "CD:",
+        "- Prescrevo ____.",
+        "- Alta com orientações médicas e seguimento ambulatorial em PSF.",
+        "- Oriento paciente a retornar em caso de novas queixas ou intercorrências."
+      ]
+    },
+
+    "EXAME FISICO COMPLEMENTAR": {
+      "CAVIDADE ORAL E OROFARINGE": [
+        "Sem evidências de hiperemias, adenomegalias, abaulamentos patológicos, placas ou exsudatos."
+      ],
+      "PESCOCO": [
+        "Traqueia centrada, musculatura tópica, sem alterações cutâneas à inspeção, ausência de massas ou tumorações à palpação."
+      ],
+      "ANOPERINEO": [
+        "Pele e mucosa íntegras, toque retal com esfíncter normotenso, sem tumorações, com fezes em ampola retal, pastosas, sem melena em dedo de luva."
+      ]
+    },
+
+    "OTOSCOPIA (MODELO)": {
+      "OE": [
+        "Meato acústico externo com pele íntegra, sem lesões ou obstruções; MT íntegra, translúcida, sem abaulamentos ou nível hídrico, cone luminoso visível e tópico."
+      ],
+      "OD": [
+        "Meato acústico externo com pele íntegra, sem lesões ou obstruções; MT íntegra, translúcida, sem abaulamentos ou nível hídrico, cone luminoso visível e tópico."
+      ]
+    },
+
+    "REAVALIACAO (MODELO)": {
+      "MASCULINA": [
+        "Paciente evoluiu estável, referindo melhora sintomática após medicação, sem relato de novas queixas ou intercorrências.",
+        "No momento segue em BEG, Glasgow 15 e eupneico em ar ambiente."
+      ],
+      "FEMININA": [
+        "Paciente evoluiu estável, referindo melhora sintomática após medicação, sem relato de novas queixas ou intercorrências.",
+        "No momento segue em BEG, Glasgow 15 e eupneica em ar ambiente."
+      ]
+    },
+
+    "EXAMES COMPLEMENTARES (MODELO)": {
+      "IMAGEM": [
+        "RX DE TÓRAX: Sem evidências de pneumotórax, condensações, DP, fraturas, distopias ou demais alterações patológicas agudas.",
+        "RX DE ABDOME AGUDO: Sem evidências de pneumoperitôneo, distensão de alças intestinais, alças sentinelas ou demais alterações patológicas agudas."
+      ],
+      "CARDIO": [
+        "ECG: Sinusal, dentro dos limites da normalidade.",
+        "Marcadores de necrose miocárdica no intervalo da normalidade."
+      ],
+      "LABORATORIO": [
+        "Hemograma sem sinais de anemia, leucócitos e plaquetas no intervalo da normalidade.",
+        "Função renal preservada.",
+        "Transaminases sem elevação significativa.",
+        "EAS sem alterações dignas de nota.",
+        "Amilase sem elevação significativa.",
+        "PCR sem elevação significativa.",
+        "Bilirrubinas totais e frações sem elevação.",
+        "Eletrólitos no intervalo da normalidade."
+      ]
     }
   };
 
@@ -327,7 +439,6 @@
     const block = RX[key];
 
     Object.entries(block).forEach(([via, items]) => {
-      // filtro de busca
       const filtered = items.filter(x => normalize(x).includes(q));
       if(q && filtered.length === 0) return;
 
@@ -371,14 +482,13 @@
     if(!txt){ alert("Selecione uma condição antes de copiar."); return; }
     try{
       await navigator.clipboard.writeText(txt);
-      alert("Prescrição copiada.");
+      alert("Conteúdo copiado.");
     } catch(e){
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = txt; document.body.appendChild(ta);
       ta.select(); document.execCommand("copy");
       document.body.removeChild(ta);
-      alert("Prescrição copiada.");
+      alert("Conteúdo copiado.");
     }
   });
 
@@ -391,7 +501,6 @@
     elJsonBox.style.display = "block";
   });
 
-  // render inicial
   render();
 </script>
 
