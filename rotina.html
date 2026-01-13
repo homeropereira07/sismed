@@ -1,3 +1,4 @@
+valide esse codigo sem tem algum erro de construção 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -285,6 +286,7 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -350,6 +352,17 @@
         }
         
         .btn-new-patient:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
             background: #d97706;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
@@ -616,6 +629,7 @@
             gap: 1rem;
             margin-top: 2rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .editable-content {
@@ -629,6 +643,52 @@
         .edit-mode .editable-content {
             border: 2px solid var(--primary);
             background-color: #f8f9fa;
+        }
+        
+        /* Seletor de tipo de atestado */
+        .tipo-atestado-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tipo-atestado-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .tipo-atestado-btn:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+        
+        .tipo-atestado-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Campos específicos para atestado de acompanhante */
+        .acompanhante-fields {
+            display: none;
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .acompanhante-fields.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            animation: fadeIn 0.5s ease;
         }
         
         /* Responsividade */
@@ -686,6 +746,14 @@
             }
             
             .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tipo-atestado-container {
+                flex-direction: column;
+            }
+            
+            .acompanhante-fields.active {
                 grid-template-columns: 1fr;
             }
         }
@@ -931,6 +999,21 @@
                         Atestado Médico
                     </h2>
                     
+                    <div class="tipo-atestado-container">
+                        <div class="tipo-atestado-btn active" data-tipo="atestado">
+                            <i class="fas fa-user-injured"></i>
+                            Atestado Médico
+                        </div>
+                        <div class="tipo-atestado-btn" data-tipo="comprovante">
+                            <i class="fas fa-calendar-check"></i>
+                            Comprovante de Comparecimento
+                        </div>
+                        <div class="tipo-atestado-btn" data-tipo="acompanhante">
+                            <i class="fas fa-user-friends"></i>
+                            Atestado de Acompanhante
+                        </div>
+                    </div>
+                    
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="paciente-atestado" class="form-label">Nome do Paciente</label>
@@ -955,12 +1038,77 @@
                                 <input type="text" id="cid" class="form-input" placeholder="Ex: M54.5">
                             </div>
                         </div>
+                        
+                        <!-- Campos específicos para acompanhante -->
+                        <div id="acompanhante-fields" class="acompanhante-fields">
+                            <div class="form-group">
+                                <label for="nome-acompanhante" class="form-label">Nome do Acompanhante</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user-friends input-icon"></i>
+                                    <input type="text" id="nome-acompanhante" class="form-input" placeholder="Nome completo do acompanhante">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="parentesco" class="form-label">Parentesco</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-users input-icon"></i>
+                                    <select id="parentesco" class="form-select">
+                                        <option value="">Selecione o parentesco</option>
+                                        <option value="Pai">Pai</option>
+                                        <option value="Mãe">Mãe</option>
+                                        <option value="Filho(a)">Filho(a)</option>
+                                        <option value="Cônjuge/Companheiro(a)">Cônjuge/Companheiro(a)</option>
+                                        <option value="Irmão(ã)">Irmão(ã)</option>
+                                        <option value="Avô(ó)">Avô(ó)</option>
+                                        <option value="Neto(a)">Neto(a)</option>
+                                        <option value="Tio(a)">Tio(a)</option>
+                                        <option value="Sobrinho(a)">Sobrinho(a)</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dias-acompanhante" class="form-label">Dias Necessários</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-calendar-alt input-icon"></i>
+                                    <input type="number" id="dias-acompanhante" class="form-input" min="1" value="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="motivo-acompanhante" class="form-label">Motivo do Acompanhamento</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-file-medical-alt input-icon"></i>
+                                    <select id="motivo-acompanhante" class="form-select">
+                                        <option value="">Selecione o motivo</option>
+                                        <option value="Tratamento médico">Tratamento médico</option>
+                                        <option value="Cirurgia">Cirurgia</option>
+                                        <option value="Exames">Exames</option>
+                                        <option value="Procedimento médico">Procedimento médico</option>
+                                        <option value="Gestação de alto risco">Gestação de alto risco</option>
+                                        <option value="Cuidados pós-operatórios">Cuidados pós-operatórios</option>
+                                        <option value="Doença crônica">Doença crônica</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-actions">
                         <button id="gerar-atestado" class="btn btn-primary">
                             <i class="fas fa-file-contract"></i>
                             Gerar Atestado
+                        </button>
+                        <button id="gerar-comprovante" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-calendar-check"></i>
+                            Gerar Comprovante
+                        </button>
+                        <button id="gerar-acompanhante" class="btn btn-warning" style="display: none;">
+                            <i class="fas fa-user-friends"></i>
+                            Gerar Atestado de Acompanhante
                         </button>
                     </div>
                 </div>
@@ -1063,7 +1211,7 @@
                     </div>
                 </div>
                 
-                <!-- Formulário para Solicitação de Exames -->
+                 <!-- Formulário para Solicitação de Exames -->
                 <div id="solicitacao-exames-form" class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-microscope"></i>
@@ -1510,18 +1658,18 @@
                 </div>
                 
                 <div class="exame-item">
-                    <input type="checkbox" id="exame-img-291" value="Radiografia de coluna torácica)">
-                    <label for="exame-img-29">Radiografia de coluna torácica</label>
+                    <input type="checkbox" id="exame-img-291" value="Radiografia de coluna (torácica)">
+                    <label for="exame-img-291">Radiografia de coluna torácica</label>
                 </div>
                 
                 <div class="exame-item">
-                    <input type="checkbox" id="exame-img-292" value="Radiografia de coluna cervical">
-                    <label for="exame-img-29">Radiografia de coluna cervical</label>
+                    <input type="checkbox" id="exame-img-292" value="Radiografia de coluna (cervical)">
+                    <label for="exame-img-292">Radiografia de coluna cervical</label>
                 </div>
                 
                 <div class="exame-item">
-                    <input type="checkbox" id="exame-img-293" value="Radiografia de coluna lombar">
-                    <label for="exame-img-29">Radiografia de coluna lombar</label>
+                    <input type="checkbox" id="exame-img-293" value="Radiografia de coluna (lombar)">
+                    <label for="exame-img-293">Radiografia de coluna lombar</label>
                 </div>                
                 
                 <div class="exame-item">
@@ -1602,8 +1750,8 @@
                     </button>
                 </div>
             </div> <!-- Fechamento da div #solicitacao-exames-form -->
-                
-                <!-- Links Úteis -->
+
+                   <!-- Links Úteis -->
                 <div id="links-uteis-form" class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-link"></i>
@@ -1831,6 +1979,7 @@
                         </a>
                     </div>
                 </div>
+      
                 
                 <!-- Área de Impressão -->
                 <div id="print-area" class="print-area">
@@ -1863,7 +2012,8 @@
                     </div>
                 </div>
                 
-                <!-- Área de Impressão para Controle Especial -->
+                
+               <!-- Área de Impressão para Controle Especial -->
                 <div id="print-area-controle-especial" class="print-area">
                     <div class="receituario-container">
                         <!-- Primeira Via (Farmácia) -->
@@ -2815,24 +2965,36 @@
 
         // Elementos DOM
         let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
+        let tipoAtestadoAtual = 'atestado'; // 'atestado', 'comprovante', 'acompanhante'
 
         // Inicializar interface
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM carregado - iniciando sistema...");
+            
             // Verificar se o usuário está logado
             const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
             
             if (!medicoLogado) {
+                console.log("Usuário não logado, redirecionando...");
                 // Se não estiver logado, redirecionar para a tela de login
                 window.location.href = 'https://homeropereira07.github.io/sismed/';
                 return;
             }
             
+            console.log("Médico logado:", medicoLogado.nome);
+            
             // Exibir nome do médico logado
-            document.getElementById('user-name').textContent = medicoLogado.nome;
+            const userNameElement = document.getElementById('user-name');
+            if (userNameElement) {
+                userNameElement.textContent = medicoLogado.nome;
+            }
             
             // Verificar se é desenvolvedor para mostrar a aba Configurações
             if (medicoLogado.tipo === 'desenvolvedor') {
-                document.getElementById('configuracoes-btn').style.display = 'flex';
+                const configBtn = document.getElementById('configuracoes-btn');
+                if (configBtn) {
+                    configBtn.style.display = 'flex';
+                }
             }
             
             // Configurar menu de logout
@@ -2840,53 +3002,60 @@
             const logoutMenu = document.getElementById('logout-menu');
             const logoutBtn = document.getElementById('logout-btn');
             
-            userMenu.addEventListener('click', function() {
-                logoutMenu.classList.toggle('show');
-            });
-            
-            logoutBtn.addEventListener('click', function() {
-                // Remover dados do médico do localStorage
-                localStorage.removeItem('medicoLogado');
-                localStorage.removeItem('dadosMedico');
-                // Redirecionar para a tela de login
-                window.location.href = 'https://homeropereira07.github.io/sismed/';
-            });
-            
-            // Fechar menu ao clicar fora
-            document.addEventListener('click', function(event) {
-                if (!userMenu.contains(event.target) && !logoutMenu.contains(event.target)) {
-                    logoutMenu.classList.remove('show');
-                }
-            });
+            if (userMenu && logoutMenu && logoutBtn) {
+                userMenu.addEventListener('click', function() {
+                    logoutMenu.classList.toggle('show');
+                });
+                
+                logoutBtn.addEventListener('click', function() {
+                    // Remover dados do médico do localStorage
+                    localStorage.removeItem('medicoLogado');
+                    localStorage.removeItem('dadosMedico');
+                    // Redirecionar para a tela de login
+                    window.location.href = 'https://homeropereira07.github.io/sismed/';
+                });
+                
+                // Fechar menu ao clicar fora
+                document.addEventListener('click', function(event) {
+                    if (!userMenu.contains(event.target) && !logoutMenu.contains(event.target)) {
+                        logoutMenu.classList.remove('show');
+                    }
+                });
+            }
             
             // Carregar dados do médico nos formulários
             carregarDadosMedico(medicoLogado);
             
             // Configuração da unidade
             const unidadeTrabalhoSelect = document.getElementById('unidade-trabalho');
-            if (unidadeSelecionada) {
-                unidadeTrabalhoSelect.value = unidadeSelecionada;
-                mostrarDetalhesUnidade(unidadeSelecionada);
+            if (unidadeTrabalhoSelect) {
+                if (unidadeSelecionada) {
+                    unidadeTrabalhoSelect.value = unidadeSelecionada;
+                    mostrarDetalhesUnidade(unidadeSelecionada);
+                }
+
+                unidadeTrabalhoSelect.addEventListener('change', function() {
+                    const unidade = this.value;
+                    mostrarDetalhesUnidade(unidade);
+                });
             }
 
-            unidadeTrabalhoSelect.addEventListener('change', function() {
-                const unidade = this.value;
-                mostrarDetalhesUnidade(unidade);
-            });
-
             // Botão salvar configuração
-            document.getElementById('salvar-unidade').addEventListener('click', () => {
-                const unidade = unidadeTrabalhoSelect.value;
-                
-                if (!unidade) {
-                    alert('Por favor, selecione uma unidade de trabalho.');
-                    return;
-                }
-                
-                localStorage.setItem('unidadeSelecionada', unidade);
-                unidadeSelecionada = unidade;
-                alert('Configuração salva com sucesso!');
-            });
+            const salvarUnidadeBtn = document.getElementById('salvar-unidade');
+            if (salvarUnidadeBtn) {
+                salvarUnidadeBtn.addEventListener('click', () => {
+                    const unidade = unidadeTrabalhoSelect.value;
+                    
+                    if (!unidade) {
+                        alert('Por favor, selecione uma unidade de trabalho.');
+                        return;
+                    }
+                    
+                    localStorage.setItem('unidadeSelecionada', unidade);
+                    unidadeSelecionada = unidade;
+                    alert('Configuração salva com sucesso!');
+                });
+            }
 
             // Alternar entre tipos de documento
             const docTypeButtons = document.querySelectorAll('.doc-type-btn');
@@ -2902,53 +3071,103 @@
                     
                     // Mostrar formulário correspondente
                     formSections.forEach(section => section.classList.remove('active'));
-                    document.getElementById(`${type}-form`).classList.add('active');
+                    const targetForm = document.getElementById(`${type}-form`);
+                    if (targetForm) {
+                        targetForm.classList.add('active');
+                    }
                     
                     // Ocultar área de impressão
                     document.querySelectorAll('.print-area').forEach(area => {
                         area.style.display = 'none';
                     });
-                    document.getElementById('edit-controls').style.display = 'none';
+                    const editControls = document.getElementById('edit-controls');
+                    if (editControls) {
+                        editControls.style.display = 'none';
+                    }
                 });
             });
 
             // Botão gerar receita
-            document.getElementById('gerar-receita').addEventListener('click', gerarReceita);
+            const gerarReceitaBtn = document.getElementById('gerar-receita');
+            if (gerarReceitaBtn) {
+                gerarReceitaBtn.addEventListener('click', gerarReceita);
+            }
             
             // Botão gerar atestado
-            document.getElementById('gerar-atestado').addEventListener('click', gerarAtestado);
+            const gerarAtestadoBtn = document.getElementById('gerar-atestado');
+            if (gerarAtestadoBtn) {
+                gerarAtestadoBtn.addEventListener('click', gerarAtestado);
+            }
             
             // Botão gerar receituário
-            document.getElementById('gerar-receituario').addEventListener('click', gerarReceituario);
+            const gerarReceituarioBtn = document.getElementById('gerar-receituario');
+            if (gerarReceituarioBtn) {
+                gerarReceituarioBtn.addEventListener('click', gerarReceituario);
+            }
             
             // Botão gerar controle especial
-            document.getElementById('gerar-controle-especial').addEventListener('click', gerarControleEspecial);
+            const gerarControleEspecialBtn = document.getElementById('gerar-controle-especial');
+            if (gerarControleEspecialBtn) {
+                gerarControleEspecialBtn.addEventListener('click', gerarControleEspecial);
+            }
             
             // Botão gerar solicitação de exames
-            document.getElementById('gerar-solicitacao-exames').addEventListener('click', gerarSolicitacaoExames);
+            const gerarExamesBtn = document.getElementById('gerar-solicitacao-exames');
+            if (gerarExamesBtn) {
+                gerarExamesBtn.addEventListener('click', gerarSolicitacaoExames);
+            }
 
             // Controles de edição
-            document.getElementById('btn-edit').addEventListener('click', () => {
-                document.getElementById('print-content').contentEditable = 'true';
-                document.getElementById('print-area').classList.add('edit-mode');
-                document.getElementById('btn-edit').style.display = 'none';
-                document.getElementById('btn-save').style.display = 'inline-block';
-            });
-
-            document.getElementById('btn-save').addEventListener('click', () => {
-                document.getElementById('print-content').contentEditable = 'false';
-                document.getElementById('print-area').classList.remove('edit-mode');
-                document.getElementById('btn-edit').style.display = 'inline-block';
-                document.getElementById('btn-save').style.display = 'none';
-            });
+            const btnEdit = document.getElementById('btn-edit');
+            const btnSave = document.getElementById('btn-save');
+            
+            if (btnEdit) {
+                btnEdit.addEventListener('click', () => {
+                    const printContent = document.getElementById('print-content');
+                    if (printContent) {
+                        printContent.contentEditable = 'true';
+                        const printArea = document.getElementById('print-area');
+                        if (printArea) {
+                            printArea.classList.add('edit-mode');
+                        }
+                        btnEdit.style.display = 'none';
+                        if (btnSave) {
+                            btnSave.style.display = 'inline-block';
+                        }
+                    }
+                });
+            }
+            
+            if (btnSave) {
+                btnSave.addEventListener('click', () => {
+                    const printContent = document.getElementById('print-content');
+                    if (printContent) {
+                        printContent.contentEditable = 'false';
+                        const printArea = document.getElementById('print-area');
+                        if (printArea) {
+                            printArea.classList.remove('edit-mode');
+                        }
+                        if (btnEdit) {
+                            btnEdit.style.display = 'inline-block';
+                        }
+                        btnSave.style.display = 'none';
+                    }
+                });
+            }
 
             // Botão imprimir
-            document.getElementById('btn-print').addEventListener('click', () => {
-                window.print();
-            });
+            const btnPrint = document.getElementById('btn-print');
+            if (btnPrint) {
+                btnPrint.addEventListener('click', () => {
+                    window.print();
+                });
+            }
 
             // Botão novo paciente
-            document.getElementById('btn-new-patient').addEventListener('click', resetarFormularios);
+            const btnNewPatient = document.getElementById('btn-new-patient');
+            if (btnNewPatient) {
+                btnNewPatient.addEventListener('click', resetarFormularios);
+            }
             
             // Controle de lateralidade para exames
             document.addEventListener('click', function(e) {
@@ -2958,30 +3177,73 @@
                     const lateralidadeOptions = checkbox.parentElement.querySelector('.lateralidade-options');
                     
                     if (checkbox.checked) {
-                        lateralidadeOptions.style.display = 'block';
+                        if (lateralidadeOptions) {
+                            lateralidadeOptions.style.display = 'block';
+                        }
                     } else {
-                        lateralidadeOptions.style.display = 'none';
-                        // Limpa a seleção quando desmarcar
-                        const select = lateralidadeOptions.querySelector('.lateralidade-select');
-                        select.value = '';
+                        if (lateralidadeOptions) {
+                            lateralidadeOptions.style.display = 'none';
+                            // Limpa a seleção quando desmarcar
+                            const select = lateralidadeOptions.querySelector('.lateralidade-select');
+                            if (select) {
+                                select.value = '';
+                            }
+                        }
                     }
                 }
             });
             
-            // Também adicione para os exames que já existem (punho, mão, pé, etc.)
-            document.querySelectorAll('.exame-lateralidade').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const lateralidadeOptions = this.parentElement.querySelector('.lateralidade-options');
+            // Controle do tipo de atestado
+            const tipoAtestadoButtons = document.querySelectorAll('.tipo-atestado-btn');
+            const acompanhanteFields = document.getElementById('acompanhante-fields');
+            
+            tipoAtestadoButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tipo = this.getAttribute('data-tipo');
+                    tipoAtestadoAtual = tipo;
                     
-                    if (this.checked) {
-                        lateralidadeOptions.style.display = 'block';
-                    } else {
-                        lateralidadeOptions.style.display = 'none';
-                        const select = lateralidadeOptions.querySelector('.lateralidade-select');
-                        select.value = '';
+                    // Ativar botão selecionado
+                    tipoAtestadoButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar/ocultar campos de acompanhante
+                    if (acompanhanteFields) {
+                        if (tipo === 'acompanhante') {
+                            acompanhanteFields.classList.add('active');
+                        } else {
+                            acompanhanteFields.classList.remove('active');
+                        }
+                    }
+                    
+                    // Mostrar botão correto
+                    const btnAtestado = document.getElementById('gerar-atestado');
+                    const btnComprovante = document.getElementById('gerar-comprovante');
+                    const btnAcompanhante = document.getElementById('gerar-acompanhante');
+                    
+                    if (btnAtestado) {
+                        btnAtestado.style.display = tipo === 'atestado' ? 'inline-block' : 'none';
+                    }
+                    if (btnComprovante) {
+                        btnComprovante.style.display = tipo === 'comprovante' ? 'inline-block' : 'none';
+                    }
+                    if (btnAcompanhante) {
+                        btnAcompanhante.style.display = tipo === 'acompanhante' ? 'inline-block' : 'none';
                     }
                 });
             });
+            
+            // Botões específicos para atestado
+            const gerarComprovanteBtn = document.getElementById('gerar-comprovante');
+            if (gerarComprovanteBtn) {
+                gerarComprovanteBtn.addEventListener('click', gerarComprovante);
+            }
+            
+            const gerarAcompanhanteBtn = document.getElementById('gerar-acompanhante');
+            if (gerarAcompanhanteBtn) {
+                gerarAcompanhanteBtn.addEventListener('click', gerarAtestadoAcompanhante);
+            }
+            
+            console.log("Sistema inicializado com sucesso!");
         });
 
         function carregarDadosMedico(medico) {
@@ -3060,7 +3322,7 @@
             const unidadeDetalhes = document.getElementById('unidade-detalhes');
             const unidadeInfo = document.getElementById('unidade-info');
             
-            if (unidade && unidades[unidade]) {
+            if (unidade && unidades[unidade] && unidadeDetalhes && unidadeInfo) {
                 const dados = unidades[unidade];
                 unidadeInfo.innerHTML = `
                     <p><strong>Endereço:</strong> ${dados.endereco}</p>
@@ -3069,14 +3331,14 @@
                     <p><strong>Especialidades:</strong> ${dados.especialidades}</p>
                 `;
                 unidadeDetalhes.style.display = 'block';
-            } else {
+            } else if (unidadeDetalhes) {
                 unidadeDetalhes.style.display = 'none';
             }
         }
 
         function atualizarDadosUnidade(unidade) {
             const unidadeDados = document.getElementById('unidade-dados');
-            if (unidades[unidade]) {
+            if (unidades[unidade] && unidadeDados) {
                 const dados = unidades[unidade];
                 unidadeDados.innerHTML = `
                     <p><strong>Endereço:</strong> ${dados.endereco}</p>
@@ -3088,52 +3350,109 @@
 
         function resetarFormularios() {
             // Resetar formulário de receita
-            document.getElementById('paciente').value = '';
-            document.getElementById('doenca').value = '';
+            const pacienteInput = document.getElementById('paciente');
+            const doencaSelect = document.getElementById('doenca');
+            if (pacienteInput) pacienteInput.value = '';
+            if (doencaSelect) doencaSelect.value = '';
             
             // Resetar formulário de atestado
-            document.getElementById('paciente-atestado').value = '';
-            document.getElementById('dias-afastamento').value = '1';
-            document.getElementById('cid').value = '';
+            const pacienteAtestado = document.getElementById('paciente-atestado');
+            const diasAfastamento = document.getElementById('dias-afastamento');
+            const cid = document.getElementById('cid');
+            const nomeAcompanhante = document.getElementById('nome-acompanhante');
+            const parentesco = document.getElementById('parentesco');
+            const diasAcompanhante = document.getElementById('dias-acompanhante');
+            const motivoAcompanhante = document.getElementById('motivo-acompanhante');
+            
+            if (pacienteAtestado) pacienteAtestado.value = '';
+            if (diasAfastamento) diasAfastamento.value = '1';
+            if (cid) cid.value = '';
+            if (nomeAcompanhante) nomeAcompanhante.value = '';
+            if (parentesco) parentesco.value = '';
+            if (diasAcompanhante) diasAcompanhante.value = '1';
+            if (motivoAcompanhante) motivoAcompanhante.value = '';
             
             // Resetar formulário de receituário
-            document.getElementById('paciente-receituario').value = '';
-            document.getElementById('medicamentos').value = '';
+            const pacienteReceituario = document.getElementById('paciente-receituario');
+            const medicamentos = document.getElementById('medicamentos');
+            if (pacienteReceituario) pacienteReceituario.value = '';
+            if (medicamentos) medicamentos.value = '';
             
             // Resetar formulário de controle especial
-            document.getElementById('paciente-controle').value = '';
-            document.getElementById('endereco-paciente').value = '';
-            document.getElementById('medicamentos-controle').value = '';
+            const pacienteControle = document.getElementById('paciente-controle');
+            const enderecoPaciente = document.getElementById('endereco-paciente');
+            const medicamentosControle = document.getElementById('medicamentos-controle');
+            if (pacienteControle) pacienteControle.value = '';
+            if (enderecoPaciente) enderecoPaciente.value = '';
+            if (medicamentosControle) medicamentosControle.value = '';
             
             // Resetar formulário de exames
-            document.getElementById('paciente-exames').value = '';
-            document.getElementById('observacoes-exames').value = '';
+            const pacienteExames = document.getElementById('paciente-exames');
+            const observacoesExames = document.getElementById('observacoes-exames');
+            if (pacienteExames) pacienteExames.value = '';
+            if (observacoesExames) observacoesExames.value = '';
             
             // Desmarcar todos os checkboxes de exames
             document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
             });
             
+            // Resetar tipo de atestado para padrão
+            tipoAtestadoAtual = 'atestado';
+            const tipoAtestadoButtons = document.querySelectorAll('.tipo-atestado-btn');
+            tipoAtestadoButtons.forEach(btn => btn.classList.remove('active'));
+            const btnAtestado = document.querySelector('.tipo-atestado-btn[data-tipo="atestado"]');
+            if (btnAtestado) {
+                btnAtestado.classList.add('active');
+            }
+            
+            const acompanhanteFields = document.getElementById('acompanhante-fields');
+            if (acompanhanteFields) {
+                acompanhanteFields.classList.remove('active');
+            }
+            
+            const btnAtestadoEl = document.getElementById('gerar-atestado');
+            const btnComprovante = document.getElementById('gerar-comprovante');
+            const btnAcompanhante = document.getElementById('gerar-acompanhante');
+            
+            if (btnAtestadoEl) btnAtestadoEl.style.display = 'inline-block';
+            if (btnComprovante) btnComprovante.style.display = 'none';
+            if (btnAcompanhante) btnAcompanhante.style.display = 'none';
+            
             // Ocultar áreas de impressão
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
-            document.getElementById('edit-controls').style.display = 'none';
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'none';
+            }
             
             // Voltar para a primeira aba (receita)
-            document.querySelectorAll('.doc-type-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.doc-type-btn[data-type="receita"]').classList.add('active');
+            const docTypeButtons = document.querySelectorAll('.doc-type-btn');
+            docTypeButtons.forEach(btn => btn.classList.remove('active'));
+            const receitaBtn = document.querySelector('.doc-type-btn[data-type="receita"]');
+            if (receitaBtn) {
+                receitaBtn.classList.add('active');
+            }
             
-            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-            document.getElementById('receita-form').classList.add('active');
+            const formSections = document.querySelectorAll('.form-section');
+            formSections.forEach(section => section.classList.remove('active'));
+            const receitaForm = document.getElementById('receita-form');
+            if (receitaForm) {
+                receitaForm.classList.add('active');
+            }
             
             // Focar no primeiro campo
-            document.getElementById('paciente').focus();
+            if (pacienteInput) {
+                pacienteInput.focus();
+            }
             
             alert('Formulários resetados. Pronto para atender um novo paciente!');
         }
 
         function gerarReceita() {
+            console.log("Gerando receita...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -3149,13 +3468,20 @@
                 return;
             }
             
-            document.getElementById('document-title').textContent = 'RECEITA MÉDICA';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'RECEITA MÉDICA';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -3180,18 +3506,29 @@
             
             contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
         function gerarAtestado() {
+            console.log("Gerando atestado...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -3208,13 +3545,20 @@
                 return;
             }
             
-            document.getElementById('document-title').textContent = 'ATESTADO MÉDICO';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'ATESTADO MÉDICO';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -3242,18 +3586,184 @@
                 <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
             `;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
+        function gerarComprovante() {
+            console.log("Gerando comprovante...");
+            const dadosMedico = obterDadosMedico();
+            
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-atestado').value;
+            const dias = document.getElementById('dias-afastamento').value;
+            
+            if (!paciente || !dias) {
+                alert('Por favor, preencha o nome do paciente e os dias de comparecimento.');
+                return;
+            }
+            
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'COMPROVANTE DE COMPARECIMENTO';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
+            
+            // Atualizar assinatura com dados do médico
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            const numeroExtenso = {
+                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
+                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
+            };
+            
+            const diasExtenso = numeroExtenso[dias] || dias;
+            
+            let contentHTML = `
+                <p>COMPROVAMOS PARA OS DEVIDOS FINS, QUE O(A) SR(A). <strong>${paciente}</strong> COMPARECEU A ESTA UNIDADE DE SAÚDE DIA ${dataAtual} PARA REALIZAÇÃO DE CONSULTA MÉDICA, SENDO NECESSÁRIO RETORNAR POR ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} CONSECUTIVOS A PARTIR DE HOJE PARA DAR CONTINUIDADE AO TRATAMENTO.</p>
+                
+                <p>O PACIENTE ESTÁ EM TRATAMENTO MÉDICO E DEVE RETORNAR CONFORME ORIENTAÇÕES ACIMA PARA REAVALIAÇÃO E CONTINUIDADE DO TRATAMENTO.</p>
+                
+                <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
+            `;
+            
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
+        }
+
+        function gerarAtestadoAcompanhante() {
+            console.log("Gerando atestado de acompanhante...");
+            const dadosMedico = obterDadosMedico();
+            
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-atestado').value;
+            const acompanhante = document.getElementById('nome-acompanhante').value;
+            const parentesco = document.getElementById('parentesco').value;
+            const dias = document.getElementById('dias-acompanhante').value;
+            const motivo = document.getElementById('motivo-acompanhante').value;
+            const cid = document.getElementById('cid').value;
+            
+            if (!paciente || !acompanhante || !parentesco || !dias || !motivo) {
+                alert('Por favor, preencha todos os campos do atestado de acompanhante.');
+                return;
+            }
+            
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'ATESTADO MÉDICO PARA ACOMPANHANTE';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
+            
+            // Atualizar assinatura com dados do médico
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            const numeroExtenso = {
+                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
+                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
+            };
+            
+            const diasExtenso = numeroExtenso[dias] || dias;
+            
+            let contentHTML = `
+                <p>ATESTO PARA OS DEVIDOS FINS, QUE O(A) PACIENTE <strong>${paciente}</strong> ESTÁ SOB MEUS CUIDADOS MÉDICOS NA PRESENTE UNIDADE DE SAÚDE, SENDO NECESSÁRIO ACOMPANHAMENTO POR ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} PARA ${motivo}.</p>
+                
+                <p>PARA TANTO, SOLICITO A PRESENÇA DO(A) SR(A). <strong>${acompanhante}</strong>, ${parentesco} DO(A) PACIENTE, PARA ACOMPANHÁ-LO(A) DURANTE O PERÍODO CITADO ACIMA.</p>
+                
+                <p>O ACOMPANHANTE É NECESSÁRIO PARA AUXILIAR NAS ATIVIDADES DO PACIENTE, BEM COMO PARA DAR SUPORTE DURANTE O TRATAMENTO MÉDICO.</p>
+                
+                ${cid ? `<p><strong>CID: ${cid}</strong></p>` : ''}
+                
+                <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
+            `;
+            
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
+        }
+
+        // As outras funções (gerarReceituario, gerarControleEspecial, gerarSolicitacaoExames) 
+        // permanecem iguais, apenas adicionando verificações de null
+        
         function gerarReceituario() {
+            console.log("Gerando receituário...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -3269,13 +3779,20 @@
                 return;
             }
             
-            document.getElementById('document-title').textContent = 'RECEITUÁRIO MÉDICO';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'RECEITUÁRIO MÉDICO';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -3286,18 +3803,29 @@
                 <p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
             `;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
         function gerarControleEspecial() {
+            console.log("Gerando controle especial...");
             const dadosMedico = obterDadosMedico();
             
             const medico = document.getElementById('medico').value;
@@ -3313,36 +3841,63 @@
             }
             
             // Atualizar dados na primeira via
-            document.getElementById('print-medico').textContent = dadosMedico.nome;
-            document.getElementById('print-medico2').textContent = dadosMedico.nome;
-            document.getElementById('print-crm').textContent = dadosMedico.crm;
-            document.getElementById('print-crm2').textContent = dadosMedico.crm;
-            document.getElementById('print-endereco-medico').textContent = enderecoMedico;
-            document.getElementById('print-endereco-medico2').textContent = enderecoMedico;
-            document.getElementById('print-paciente-controle').textContent = paciente;
-            document.getElementById('print-paciente-controle2').textContent = paciente;
-            document.getElementById('print-endereco-paciente').textContent = enderecoPaciente;
-            document.getElementById('print-endereco-paciente2').textContent = enderecoPaciente;
+            const printMedico = document.getElementById('print-medico');
+            const printMedico2 = document.getElementById('print-medico2');
+            const printCrm = document.getElementById('print-crm');
+            const printCrm2 = document.getElementById('print-crm2');
+            const printEnderecoMedico = document.getElementById('print-endereco-medico');
+            const printEnderecoMedico2 = document.getElementById('print-endereco-medico2');
+            const printPacienteControle = document.getElementById('print-paciente-controle');
+            const printPacienteControle2 = document.getElementById('print-paciente-controle2');
+            const printEnderecoPaciente = document.getElementById('print-endereco-paciente');
+            const printEnderecoPaciente2 = document.getElementById('print-endereco-paciente2');
+            const printMedicamentos = document.getElementById('print-medicamentos');
+            const printMedicamentos2 = document.getElementById('print-medicamentos2');
+            const printData = document.getElementById('print-data');
+            const printData2 = document.getElementById('print-data2');
+            
+            if (printMedico) printMedico.textContent = dadosMedico.nome;
+            if (printMedico2) printMedico2.textContent = dadosMedico.nome;
+            if (printCrm) printCrm.textContent = dadosMedico.crm;
+            if (printCrm2) printCrm2.textContent = dadosMedico.crm;
+            if (printEnderecoMedico) printEnderecoMedico.textContent = enderecoMedico;
+            if (printEnderecoMedico2) printEnderecoMedico2.textContent = enderecoMedico;
+            if (printPacienteControle) printPacienteControle.textContent = paciente;
+            if (printPacienteControle2) printPacienteControle2.textContent = paciente;
+            if (printEnderecoPaciente) printEnderecoPaciente.textContent = enderecoPaciente;
+            if (printEnderecoPaciente2) printEnderecoPaciente2.textContent = enderecoPaciente;
             
             // Formatar os medicamentos com fonte menor
-            document.getElementById('print-medicamentos').innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
-            document.getElementById('print-medicamentos2').innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            if (printMedicamentos) {
+                printMedicamentos.innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            }
+            if (printMedicamentos2) {
+                printMedicamentos2.innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            }
             
             // Atualizar data
             const dataAtual = new Date().toLocaleDateString('pt-BR');
-            document.getElementById('print-data').textContent = dataAtual;
-            document.getElementById('print-data2').textContent = dataAtual;
+            if (printData) printData.textContent = dataAtual;
+            if (printData2) printData2.textContent = dataAtual;
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area-controle-especial').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printAreaControle = document.getElementById('print-area-controle-especial');
+            if (printAreaControle) {
+                printAreaControle.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
         function gerarSolicitacaoExames() {
+            console.log("Gerando solicitação de exames...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -3381,13 +3936,20 @@
                 examesSelecionados.push(exameTexto);
             });
             
-            document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'SOLICITAÇÃO DE EXAMES';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -3417,15 +3979,25 @@
             
             contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
     </script>
 </body>
