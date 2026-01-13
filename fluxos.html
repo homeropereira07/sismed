@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Apoio à Decisão - Emergência</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --danger-color: #d32f2f;
+            --warning-color: #f57c00;
+            --success-color: #388e3c;
+            --light-bg: #f5f5f5;
+            --border-color: #ddd;
+            --text-dark: #333;
+            --text-light: #666;
+            --shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #0d47a1);
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1::before {
+            content: "⚕️";
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .card.danger {
+            border-left-color: var(--danger-color);
+        }
+
+        .card.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title.danger {
+            color: var(--danger-color);
+        }
+
+        .card-title.warning {
+            color: var(--warning-color);
+        }
+
+        .patient-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        .condition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .condition-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .condition-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+
+        .condition-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .condition-card.danger {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .condition-card.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .condition-card .condition-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .condition-card .condition-desc {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .exam-section {
+            margin-top: 20px;
+        }
+
+        .exam-field {
+            margin-bottom: 15px;
+        }
+
+        .prescription-section {
+            margin-top: 20px;
+        }
+
+        .prescription-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .prescription-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .medication-item {
+            padding: 10px;
+            background-color: white;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .medication-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .medication-dosage {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .emergency-meds {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .emergency-med {
+            background-color: #fff3e0;
+            border: 1px solid #ffb74d;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0d47a1;
+        }
+
+        .btn-secondary {
+            background-color: #f1f3f4;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8eaed;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .time-display {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .priority-high {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+        .priority-medium {
+            background-color: #fff3e0;
+            color: var(--warning-color);
+        }
+
+        .priority-low {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .icon {
+            font-size: 20px;
+        }
+
+        .alert-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            border-left: 4px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .alert-warning {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .alert-info {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Apoio à Decisão - Emergência</h1>
+            <div class="subtitle">Protocolos baseados no guia "Plantão Rápido" - Atendimento em UPA/PS</div>
+            <div class="time-display" id="current-time">Carregando...</div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="patient">Dados do Paciente</div>
+            <div class="tab" data-tab="condition">Condição Clínica</div>
+            <div class="tab" data-tab="prescription">Prescrição</div>
+        </div>
+
+        <div class="tab-content active" id="patient-tab">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">👤</span>
+                    Informações do Paciente
+                </div>
+                
+                <div class="patient-info">
+                    <div class="form-group">
+                        <label for="patient-name">Nome do Paciente</label>
+                        <input type="text" id="patient-name" class="form-control" placeholder="Digite o nome completo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient-dob">Data de Nascimento</label>
+                        <input type="date" id="patient-dob" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient-sus">Número do SUS</label>
+                        <input type="text" id="patient-sus" class="form-control" placeholder="000 0000 0000 0000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient-age">Idade</label>
+                        <input type="number" id="patient-age" class="form-control" placeholder="Idade em anos">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="patient-gender">Sexo</label>
+                    <select id="patient-gender" class="form-control">
+                        <option value="">Selecione</option>
+                        <option value="male">Masculino</option>
+                        <option value="female">Feminino</option>
+                    </select>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="next-to-condition">
+                        <span class="icon">➡️</span>
+                        Próximo: Condição Clínica
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="condition-tab">
+            <div class="alert-box alert-danger">
+                <span class="icon">⚠️</span>
+                <div>
+                    <strong>ATENÇÃO: Eventos Críticos</strong> - Minutos importam! Priorize avaliação e intervenção imediata.
+                </div>
+            </div>
+            
+            <div class="card danger">
+                <div class="card-title danger">
+                    <span class="icon">🚨</span>
+                    Eventos Críticos (Prioridade Máxima)
+                </div>
+                
+                <div class="condition-grid">
+                    <div class="condition-card danger" data-condition="pcr">
+                        <div class="condition-title">
+                            Parada Cardiorrespiratória
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            PCR, choque (séptico/hipovolêmico/cardiogênico/obstrutivo), rebaixamento importante de consciência.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card danger" data-condition="sca">
+                        <div class="condition-title">
+                            Dor Torácica / SCA
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Síndrome coronariana aguda - tempo para diagnóstico e tratamento muda desfecho.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card danger" data-condition="avc">
+                        <div class="condition-title">
+                            AVC Agudo
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Déficit focal súbito, afasia, hemiparesia, alteração visual. Exige TC sem contraste/transferência rápida.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card danger" data-condition="dispneia">
+                        <div class="condition-title">
+                            Dispneia Aguda / IR
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Crise asmática/DPOC, edema agudo de pulmão, pneumonia grave, TEP, anafilaxia.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card danger" data-condition="sepsis">
+                        <div class="condition-title">
+                            Sepse / Choque Séptico
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Febre/hipotermia, taquicardia, hipotensão, confusão, lactato elevado.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card danger" data-condition="anafilaxia">
+                        <div class="condition-title">
+                            Anafilaxia
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Urticária + broncoespasmo/estridor/hipotensão após exposição: adrenalina IM precoce.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card warning">
+                <div class="card-title warning">
+                    <span class="icon">⚠️</span>
+                    Queixas Comuns que Podem Ocultar Gravidade
+                </div>
+                
+                <div class="condition-grid">
+                    <div class="condition-card warning" data-condition="abdome">
+                        <div class="condition-title">
+                            Dor Abdominal
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Pode representar abdome agudo cirúrgico, isquemia mesentérica, apendicite, gravidez ectópica.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card warning" data-condition="cefaleia">
+                        <div class="condition-title">
+                            Cefaleia
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Reconhecer "red flags": início súbito explosivo, déficit neurológico, febre/rigidez nucal, pós-trauma.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card warning" data-condition="mental">
+                        <div class="condition-title">
+                            Alteração do Estado Mental
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Confusão, síncope, hipoglicemia, intoxicações, AVC, sepse, distúrbios metabólicos.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card warning" data-condition="febre">
+                        <div class="condition-title">
+                            Febre e Dor
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Infecções respiratórias/urinárias, gastroenterites, dengue e outras endemias regionais.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">🏥</span>
+                    Situações Específicas por Perfil de Serviço
+                </div>
+                
+                <div class="condition-grid">
+                    <div class="condition-card" data-condition="hipertensao">
+                        <div class="condition-title">
+                            Emergências Hipertensivas
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            PA muito elevada com lesão de órgão-alvo (EAP, encefalopatia, dissecção de aorta).
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card" data-condition="intoxicacao">
+                        <div class="condition-title">
+                            Intoxicações
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Álcool, cocaína/anfetaminas, benzodiazepínicos/opioides, organofosforados.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card" data-condition="psiquiatrica">
+                        <div class="condition-title">
+                            Emergências Psiquiátricas
+                            <span class="priority-badge priority-medium">MÉDIA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Agitação, psicose, risco de auto/heteroagressão.
+                        </div>
+                    </div>
+                    
+                    <div class="condition-card" data-condition="obstetrica">
+                        <div class="condition-title">
+                            Complicações Obstétricas
+                            <span class="priority-badge priority-high">ALTA</span>
+                        </div>
+                        <div class="condition-desc">
+                            Hemorragia, pré-eclâmpsia/eclâmpsia, dor pélvica aguda, gravidez ectópica.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="back-to-patient">
+                    <span class="icon">⬅️</span>
+                    Voltar: Dados do Paciente
+                </button>
+                <button class="btn btn-primary" id="next-to-prescription">
+                    <span class="icon">➡️</span>
+                    Próximo: Prescrição
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="prescription-tab">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">📋</span>
+                    Exame Físico - Condição Específica
+                </div>
+                
+                <div id="specific-exam">
+                    <p class="alert-box alert-info">
+                        <span class="icon">ℹ️</span>
+                        Selecione uma condição clínica na aba anterior para visualizar o exame físico específico e as prescrições.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">💊</span>
+                    Medicamentos para Uso na Emergência
+                </div>
+                
+                <div class="emergency-meds" id="emergency-medications">
+                    <!-- Será preenchido dinamicamente -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">🏠</span>
+                    Prescrição para Alta / Ambulatorial
+                </div>
+                
+                <div id="home-prescription">
+                    <p class="alert-box alert-info">
+                        <span class="icon">ℹ️</span>
+                        Selecione uma condição clínica para visualizar a prescrição para alta.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="back-to-condition">
+                    <span class="icon">⬅️</span>
+                    Voltar: Condição Clínica
+                </button>
+                <button class="btn btn-danger" id="print-prescription">
+                    <span class="icon">🖨️</span>
+                    Imprimir Prescrição
+                </button>
+                <button class="btn btn-primary" id="new-patient">
+                    <span class="icon">🔄</span>
+                    Novo Paciente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados baseados no arquivo fornecido
+        const conditionsData = {
+            pcr: {
+                name: "Parada Cardiorrespiratória / Instabilidade Hemodinâmica",
+                exam: `
+                    <div class="exam-field">
+                        <label>ABCDE Avaliado:</label>
+                        <select class="form-control">
+                            <option>Sim, completo</option>
+                            <option>Parcialmente</option>
+                            <option>Não realizado</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Via Aérea:</label>
+                        <select class="form-control">
+                            <option>Patente</option>
+                            <option>Obstruída - necessita intervenção</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Ventilação:</label>
+                        <select class="form-control">
+                            <option>Espontânea</option>
+                            <option>Assistida (BVM)</option>
+                            <option>Intubado</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Circulação:</label>
+                        <select class="form-control">
+                            <option>Estável</option>
+                            <option>Instável - precisa suporte</option>
+                            <option>PCR em curso</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>PA (mmHg):</label>
+                        <input type="text" class="form-control" placeholder="Ex: 120/80">
+                    </div>
+                    <div class="exam-field">
+                        <label>FC (bpm):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 80">
+                    </div>
+                    <div class="exam-field">
+                        <label>SatO2 (%):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 98">
+                    </div>
+                `,
+                emergencyMeds: [
+                    "Adrenalina 1mg/ml (1:1000) - 0,3-0,5mg IM (anafilaxia)",
+                    "Adrenalina 1mg/10ml (1:10.000) - 1mg EV (PCR)",
+                    "Amiodarona 300mg EV (FA/TV)",
+                    "Atropina 1mg EV (bradicardia)",
+                    "Bicarbonato 8,4% 50ml EV (acidose)",
+                    "Dobutamina 250mg/250ml (choque cardiogênico)",
+                    "Dopamina 200mg/250ml (hipotensão)",
+                    "Noradrenalina 4mg/250ml (choque)"
+                ],
+                homePrescription: `
+                    <div class="prescription-card">
+                        <div class="prescription-title">Encaminhamento Hospitalar</div>
+                        <p>Paciente em instabilidade hemodinâmica requer internação em UTI.</p>
+                        <p><strong>Conduta:</strong> Transferência imediata para unidade de referência com suporte avançado.</p>
+                    </div>
+                `
+            },
+            sca: {
+                name: "Síndrome Coronariana Aguda / Dor Torácica",
+                exam: `
+                    <div class="exam-field">
+                        <label>ECG:</label>
+                        <select class="form-control">
+                            <option>Normal</option>
+                            <option>Supradesnivelamento ST</option>
+                            <option>Infradesnivelamento ST</option>
+                            <option>Onda T invertida</option>
+                            <option>Bloqueio de ramo novo</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Dor (0-10):</label>
+                        <input type="number" class="form-control" min="0" max="10" placeholder="Ex: 8">
+                    </div>
+                    <div class="exam-field">
+                        <label>Localização:</label>
+                        <select class="form-control">
+                            <option>Retroesternal</option>
+                            <option>Precordial</option>
+                            <option>Irradiada para membro superior esquerdo</option>
+                            <option>Irradiada para mandíbula</option>
+                            <option>Irradiada para dorso</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>PA (mmHg):</label>
+                        <input type="text" class="form-control" placeholder="Ex: 140/90">
+                    </div>
+                    <div class="exam-field">
+                        <label>FC (bpm):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 110">
+                    </div>
+                    <div class="exam-field">
+                        <label>SatO2 (%):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 96">
+                    </div>
+                    <div class="exam-field">
+                        <label>Marcadores de necrose:</label>
+                        <select class="form-control">
+                            <option>Não coletados</option>
+                            <option>Normal</option>
+                            <option>Elevados</option>
+                        </select>
+                    </div>
+                `,
+                emergencyMeds: [
+                    "AAS 300mg VO (mastigar)",
+                    "Clopidogrel 300mg VO (loading dose)",
+                    "Nitroglicerina 0,4mg SL (se PA > 100mmHg)",
+                    "Morfina 2-5mg EV (dor refratária)",
+                    "Metoprolol 5mg EV (se taquicardia, sem IC)",
+                    "Heparina 5000UI EV (se IAM com supradesnivelamento)"
+                ],
+                homePrescription: `
+                    <div class="prescription-card">
+                        <div class="prescription-title">Receita para Alta (após avaliação)</div>
+                        <div class="medication-item">
+                            <div class="medication-name">AAS 100mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido ao dia, pela manhã</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Clopidogrel 75mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido ao dia</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Atorvastatina 40mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido à noite</div>
+                        </div>
+                        <p><strong>Orientações:</strong> Retornar imediatamente se dor torácica recorrente, falta de ar, palpitações ou desmaio.</p>
+                    </div>
+                `
+            },
+            dispneia: {
+                name: "Dispneia Aguda / Insuficiência Respiratória",
+                exam: `
+                    <div class="exam-field">
+                        <label>Tipo de Dispneia:</label>
+                        <select class="form-control">
+                            <option>Aguda (minutos/horas)</option>
+                            <option>Subaguda (dias)</option>
+                            <option>Crônica agudizada</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Saturação O2 (AA):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 88">
+                    </div>
+                    <div class="exam-field">
+                        <label>Saturação O2 (O2):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 92 (com O2)">
+                    </div>
+                    <div class="exam-field">
+                        <label>FR (rpm):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 28">
+                    </div>
+                    <div class="exam-field">
+                        <label>Ausculta Pulmonar:</label>
+                        <select class="form-control">
+                            <option>MV+ sem RA</option>
+                            <option>Sibilos difusos</option>
+                            <option>Estertores crepitantes</option>
+                            <option>Murmúrio vesicular diminuído</option>
+                            <option>Roncos</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>PA (mmHg):</label>
+                        <input type="text" class="form-control" placeholder="Ex: 130/85">
+                    </div>
+                    <div class="exam-field">
+                        <label>FC (bpm):</label>
+                        <input type="number" class="form-control" placeholder="Ex: 115">
+                    </div>
+                    <div class="exam-field">
+                        <label>Gasometria (se disponível):</label>
+                        <input type="text" class="form-control" placeholder="Ex: pH 7,32 / PaCO2 55 / PaO2 60">
+                    </div>
+                `,
+                emergencyMeds: [
+                    "Salbutamol nebulização 2,5-5mg (asma/DPOC)",
+                    "Ipratrópio nebulização 0,5mg (asma/DPOC)",
+                    "Furosemida 40mg EV (EAP)",
+                    "Morfina 2-4mg EV (EAP/ansiedade)",
+                    "Adrenalina 0,3-0,5mg IM (anafilaxia)",
+                    "Metilprednisolona 125mg EV (asma grave)",
+                    "Aminofilina 240mg EV (asma refratária)"
+                ],
+                homePrescription: `
+                    <div class="prescription-card">
+                        <div class="prescription-title">Asma - Prescrição para Alta (após crise)</div>
+                        <div class="medication-item">
+                            <div class="medication-name">Prednisona 20mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido às 8:00 por 5 dias seguidos</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Salbutamol Spray 100mcg</div>
+                            <div class="medication-dosage">Inalar 1 puff no meio da respiração profunda e segurar por 10 seg. Pode repetir uma vez após 1 minuto. Se necessário, repetir após 6h.</div>
+                        </div>
+                        <p><strong>Orientações:</strong> Retornar imediatamente se piora da falta de ar, dificuldade para falar, cansaço extremo.</p>
+                    </div>
+                `
+            },
+            abdome: {
+                name: "Dor Abdominal Aguda",
+                exam: `
+                    <div class="exam-field">
+                        <label>Localização da Dor:</label>
+                        <select class="form-control">
+                            <option>Difusa</option>
+                            <option>Epigástrica</option>
+                            <option>Hipocôndrio direito</option>
+                            <option>Fossa ilíaca direita</option>
+                            <option>Fossa ilíaca esquerda</option>
+                            <option>Hipogástrica</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Intensidade (0-10):</label>
+                        <input type="number" class="form-control" min="0" max="10" placeholder="Ex: 7">
+                    </div>
+                    <div class="exam-field">
+                        <label>Característica:</label>
+                        <select class="form-control">
+                            <option>Contínua</option>
+                            <option>Cólica</option>
+                            <option>Queimante</option>
+                            <option>Latejante</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Palpação Abdominal:</label>
+                        <select class="form-control">
+                            <option>Indolor</option>
+                            <option>Dor à palpação superficial</option>
+                            <option>Dor à palpação profunda</option>
+                            <option>Defesa/rigidez</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Sinais de Irritação Peritoneal:</label>
+                        <select class="form-control">
+                            <option>Blumberg negativo</option>
+                            <option>Blumberg positivo</option>
+                            <option>Descompressão positiva</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Murphy:</label>
+                        <select class="form-control">
+                            <option>Negativo</option>
+                            <option>Positivo</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Giordano:</label>
+                        <select class="form-control">
+                            <option>Negativo</option>
+                            <option>Positivo</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>RHA:</label>
+                        <select class="form-control">
+                            <option>Presentes</option>
+                            <option>Diminuídos</option>
+                            <option>Ausentes</option>
+                            <option>Metálicos</option>
+                        </select>
+                    </div>
+                `,
+                emergencyMeds: [
+                    "Dipirona 1g EV (dor leve/moderada)",
+                    "Cetoprofeno 100mg EV (dor inflamatória)",
+                    "Tramadol 100mg EV (dor moderada/intensa)",
+                    "Butilbrometo de escopolamina 20mg EV (cólica)",
+                    "Metoclopramida 10mg EV (náuseas/vômitos)",
+                    "Ranitidina 50mg EV (gastrite)",
+                    "Omeprazol 40mg EV (gastrite/úlcera)"
+                ],
+                homePrescription: `
+                    <div class="prescription-card">
+                        <div class="prescription-title">Analgesia Padrão - Dor Abdominal</div>
+                        <div class="medication-item">
+                            <div class="medication-name">Dipirona 500mg</div>
+                            <div class="medication-dosage">Tomar 2 comprimidos se febre ou dor, podendo repetir de 6/6h</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Butilbrometo de Escopolamina 10mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido se dor, podendo repetir de 8/8h</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Metoclopramida 10mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido se náuseas ou vômitos, podendo repetir de 8/8h</div>
+                        </div>
+                        <p><strong>Orientações:</strong> Retornar imediatamente se dor intensa e contínua, vômitos persistentes, febre alta, distensão abdominal ou piora do quadro.</p>
+                    </div>
+                `
+            },
+            cefaleia: {
+                name: "Cefaleia Aguda",
+                exam: `
+                    <div class="exam-field">
+                        <label>Intensidade (0-10):</label>
+                        <input type="number" class="form-control" min="0" max="10" placeholder="Ex: 9">
+                    </div>
+                    <div class="exam-field">
+                        <label>Início:</label>
+                        <select class="form-control">
+                            <option>Progressivo (horas/dias)</option>
+                            <option>Súbito (segundos/minutos)</option>
+                            <option>Explosivo (cefaleia mais forte da vida)</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Localização:</label>
+                        <select class="form-control">
+                            <option>Frontal</option>
+                            <option>Temporal</option>
+                            <option>Occipital</option>
+                            <option>Hemicraniana</option>
+                            <option>Difusa</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Característica:</label>
+                        <select class="form-control">
+                            <option>Pulsátil</option>
+                            <option>Pressão</option>
+                            <option>Facada</option>
+                            <option>Latejante</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>Sinais de Alarme:</label>
+                        <select class="form-control" multiple>
+                            <option>Febre</option>
+                            <option>Rigidez de nuca</option>
+                            <option>Déficit neurológico focal</option>
+                            <option>Alteração de consciência</option>
+                            <option>Início após trauma</option>
+                            <option>Piora com Valsalva</option>
+                            <option>Imunossupressão</option>
+                        </select>
+                    </div>
+                    <div class="exam-field">
+                        <label>PA (mmHg):</label>
+                        <input type="text" class="form-control" placeholder="Ex: 150/95">
+                    </div>
+                    <div class="exam-field">
+                        <label>Exame Neurológico:</label>
+                        <select class="form-control">
+                            <option>Normal</option>
+                            <option>Alteração focal</option>
+                            <option>Alteração difusa</option>
+                        </select>
+                    </div>
+                `,
+                emergencyMeds: [
+                    "Dipirona 1g EV",
+                    "Cetoprofeno 100mg EV",
+                    "Diclofenaco 75mg EV",
+                    "Metoclopramida 10mg EV (náuseas)",
+                    "Dexametasona 10mg EV (cefaleia em salvas)",
+                    "Sumatriptano 6mg SC (enxaqueca)",
+                    "Naratriptano 2,5mg VO (enxaqueca)"
+                ],
+                homePrescription: `
+                    <div class="prescription-card">
+                        <div class="prescription-title">Cefaleias Primárias - Analgesia Geral</div>
+                        <div class="medication-item">
+                            <div class="medication-name">Dipirona 500mg</div>
+                            <div class="medication-dosage">Tomar 2 comprimidos se febre ou dor, podendo repetir de 6/6h</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Naproxeno Sódico 500mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido se dor, podendo repetir de 12/12h por até 5 dias</div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-name">Metoclopramida 10mg</div>
+                            <div class="medication-dosage">Tomar 1 comprimido se náuseas ou vômitos, podendo repetir de 8/8h</div>
+                        </div>
+                        <p><strong>Orientações:</strong> Retornar imediatamente se cefaleia explosiva, piora súbita, febre, rigidez de nuca, déficit neurológico ou alteração de consciência.</p>
+                    </div>
+                `
+            }
+        };
+
+        // Estado da aplicação
+        let currentCondition = null;
+        let currentTab = 'patient';
+
+        // Elementos DOM
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const conditionCards = document.querySelectorAll('.condition-card');
+        const patientNameInput = document.getElementById('patient-name');
+        const patientDobInput = document.getElementById('patient-dob');
+        const patientAgeInput = document.getElementById('patient-age');
+        const patientSusInput = document.getElementById('patient-sus');
+        const patientGenderSelect = document.getElementById('patient-gender');
+        const specificExamDiv = document.getElementById('specific-exam');
+        const emergencyMedsDiv = document.getElementById('emergency-medications');
+        const homePrescriptionDiv = document.getElementById('home-prescription');
+        const currentTimeDiv = document.getElementById('current-time');
+
+        // Atualizar hora atual
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const dateString = now.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            currentTimeDiv.textContent = `${dateString} ${timeString}`;
+        }
+
+        // Navegação entre abas
+        function switchTab(tabName) {
+            // Atualizar estado
+            currentTab = tabName;
+            
+            // Atualizar abas visuais
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Atualizar conteúdo das abas
+            tabContents.forEach(content => {
+                if (content.id === `${tabName}-tab`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // Selecionar condição clínica
+        function selectCondition(conditionId) {
+            // Remover seleção anterior
+            conditionCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Adicionar seleção à nova condição
+            const selectedCard = document.querySelector(`[data-condition="${conditionId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+            
+            // Atualizar estado
+            currentCondition = conditionId;
+            
+            // Atualizar exame físico e prescrições se estiver na aba de prescrição
+            if (currentTab === 'prescription') {
+                updatePrescriptionTab();
+            }
+        }
+
+        // Atualizar aba de prescrição com dados da condição selecionada
+        function updatePrescriptionTab() {
+            if (!currentCondition || !conditionsData[currentCondition]) {
+                specificExamDiv.innerHTML = `
+                    <p class="alert-box alert-info">
+                        <span class="icon">ℹ️</span>
+                        Selecione uma condição clínica na aba anterior para visualizar o exame físico específico e as prescrições.
+                    </p>`;
+                homePrescriptionDiv.innerHTML = `
+                    <p class="alert-box alert-info">
+                        <span class="icon">ℹ️</span>
+                        Selecione uma condição clínica para visualizar a prescrição para alta.
+                    </p>`;
+                return;
+            }
+            
+            const condition = conditionsData[currentCondition];
+            
+            // Atualizar exame físico específico
+            specificExamDiv.innerHTML = `
+                <div class="alert-box alert-info">
+                    <span class="icon">ℹ️</span>
+                    <strong>${condition.name}</strong> - Exame Físico Específico
+                </div>
+                ${condition.exam}`;
+            
+            // Atualizar medicamentos de emergência
+            emergencyMedsDiv.innerHTML = '';
+            condition.emergencyMeds.forEach(med => {
+                const medDiv = document.createElement('div');
+                medDiv.className = 'emergency-med';
+                medDiv.textContent = med;
+                emergencyMedsDiv.appendChild(medDiv);
+            });
+            
+            // Atualizar prescrição para alta
+            homePrescriptionDiv.innerHTML = condition.homePrescription;
+        }
+
+        // Calcular idade a partir da data de nascimento
+        function calculateAge() {
+            if (!patientDobInput.value) return;
+            
+            const birthDate = new Date(patientDobInput.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            patientAgeInput.value = age;
+        }
+
+        // Imprimir prescrição
+        function printPrescription() {
+            if (!currentCondition) {
+                alert('Selecione uma condição clínica antes de imprimir a prescrição.');
+                return;
+            }
+            
+            const condition = conditionsData[currentCondition];
+            const patientName = patientNameInput.value || '[NÃO INFORMADO]';
+            const patientAge = patientAgeInput.value || '[NÃO INFORMADO]';
+            const patientSus = patientSusInput.value || '[NÃO INFORMADO]';
+            const patientGender = patientGenderSelect.value || '[NÃO INFORMADO]';
+            const genderText = patientGender === 'male' ? 'Masculino' : 
+                             patientGender === 'female' ? 'Feminino' : 
+                             '[NÃO INFORMADO]';
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Prescrição Médica - ${patientName}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+                        .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+                        .patient-info { margin-bottom: 30px; }
+                        .section { margin-bottom: 25px; }
+                        .section-title { font-weight: bold; font-size: 18px; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+                        .medication { margin-bottom: 15px; }
+                        .medication-name { font-weight: bold; }
+                        .footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 10px; font-size: 12px; }
+                        @media print {
+                            body { margin: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Prescrição Médica</h1>
+                        <p><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+                    </div>
+                    
+                    <div class="patient-info">
+                        <h2>Dados do Paciente</h2>
+                        <p><strong>Nome:</strong> ${patientName}</p>
+                        <p><strong>Idade:</strong> ${patientAge} anos</p>
+                        <p><strong>Sexo:</strong> ${genderText}</p>
+                        <p><strong>SUS:</strong> ${patientSus}</p>
+                        <p><strong>Condição:</strong> ${condition.name}</p>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Medicamentos para Uso na Emergência</div>
+                        ${condition.emergencyMeds.map(med => `
+                            <div class="medication">
+                                <div class="medication-name">${med}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Prescrição para Alta / Ambulatorial</div>
+                        ${condition.homePrescription.replace(/<[^>]*>/g, '')}
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Prescrição gerada pelo Sistema de Apoio à Decisão - Emergência</p>
+                        <p>Baseado no protocolo "Plantão Rápido"</p>
+                    </div>
+                    
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            setTimeout(function() {
+                                window.close();
+                            }, 1000);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // Limpar formulário para novo paciente
+        function clearForm() {
+            patientNameInput.value = '';
+            patientDobInput.value = '';
+            patientAgeInput.value = '';
+            patientSusInput.value = '';
+            patientGenderSelect.value = '';
+            
+            conditionCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            currentCondition = null;
+            currentTab = 'patient';
+            switchTab('patient');
+            
+            specificExamDiv.innerHTML = `
+                <p class="alert-box alert-info">
+                    <span class="icon">ℹ️</span>
+                    Selecione uma condição clínica na aba anterior para visualizar o exame físico específico e as prescrições.
+                </p>`;
+                
+            homePrescriptionDiv.innerHTML = `
+                <p class="alert-box alert-info">
+                    <span class="icon">ℹ️</span>
+                    Selecione uma condição clínica para visualizar a prescrição para alta.
+                </p>`;
+        }
+
+        // Inicializar eventos
+        function initEvents() {
+            // Navegação entre abas
+            document.getElementById('next-to-condition').addEventListener('click', () => {
+                switchTab('condition');
+            });
+            
+            document.getElementById('back-to-patient').addEventListener('click', () => {
+                switchTab('patient');
+            });
+            
+            document.getElementById('next-to-prescription').addEventListener('click', () => {
+                if (!currentCondition) {
+                    alert('Por favor, selecione uma condição clínica antes de prosseguir.');
+                    return;
+                }
+                switchTab('prescription');
+                updatePrescriptionTab();
+            });
+            
+            document.getElementById('back-to-condition').addEventListener('click', () => {
+                switchTab('condition');
+            });
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    if (tabName === 'prescription' && !currentCondition) {
+                        alert('Por favor, selecione uma condição clínica antes de acessar as prescrições.');
+                        return;
+                    }
+                    switchTab(tabName);
+                    if (tabName === 'prescription') {
+                        updatePrescriptionTab();
+                    }
+                });
+            });
+            
+            // Seleção de condições clínicas
+            conditionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const conditionId = card.dataset.condition;
+                    selectCondition(conditionId);
+                });
+            });
+            
+            // Calcular idade automaticamente
+            patientDobInput.addEventListener('change', calculateAge);
+            
+            // Botões de ação
+            document.getElementById('print-prescription').addEventListener('click', printPrescription);
+            document.getElementById('new-patient').addEventListener('click', clearForm);
+            
+            // Atualizar hora a cada segundo
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+        }
+
+        // Inicializar aplicação quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', initEvents);
+    </script>
+</body>
+</html>
