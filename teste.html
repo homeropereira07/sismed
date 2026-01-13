@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SisMed - Sistema de Prescrição Médica</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
             --primary: #2563eb;
@@ -283,6 +285,7 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -348,6 +351,17 @@
         }
         
         .btn-new-patient:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
             background: #d97706;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
@@ -490,7 +504,20 @@
             margin-top: 15px;
             font-size: 11px;
         }
-        
+
+        /* CSS para o botão Fluxos Emergência */
+        #fluxos-btn i {
+            color: #e74c3c; /* Vermelho para destacar emergência */
+        }
+
+        #fluxos-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }        
+
+        #fluxos-btn:hover i {
+            color: #c0392b;
+        }        
+
         /* Exames */
         .exames-container {
             display: grid;
@@ -545,20 +572,20 @@
             font-size: 0.85rem;
         }
         
-        /* Configuração */
-        .config-info {
+        /* Unidade */
+        .unidade-info {
             background: var(--light);
             border-radius: 10px;
             padding: 1.5rem;
             margin-top: 1.5rem;
         }
         
-        .config-info h3 {
+        .unidade-info h3 {
             margin-bottom: 1rem;
             color: var(--primary);
         }
         
-        .config-info p {
+        .unidade-info p {
             margin-bottom: 0.75rem;
         }
         
@@ -614,6 +641,7 @@
             gap: 1rem;
             margin-top: 2rem;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .editable-content {
@@ -627,6 +655,52 @@
         .edit-mode .editable-content {
             border: 2px solid var(--primary);
             background-color: #f8f9fa;
+        }
+        
+        /* Seletor de tipo de atestado */
+        .tipo-atestado-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tipo-atestado-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .tipo-atestado-btn:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+        
+        .tipo-atestado-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Campos específicos para atestado de acompanhante */
+        .acompanhante-fields {
+            display: none;
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .acompanhante-fields.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            animation: fadeIn 0.5s ease;
         }
         
         /* Responsividade */
@@ -684,6 +758,14 @@
             }
             
             .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tipo-atestado-container {
+                flex-direction: column;
+            }
+            
+            .acompanhante-fields.active {
                 grid-template-columns: 1fr;
             }
         }
@@ -829,9 +911,20 @@
                     Links Úteis
                 </div>
                 
-                <div class="doc-type-btn" data-type="configuracao">
+                <div class="doc-type-btn" data-type="unidade">
+                    <i class="fas fa-hospital"></i>
+                    Unidade
+                </div>
+
+                <!-- No sidebar, adicione este botão após o botão "Extras" -->
+                <div class="doc-type-btn" data-type="fluxos" id="fluxos-btn" style="display: none;">
+                    <i class="fas fa-project-diagram"></i>
+                    Fluxos Emergência
+                </div>
+                
+                <div class="doc-type-btn" data-type="configuracoes" id="configuracoes-btn" style="display: none;">
                     <i class="fas fa-cog"></i>
-                    Configuração
+                    Extras
                 </div>
             </div>
             
@@ -887,11 +980,23 @@
                                     <option value="OTALGIA INFECCIOSA">OTALGIA INFECCIOSA</option>
                                     <option value="PARALISIA FACIAL">PARALISIA FACIAL</option>
                                     <option value="PNEUMONIA E AMIGDALITE">PNEUMONIA E AMIGDALITE</option>
+                                    <option value="PNEUMONIA E AMIGDALITE">PNEUMONIA ALERGIA PENICILINA</option>
                                     <option value="SÍNDROME GRIPAL">SÍNDROME GRIPAL</option>
                                     <option value="SUTURA">SUTURA</option>
                                     <option value="VAGINOSE">VAGINOSE</option>
                                     <option value="VITAMINA">VITAMINA</option>
                                     <option value="VPPB">VPPB (Vertigem Posicional Paroxística Benigna)</option>
+                                    <option value="ASMA">ASMA</option>
+                                    <option value="DENGUE">DENGUE</option>
+                                    <option value="ENXAQUECA">ENXAQUECA</option>
+                                    <option value="COLICA NEFRETICA">CÓLICA NEFRÉTICA</option>
+                                    <option value="RINOSSINUSITE">RINOSSINUSITE AGUDA</option>
+                                    <option value="OTITE EXTERNA">OTITE EXTERNA AGUDA</option>
+                                    <option value="AMIGDALITE ESTREPTOCOCICA">AMIGDALITE ESTREPTOCÓCICA</option>
+                                    <option value="HERPES ZOSTER">HERPES ZÓSTER</option>
+                                    <option value="ESCABIOSE">ESCABIOSE</option>
+                                    <option value="DISMENORREIA">DISMENORREIA</option>
+                                    <option value="TOSSE SECA">TOSSE SECA</option>
                                 </select>
                             </div>
                         </div>
@@ -911,6 +1016,21 @@
                         <i class="fas fa-file-contract"></i>
                         Atestado Médico
                     </h2>
+                    
+                    <div class="tipo-atestado-container">
+                        <div class="tipo-atestado-btn active" data-tipo="atestado">
+                            <i class="fas fa-user-injured"></i>
+                            Atestado Médico
+                        </div>
+                        <div class="tipo-atestado-btn" data-tipo="comprovante">
+                            <i class="fas fa-calendar-check"></i>
+                            Comprovante de Comparecimento
+                        </div>
+                        <div class="tipo-atestado-btn" data-tipo="acompanhante">
+                            <i class="fas fa-user-friends"></i>
+                            Atestado de Acompanhante
+                        </div>
+                    </div>
                     
                     <div class="form-grid">
                         <div class="form-group">
@@ -936,12 +1056,77 @@
                                 <input type="text" id="cid" class="form-input" placeholder="Ex: M54.5">
                             </div>
                         </div>
+                        
+                        <!-- Campos específicos para acompanhante -->
+                        <div id="acompanhante-fields" class="acompanhante-fields">
+                            <div class="form-group">
+                                <label for="nome-acompanhante" class="form-label">Nome do Acompanhante</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user-friends input-icon"></i>
+                                    <input type="text" id="nome-acompanhante" class="form-input" placeholder="Nome completo do acompanhante">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="parentesco" class="form-label">Parentesco</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-users input-icon"></i>
+                                    <select id="parentesco" class="form-select">
+                                        <option value="">Selecione o parentesco</option>
+                                        <option value="Pai">Pai</option>
+                                        <option value="Mãe">Mãe</option>
+                                        <option value="Filho(a)">Filho(a)</option>
+                                        <option value="Cônjuge/Companheiro(a)">Cônjuge/Companheiro(a)</option>
+                                        <option value="Irmão(ã)">Irmão(ã)</option>
+                                        <option value="Avô(ó)">Avô(ó)</option>
+                                        <option value="Neto(a)">Neto(a)</option>
+                                        <option value="Tio(a)">Tio(a)</option>
+                                        <option value="Sobrinho(a)">Sobrinho(a)</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dias-acompanhante" class="form-label">Dias Necessários</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-calendar-alt input-icon"></i>
+                                    <input type="number" id="dias-acompanhante" class="form-input" min="1" value="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="motivo-acompanhante" class="form-label">Motivo do Acompanhamento</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-file-medical-alt input-icon"></i>
+                                    <select id="motivo-acompanhante" class="form-select">
+                                        <option value="">Selecione o motivo</option>
+                                        <option value="Tratamento médico">Tratamento médico</option>
+                                        <option value="Cirurgia">Cirurgia</option>
+                                        <option value="Exames">Exames</option>
+                                        <option value="Procedimento médico">Procedimento médico</option>
+                                        <option value="Gestação de alto risco">Gestação de alto risco</option>
+                                        <option value="Cuidados pós-operatórios">Cuidados pós-operatórios</option>
+                                        <option value="Doença crônica">Doença crônica</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-actions">
                         <button id="gerar-atestado" class="btn btn-primary">
                             <i class="fas fa-file-contract"></i>
                             Gerar Atestado
+                        </button>
+                        <button id="gerar-comprovante" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-calendar-check"></i>
+                            Gerar Comprovante
+                        </button>
+                        <button id="gerar-acompanhante" class="btn btn-warning" style="display: none;">
+                            <i class="fas fa-user-friends"></i>
+                            Gerar Atestado de Acompanhante
                         </button>
                     </div>
                 </div>
@@ -1044,7 +1229,7 @@
                     </div>
                 </div>
                 
-                <!-- Formulário para Solicitação de Exames -->
+                 <!-- Formulário para Solicitação de Exames -->
                 <div id="solicitacao-exames-form" class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-microscope"></i>
@@ -1073,95 +1258,518 @@
                                     <i class="fas fa-flask"></i>
                                     Exames de Laboratório
                                 </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-lab-1" value="Hemograma completo">
-                                    <label for="exame-lab-1">Hemograma completo</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-lab-2" value="Glicemia de jejum">
-                                    <label for="exame-lab-2">Glicemia de jejum</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-lab-3" value="Glicemia capilar ou plasmática">
-                                    <label for="exame-lab-3">Glicemia capilar ou plasmática</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-lab-4" value="Perfil lipídico (colesterol total, HDL, LDL, triglicerídeos)">
-                                    <label for="exame-lab-4">Perfil lipídico (colesterol total, HDL, LDL, triglicerídeos)</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-lab-5" value="Ureia">
-                                    <label for="exame-lab-5">Ureia</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-lab-6" value="Creatinina">
-                                    <label for="exame-lab-6">Creatinina</label>
-                                </div>
-                            </div>
-                            
-                            <!-- Exames de Imagem -->
-                            <div class="exames-categoria">
-                                <div class="categoria-title">
-                                    <i class="fas fa-x-ray"></i>
-                                    Exames de Imagem
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-img-1" value="Ultrassonografia abdominal total">
-                                    <label for="exame-img-1">Ultrassonografia abdominal total</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-img-2" value="Ultrassonografia pélvica (masculina/feminina)">
-                                    <label for="exame-img-2">Ultrassonografia pélvica (masculina/feminina)</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-img-3" value="Ultrassonografia obstétrica">
-                                    <label for="exame-img-3">Ultrassonografia obstétrica</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-img-4" value="Radiografia simples tórax">
-                                    <label for="exame-img-4">Radiografia simples tórax</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-img-5" value="Radiografia simples abdome">
-                                    <label for="exame-img-5">Radiografia simples abdome</label>
-                                </div>
-                                
-                                <div class="exame-item">
-                                    <input type="checkbox" id="exame-img-6" value="Eletrocardiograma (ECG)">
-                                    <label for="exame-img-6">Eletrocardiograma (ECG)</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="observacoes-exames" class="form-label">Observações Adicionais</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-sticky-note input-icon"></i>
-                            <textarea id="observacoes-exames" class="form-textarea" placeholder="Digite observações adicionais sobre os exames solicitados..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button id="gerar-solicitacao-exames" class="btn btn-primary">
-                            <i class="fas fa-microscope"></i>
-                            Gerar Solicitação de Exames
-                        </button>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-1" value="Hemograma completo">
+                    <label for="exame-lab-1">Hemograma completo</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-2" value="Glicemia de jejum">
+                    <label for="exame-lab-2">Glicemia de jejum</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-3" value="Glicemia capilar ou plasmática">
+                    <label for="exame-lab-3">Glicemia capilar ou plasmática</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-4" value="Perfil lipídico (colesterol total, HDL, LDL, triglicerídeos)">
+                    <label for="exame-lab-4">Perfil lipídico (colesterol total, HDL, LDL, triglicerídeos)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-5" value="Ureia">
+                    <label for="exame-lab-5">Ureia</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-6" value="Creatinina">
+                    <label for="exame-lab-6">Creatinina</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-7" value="TGO (AST)">
+                    <label for="exame-lab-7">TGO (AST)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-8" value="TGP (ALT)">
+                    <label for="exame-lab-8">TGP (ALT)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-9" value="TSH">
+                    <label for="exame-lab-9">TSH</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-10" value="T4 livre">
+                    <label for="exame-lab-10">T4 livre</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-11" value="EAS (urina tipo I)">
+                    <label for="exame-lab-11">EAS (urina tipo I)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-12" value="EPF (parasitológico de fezes)">
+                    <label for="exame-lab-12">EPF (parasitológico de fezes)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-13" value="Pesquisa de sangue oculto nas fezes">
+                    <label for="exame-lab-13">Pesquisa de sangue oculto nas fezes</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-14" value="Ácido úrico">
+                    <label for="exame-lab-14">Ácido úrico</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-15" value="Ferro sérico">
+                    <label for="exame-lab-15">Ferro sérico</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-16" value="Ferritina">
+                    <label for="exame-lab-16">Ferritina</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-17" value="Vitamina D">
+                    <label for="exame-lab-17">Vitamina D</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-18" value="Sorologias (HIV, sífilis, hepatites B e C)">
+                    <label for="exame-lab-18">Sorologias (HIV, sífilis, hepatites B e C)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-19" value="Beta-hCG (quantitativo ou qualitativo)">
+                    <label for="exame-lab-19">Beta-hCG (quantitativo ou qualitativo)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-20" value="Testes rápidos (HIV, sífilis, hepatites, COVID-19, dengue)">
+                    <label for="exame-lab-20">Testes rápidos (HIV, sífilis, hepatites, COVID-19, dengue)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-21" value="PSA total">
+                    <label for="exame-lab-21">PSA total</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-22" value="Colpocitologia oncótica (Papanicolau)">
+                    <label for="exame-lab-22">Colpocitologia oncótica (Papanicolau)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-23" value="Gasometria arterial ou venosa">
+                    <label for="exame-lab-23">Gasometria arterial ou venosa</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-24" value="Sódio">
+                    <label for="exame-lab-24">Sódio</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-25" value="Potássio">
+                    <label for="exame-lab-25">Potássio</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-26" value="Cloro">
+                    <label for="exame-lab-26">Cloro</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-27" value="Cálcio">
+                    <label for="exame-lab-27">Cálcio</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-28" value="Bilirrubinas totais e frações">
+                    <label for="exame-lab-28">Bilirrubinas totais e frações</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-29" value="Amilase">
+                    <label for="exame-lab-29">Amilase</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-30" value="Lipase">
+                    <label for="exame-lab-30">Lipase</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-31" value="Troponina I ou T">
+                    <label for="exame-lab-31">Troponina I ou T</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-32" value="CK total e CK-MB">
+                    <label for="exame-lab-32">CK total e CK-MB</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-33" value="Dímero D">
+                    <label for="exame-lab-33">Dímero D</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-34" value="TAP (TP)">
+                    <label for="exame-lab-34">TAP (TP)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-35" value="TTPa">
+                    <label for="exame-lab-35">TTPa</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-36" value="Lactato">
+                    <label for="exame-lab-36">Lactato</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-37" value="Urina tipo I (EAS)">
+                    <label for="exame-lab-37">Urina tipo I (EAS)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-38" value="Beta-hCG (teste rápido)">
+                    <label for="exame-lab-38">Beta-hCG (teste rápido)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-39" value="PCR (proteína C reativa)">
+                    <label for="exame-lab-39">PCR (proteína C reativa)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-40" value="VHS (velocidade de hemossedimentação)">
+                    <label for="exame-lab-40">VHS (velocidade de hemossedimentação)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-41" value="Tipagem sanguínea e fator Rh">
+                    <label for="exame-lab-41">Tipagem sanguínea e fator Rh</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-42" value="Teste de coagulação (INR)">
+                    <label for="exame-lab-42">Teste de coagulação (INR)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-43" value="Exames toxicológicos">
+                    <label for="exame-lab-43">Exames toxicológicos</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-lab-44" value="Hemoglobina glicada (HbA1c)">
+                    <label for="exame-lab-44">Hemoglobina glicada (HbA1c)</label>
+                </div>
+            </div>
+            
+            <!-- Exames de Imagem -->
+            <div class="exames-categoria">
+                <div class="categoria-title">
+                    <i class="fas fa-x-ray"></i>
+                    Exames de Imagem
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-1" value="Ultrassonografia abdominal total">
+                    <label for="exame-img-1">Ultrassonografia abdominal total</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-2" value="Ultrassonografia pélvica (masculina/feminina)">
+                    <label for="exame-img-2">Ultrassonografia pélvica (masculina/feminina)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-3" value="Ultrassonografia obstétrica">
+                    <label for="exame-img-3">Ultrassonografia obstétrica</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-4" value="Ultrassonografia transvaginal">
+                    <label for="exame-img-4">Ultrassonografia transvaginal</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-5" value="Ultrassonografia de tireoide">
+                    <label for="exame-img-5">Ultrassonografia de tireoide</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-6" value="Ultrassonografia de mamas">
+                    <label for="exame-img-6">Ultrassonografia de mamas</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-7" value="Ultrassonografia de partes moles">
+                    <label for="exame-img-7">Ultrassonografia de partes moles</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-8" value="Ultrassonografia de próstata">
+                    <label for="exame-img-8">Ultrassonografia de próstata</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-9" value="Ultrassonografia de vias urinárias">
+                    <label for="exame-img-9">Ultrassonografia de vias urinárias</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-10" value="Mamografia bilateral">
+                    <label for="exame-img-10">Mamografia bilateral</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-11" value="Radiografia simples tórax">
+                    <label for="exame-img-11">Radiografia simples tórax</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-12" value="Radiografia simples abdome">
+                    <label for="exame-img-12">Radiografia simples abdome</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-13" value="Radiografia simples ossos">
+                    <label for="exame-img-13">Radiografia simples ossos</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-14" value="Radiografia simples articulações">
+                    <label for="exame-img-14">Radiografia simples articulações</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-15" value="Radiografia simples coluna">
+                    <label for="exame-img-15">Radiografia simples coluna</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-16" value="Radiografia simples seios da face">
+                    <label for="exame-img-16">Radiografia simples seios da face</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-17" value="Radiografia simples punho" class="exame-lateralidade">
+                    <label for="exame-img-17">Radiografia simples punho</label>
+                    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <select class="lateralidade-select">
+                            <option value="">Selecione a lateralidade</option>
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Bilateral">Bilateral</option>
+                        </select>
                     </div>
                 </div>
                 
-                <!-- Links Úteis -->
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-18" value="Radiografia simples mão" class="exame-lateralidade">
+                    <label for="exame-img-18">Radiografia simples mão</label>
+                    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <select class="lateralidade-select">
+                            <option value="">Selecione a lateralidade</option>
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Bilateral">Bilateral</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-19" value="Radiografia simples pé" class="exame-lateralidade">
+                    <label for="exame-img-19">Radiografia simples pé</label>
+                    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <select class="lateralidade-select">
+                            <option value="">Selecione a lateralidade</option>
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Bilateral">Bilateral</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-20" value="Radiografia simples tornozelo" class="exame-lateralidade">
+                    <label for="exame-img-20">Radiografia simples tornozelo</label>
+                    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <select class="lateralidade-select">
+                            <option value="">Selecione a lateralidade</option>
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Bilateral">Bilateral</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-21" value="Radiografia simples braço" class="exame-lateralidade">
+                    <label for="exame-img-21">Radiografia simples braço</label>
+                    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <select class="lateralidade-select">
+                            <option value="">Selecione a lateralidade</option>
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Bilateral">Bilateral</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-22" value="Radiografia simples perna" class="exame-lateralidade">
+                    <label for="exame-img-22">Radiografia simples perna</label>
+                    <div class="lateralidade-options" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <select class="lateralidade-select">
+                            <option value="">Selecione a lateralidade</option>
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Bilateral">Bilateral</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-23" value="Eletrocardiograma (ECG)">
+                    <label for="exame-img-23">Eletrocardiograma (ECG)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-24" value="Ecocardiograma">
+                    <label for="exame-img-24">Ecocardiograma</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-25" value="Densitometria óssea">
+                    <label for="exame-img-25">Densitometria óssea</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-26" value="Radiografia de tórax (PA e perfil)">
+                    <label for="exame-img-26">Radiografia de tórax (PA e perfil)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-27" value="Radiografia de abdome agudo">
+                    <label for="exame-img-27">Radiografia de abdome agudo</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-28" value="Radiografia de ossos e articulações (membros superiores e inferiores)">
+                    <label for="exame-img-28">Radiografia de ossos e articulações (membros superiores e inferiores)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-291" value="Radiografia de coluna (torácica)">
+                    <label for="exame-img-291">Radiografia de coluna torácica</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-292" value="Radiografia de coluna (cervical)">
+                    <label for="exame-img-292">Radiografia de coluna cervical</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-293" value="Radiografia de coluna (lombar)">
+                    <label for="exame-img-293">Radiografia de coluna lombar</label>
+                </div>                
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-30" value="Radiografia de bacia/quadril (trauma)">
+                    <label for="exame-img-30">Radiografia de bacia/quadril (trauma)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-31" value="Radiografia de crânio e face (trauma craniofacial)">
+                    <label for="exame-img-31">Radiografia de crânio e face (trauma craniofacial)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-32" value="Ultrassonografia de abdome total ou superior (em casos de dor abdominal aguda)">
+                    <label for="exame-img-32">Ultrassonografia de abdome total ou superior (em casos de dor abdominal aguda)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-33" value="Ultrassonografia pélvica ou obstétrica (em emergências ginecológicas/obstétricas)">
+                    <label for="exame-img-33">Ultrassonografia pélvica ou obstétrica (em emergências ginecológicas/obstétricas)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-34" value="Ultrassonografia de partes moles (abscessos, coleções, trauma)">
+                    <label for="exame-img-34">Ultrassonografia de partes moles (abscessos, coleções, trauma)</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-35" value="Ecocardiograma de urgência">
+                    <label for="exame-img-35">Ecocardiograma de urgência</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-36" value="Tomografia computadorizada tórax">
+                    <label for="exame-img-36">Tomografia computadorizada tórax</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-37" value="Tomografia computadorizada crânio">
+                    <label for="exame-img-37">Tomografia computadorizada crânio</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-38" value="Tomografia computadorizada abdome">
+                    <label for="exame-img-38">Tomografia computadorizada abdome</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-39" value="Holter 24h">
+                    <label for="exame-img-39">Holter 24h</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-40" value="Ressonância magnética">
+                    <label for="exame-img-40">Ressonância magnética</label>
+                </div>
+                
+                <div class="exame-item">
+                    <input type="checkbox" id="exame-img-41" value="Doppler vascular">
+                    <label for="exame-img-41">Doppler vascular</label>
+                </div>
+            </div> <!-- Fechamento da div .exames-categoria (Imagem) -->
+        </div> <!-- Fechamento da div .exames-container -->
+    </div> <!-- Fechamento da div .form-group dos exames -->
+                
+                <div class="form-group">
+                    <label for="observacoes-exames" class="form-label">Observações Adicionais</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-sticky-note input-icon"></i>
+                        <textarea id="observacoes-exames" class="form-textarea" placeholder="Digite observações adicionais sobre os exames solicitados..."></textarea>
+                    </div>
+                </div>
+            
+                <div class="form-actions">
+                    <button id="gerar-solicitacao-exames" class="btn btn-primary">
+                        <i class="fas fa-microscope"></i>
+                        Gerar Solicitação de Exames
+                    </button>
+                </div>
+            </div> <!-- Fechamento da div #solicitacao-exames-form -->
+
+                   <!-- Links Úteis -->
                 <div id="links-uteis-form" class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-link"></i>
@@ -1218,6 +1826,14 @@
                             <div class="link-title">PubMed</div>
                             <div class="link-description">Base de dados de artigos científicos em medicina</div>
                         </a>
+
+                        <a href="https://homeropereira07.github.io/sismed/links.html" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="link-title">Links Arquivos Diversos</div>
+                            <div class="link-description">Dicas de PS e ESF</div>
+                        </a>
                         
                         <a href="https://www.amb.org.br/" target="_blank" class="link-card">
                             <div class="link-icon">
@@ -1237,11 +1853,11 @@
                     </div>
                 </div>
                 
-                <!-- Formulário para Configuração -->
-                <div id="configuracao-form" class="form-section">
+                <!-- Formulário para Unidade -->
+                <div id="unidade-form" class="form-section">
                     <h2 class="section-title">
-                        <i class="fas fa-cog"></i>
-                        Configuração do Sistema
+                        <i class="fas fa-hospital"></i>
+                        Configuração da Unidade
                     </h2>
                     
                 <div class="form-group">
@@ -1325,18 +1941,77 @@
                     </div>
                 </div>
                     
-                    <div id="unidade-detalhes" class="config-info" style="display: none;">
+                    <div id="unidade-detalhes" class="unidade-info" style="display: none;">
                         <h3>Detalhes da Unidade Selecionada</h3>
                         <div id="unidade-info"></div>
                     </div>
                     
                     <div class="form-actions">
-                        <button id="salvar-configuracao" class="btn btn-primary">
+                        <button id="salvar-unidade" class="btn btn-primary">
                             <i class="fas fa-save"></i>
                             Salvar Configuração
                         </button>
                     </div>
                 </div>
+
+<div class="doc-type-btn" data-type="fluxos" id="fluxos-btn" style="display: none;">
+    <i class="fas fa-project-diagram"></i>
+    Fluxos Emergência
+</div>
+                
+                <!-- Formulário para Configurações -->
+                <div id="configuracoes-form" class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-cog"></i>
+                        Extras
+                    </h2>
+                    
+                    <p class="form-label">Recursos avançadas do sistema (acesso restrito):</p>
+                    
+                    <div class="links-grid">
+                        <a href="https://homeropereira07.github.io/sismed/cadastrounidade.html" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="link-title">Cadastro de Unidades</div>
+                            <div class="link-description">Cadastrar nova unidade de atendimento</div>
+                        </a>
+                        
+                        <a href="https://homeropereira07.github.io/sismed/prescricaofast.html" target="_blank" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="link-title">Prescrição Fast</div>
+                            <div class="link-description">Fácil acesso a prescrição e condutas pré definidas</div>
+                        </a>                        
+                        
+                        
+                        <a href="#" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="link-title">Gerenciar Dados</div>
+                            <div class="link-description">Configurações de banco de dados e backup</div>
+                        </a>
+                        
+                        <a href="#" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <div class="link-title">Gerenciar Usuários</div>
+                            <div class="link-description">Configurações de permissões e acessos</div>
+                        </a>
+                        
+                        <a href="#" class="link-card">
+                            <div class="link-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="link-title">Relatórios</div>
+                            <div class="link-description">Relatórios avançados e estatísticas</div>
+                        </a>
+                    </div>
+                </div>
+      
                 
                 <!-- Área de Impressão -->
                 <div id="print-area" class="print-area">
@@ -1362,14 +2037,15 @@
                         
                         <div class="signature-area">
                             <p><strong id="print-medico-assinatura">DR. HOMERO PEREIRA</strong></p>
-                            <p id="print-crm-assinatura">CRM-MA: 16XXX</p>
+                            
                             <div class="signature-line"></div>
                             <p>Assinatura do Médico</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Área de Impressão para Controle Especial -->
+                
+               <!-- Área de Impressão para Controle Especial -->
                 <div id="print-area-controle-especial" class="print-area">
                     <div class="receituario-container">
                         <!-- Primeira Via (Farmácia) -->
@@ -1387,7 +2063,7 @@
                                     <span>2ª VIA PACIENTE</span>
                                 </div>
                                 <div class="emitente-line">
-                                    <span id="print-crm">CRM-MA: 16XXX</span>
+                                    <span id="print-crm">CRM: </span>
                                     <span></span>
                                 </div>
                                 <div class="emitente-line">
@@ -1492,7 +2168,7 @@
                                     <span>2ª VIA PACIENTE</span>
                                 </div>
                                 <div class="emitente-line">
-                                    <span id="print-crm2">CRM-MA: 16XXX</span>
+                                    <span id="print-crm2">CRM: </span>
                                     <span></span>
                                 </div>
                                 <div class="emitente-line">
@@ -2031,7 +2707,7 @@
             },
             "DIARREIA": {
                 "USO ORAL": [
-                    "RECECADOTRILA 100MG - 01 caixa - Tomar 1 comprimido 8 em 8 horas antes das refeições por 03 dias",
+                    "RACECADOTRILA 100MG - 01 caixa - Tomar 1 comprimido 8 em 8 horas antes das refeições por 03 dias",
                     "ENTEROGERMINA - 01 caixa - Tomar 1 flaconete de 12/12h por 05 dias",
                     "SORO DE REIDRATAÇÃO ORAL - 01 caixa - Dissolver 1 sache em 1 litro de água e tomar à vontade durante o dia",
                     "ENAVO ODT 4MG - 01 caixa - Tomar 1 comprimido 08/08h se náuseas ou vômitos"
@@ -2039,11 +2715,11 @@
             },
             "DIARREIA INFECCIOSA": {
                 "USO ORAL": [
-                    "TROPINAL - 01 caixa - Tomar 1 comprimido 8 em 8 horas, se dor abdominal",
-                    "ENTEROGERMINA - 5 cápsulas - Tomar 1 flaconete de 12/12h por 05 dias",
-                    "SORO DE REIDRATAÇÃO ORAL - 01 caixa - Dissolver 1 sache em 1 litro de água e tomar à vontade durante o dia",
                     "CIPROFLOXACINO 500 MG - 06 comprimidos - Tomar 01 comprimido de 12/12h por 03 dias",
-                    "ENAVO ODT 4MG - 01 caixa - Tomar 01 comprimido de 08/08h se náuseas ou vômitos"
+                    "TROPINAL - 01 caixa - Tomar 1 comprimido 8 em 8 horas, se dor abdominal",
+                    "ENAVO ODT 4MG - 01 caixa - Tomar 01 comprimido de 08/08h se náuseas ou vômitos",
+                    "ENTEROGERMINA - 5 cápsulas - Tomar 1 flaconete de 12/12h por 05 dias",
+                    "SORO DE REIDRATAÇÃO ORAL - 01 caixa - Dissolver 1 sache em 1 litro de água e tomar à vontade durante o dia"
                 ]
             },
             "DOR ABDOMINAL": {
@@ -2108,7 +2784,7 @@
             "INFECÇÃO PARTES MOLES": {
                 "USO ORAL": [
                     "FLANCOX 600 MG - 01 caixa - Tomar 01 comprimido de 12/12h por 03 dias",
-                    "CEFALEXINA 500 MG - 01 caixa - Tomar 01 comprimido de 12/12h por 07 dias",
+                    "CEFALEXINA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h por 07 dias",
                     "GAZIA 40 MG - 01 caixa - Tomar 01 comprimido em jejum"
                 ]
             },
@@ -2122,7 +2798,7 @@
             },
             "ITU": {
                 "USO ORAL": [
-                    "MACRODANTINA 100MG - 14 comprimidos - Tomar 01 comprimido de 06/06h por 7 dias",
+                    "NITROFURANTOÍNA 100MG - 14 comprimidos - Tomar 01 comprimido de 12/12h por 5 dias",
                     "TROPINAL - 01 caixa - Tomar 01 comprimido de 08/08h se dor ou febre",
                     "PYRIDIUM 200 MG - 01 caixa - Tomar 01 comprimido de 8/8h a cada 8h se ardência ao urinar"
                 ]
@@ -2189,6 +2865,13 @@
                     "NOVAMOX 2X 875/125MG - 14 comprimidos - Tomar 1 comprimido de 12/12h por 7 dias"
                 ]
             },
+            "PNEUMONIA ALERGIA PENICILINA": {
+                "USO ORAL": [
+                    "AZITROMICINA 500 MG  - 5 comprimidos - Tomar 01 comprimido 1 vez ao DIA por 5 dias",
+                    "PREDSIN 20 MG - 10 comprimidos - Tomar 02 comprimidos pela manhã por 05 dias",
+                    "LISADOR DIP - 01 caixa - Tomar 01 comprimido de 08/08h se dor ou febre"
+                ]
+            },            
             "SÍNDROME GRIPAL": {
                 "USO ORAL": [
                     "CLORIDRATO DE FEXOFENADINA 120 MG - 01 caixa - Tomar 01 comprimido ao dia",
@@ -2229,79 +2912,201 @@
                     "MECLIN 50 MG - 01 caixa - Tomar 01 comprimido de 8/8h se náuseas, vômitos ou tontura",
                     "LAVITAM FEMINO VITAMINA - 01 caixa - Tomar 01 comprimido ao dia"
                 ]
-            }
+            },
+            "ASMA": {
+  "USO ORAL": [
+    "PREDNISONA 20 MG - 05 comprimidos - Tomar 01 comprimido VO pela manhã por 5 dias"
+  ],
+  "USO INALATÓRIO": [
+    "SALBUTAMOL SPRAY 100 MCG - 01 frasco - Inalar 02 jatos de 6/6h por 5 dias"
+  ]
+},
+            
+"DENGUE": {
+  "USO ORAL": [
+    "PARACETAMOL 750 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor ou febre",
+    "DIPIRONA 500 MG - 01 caixa - Tomar 02 comprimidos de 6/6h se dor ou febre"
+  ]
+},
+        "ENXAQUECA": {
+  "USO ORAL": [
+    "NAPROXENO 500 MG - 01 caixa - Tomar 01 comprimido de 12/12h por até 5 dias",
+    "METOCLOPRAMIDA 10 MG - 01 caixa - Tomar 01 comprimido de 8/8h se náuseas ou vômitos"
+  ]
+},
+       "COLICA NEFRETICA": {
+  "USO ORAL": [
+    "CETOPROFENO 150 MG - 01 caixa - Tomar 01 comprimido de 12/12h por até 5 dias",
+    "METOCLOPRAMIDA 10 MG - 01 caixa - Tomar 01 comprimido de 8/8h se náuseas ou vômitos"
+  ]
+},
+       "RINOSSINUSITE": {
+  "USO ORAL": [
+    "LORATADINA 10 MG - 01 caixa - Tomar 01 comprimido ao dia por 10 dias",
+    "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 8/8h se dor ou febre"
+  ],
+  "USO NASAL": [
+    "SORO FISIOLÓGICO 0,9% - 01 frasco - Lavar as narinas 3x ao dia"
+  ]
+},
+        "OTITE EXTERNA": {
+  "USO OTOLÓGICO": [
+    "OTOSPORIN - 01 frasco - Aplicar 03 gotas no ouvido afetado de 8/8h por 7 dias"
+  ],
+  "USO ORAL": [
+    "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor"
+  ]
+},
+      "AMIGDALITE ESTREPTOCOCICA": {
+  "USO ORAL": [
+    "AMOXICILINA 500 MG - 21 comprimidos - Tomar 01 comprimido de 8/8h por 7 dias",
+    "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor ou febre"
+  ]
+},
+   "AMIGDALITE ESTREPTOCOCICA": {
+  "USO ORAL": [
+    "AMOXICILINA 500 MG - 21 comprimidos - Tomar 01 comprimido de 8/8h por 7 dias",
+    "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor ou febre"
+  ]
+},
+        "HERPES ZOSTER": {
+  "USO ORAL": [
+    "ACICLOVIR 800 MG - 35 comprimidos - Tomar 01 comprimido de 5x/dia por 7 dias",
+    "DIPIRONA 500 MG - 01 caixa - Tomar 01 comprimido de 6/6h se dor"
+  ]
+},
+      "ESCABIOSE": {
+  "USO TÓPICO": [
+    "PERMETRINA 5% - 01 frasco - Aplicar do pescoço para baixo à noite, repetir após 7 dias"
+  ],
+  "USO ORAL": [
+    "LORATADINA 10 MG - 01 caixa - Tomar 01 comprimido ao dia se prurido"
+  ]
+},
+            "DISMENORREIA": {
+  "USO ORAL": [
+    "ÁCIDO MEFENÂMICO 500 MG - 01 caixa - Tomar 01 comprimido de 8/8h por até 5 dias"
+  ]
+},
+         "TOSSE SECA": {
+  "USO ORAL": [
+    "LEVODROPROPIZINA 30 MG/5ML - 01 frasco - Tomar 10 mL de 8/8h por 5 dias"
+  ]
+}
         };
-        
+
         // Elementos DOM
         let unidadeSelecionada = localStorage.getItem('unidadeSelecionada') || '';
+        let tipoAtestadoAtual = 'atestado'; // 'atestado', 'comprovante', 'acompanhante'
 
         // Inicializar interface
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM carregado - iniciando sistema...");
+            
             // Verificar se o usuário está logado
             const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
             
             if (!medicoLogado) {
+                console.log("Usuário não logado, redirecionando...");
                 // Se não estiver logado, redirecionar para a tela de login
                 window.location.href = 'https://homeropereira07.github.io/sismed/';
                 return;
             }
             
+            console.log("Médico logado:", medicoLogado.nome);
+            
             // Exibir nome do médico logado
-            document.getElementById('user-name').textContent = medicoLogado.nome;
+            const userNameElement = document.getElementById('user-name');
+            if (userNameElement) {
+                userNameElement.textContent = medicoLogado.nome;
+            }
+            
+            // Verificar se é desenvolvedor para mostrar a aba Configurações
+            if (medicoLogado.tipo === 'desenvolvedor') {
+                const configBtn = document.getElementById('configuracoes-btn');
+                if (configBtn) {
+                    configBtn.style.display = 'flex';
+                }
+            }
             
             // Configurar menu de logout
             const userMenu = document.getElementById('user-menu');
             const logoutMenu = document.getElementById('logout-menu');
             const logoutBtn = document.getElementById('logout-btn');
             
-            userMenu.addEventListener('click', function() {
-                logoutMenu.classList.toggle('show');
-            });
-            
-            logoutBtn.addEventListener('click', function() {
-                // Remover dados do médico do localStorage
-                localStorage.removeItem('medicoLogado');
-                localStorage.removeItem('dadosMedico');
-                // Redirecionar para a tela de login
-                window.location.href = 'https://homeropereira07.github.io/sismed/';
-            });
-            
-            // Fechar menu ao clicar fora
-            document.addEventListener('click', function(event) {
-                if (!userMenu.contains(event.target) && !logoutMenu.contains(event.target)) {
-                    logoutMenu.classList.remove('show');
-                }
-            });
+            if (userMenu && logoutMenu && logoutBtn) {
+                userMenu.addEventListener('click', function() {
+                    logoutMenu.classList.toggle('show');
+                });
+                
+                logoutBtn.addEventListener('click', function() {
+                    // Remover dados do médico do localStorage
+                    localStorage.removeItem('medicoLogado');
+                    localStorage.removeItem('dadosMedico');
+                    // Redirecionar para a tela de login
+                    window.location.href = 'https://homeropereira07.github.io/sismed/';
+                });
+                
+                // Fechar menu ao clicar fora
+                document.addEventListener('click', function(event) {
+                    if (!userMenu.contains(event.target) && !logoutMenu.contains(event.target)) {
+                        logoutMenu.classList.remove('show');
+                    }
+                });
+            }
             
             // Carregar dados do médico nos formulários
             carregarDadosMedico(medicoLogado);
             
             // Configuração da unidade
             const unidadeTrabalhoSelect = document.getElementById('unidade-trabalho');
-            if (unidadeSelecionada) {
-                unidadeTrabalhoSelect.value = unidadeSelecionada;
-                mostrarDetalhesUnidade(unidadeSelecionada);
+            if (unidadeTrabalhoSelect) {
+                if (unidadeSelecionada) {
+                    unidadeTrabalhoSelect.value = unidadeSelecionada;
+                    mostrarDetalhesUnidade(unidadeSelecionada);
+                }
+
+                unidadeTrabalhoSelect.addEventListener('change', function() {
+                    const unidade = this.value;
+                    mostrarDetalhesUnidade(unidade);
+                });
             }
 
-            unidadeTrabalhoSelect.addEventListener('change', function() {
-                const unidade = this.value;
-                mostrarDetalhesUnidade(unidade);
-            });
-
             // Botão salvar configuração
-            document.getElementById('salvar-configuracao').addEventListener('click', () => {
-                const unidade = unidadeTrabalhoSelect.value;
-                
-                if (!unidade) {
-                    alert('Por favor, selecione uma unidade de trabalho.');
-                    return;
-                }
-                
-                localStorage.setItem('unidadeSelecionada', unidade);
-                unidadeSelecionada = unidade;
-                alert('Configuração salva com sucesso!');
-            });
+            const salvarUnidadeBtn = document.getElementById('salvar-unidade');
+            if (salvarUnidadeBtn) {
+                salvarUnidadeBtn.addEventListener('click', () => {
+                    const unidade = unidadeTrabalhoSelect.value;
+                    
+                    if (!unidade) {
+                        alert('Por favor, selecione uma unidade de trabalho.');
+                        return;
+                    }
+                    
+                    localStorage.setItem('unidadeSelecionada', unidade);
+                    unidadeSelecionada = unidade;
+                    alert('Configuração salva com sucesso!');
+                });
+            }
 
+// ADICIONE ESTE CÓDIGO PARA O BOTÃO FLUXOS EMERGÊNCIA
+// Mostrar botão Fluxos Emergência para todos os médicos ou condicionalmente
+const fluxosBtn = document.getElementById('fluxos-btn');
+if (fluxosBtn) {
+    fluxosBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open('https://homeropereira07.github.io/sismed/fluxos.html', '_blank');
+    });
+    
+    // Mostrar o botão (pode ser para todos ou apenas para emergencistas)
+    fluxosBtn.style.display = 'flex';
+    
+    // Se quiser mostrar apenas para médicos de emergência, use este código:
+    // if (medicoLogado.especialidade === 'emergencia' || medicoLogado.tipo === 'desenvolvedor') {
+    //     fluxosBtn.style.display = 'flex';
+    // }
+}
             // Alternar entre tipos de documento
             const docTypeButtons = document.querySelectorAll('.doc-type-btn');
             const formSections = document.querySelectorAll('.form-section');
@@ -2316,67 +3121,199 @@
                     
                     // Mostrar formulário correspondente
                     formSections.forEach(section => section.classList.remove('active'));
-                    document.getElementById(`${type}-form`).classList.add('active');
+                    const targetForm = document.getElementById(`${type}-form`);
+                    if (targetForm) {
+                        targetForm.classList.add('active');
+                    }
                     
                     // Ocultar área de impressão
                     document.querySelectorAll('.print-area').forEach(area => {
                         area.style.display = 'none';
                     });
-                    document.getElementById('edit-controls').style.display = 'none';
+                    const editControls = document.getElementById('edit-controls');
+                    if (editControls) {
+                        editControls.style.display = 'none';
+                    }
                 });
             });
 
             // Botão gerar receita
-            document.getElementById('gerar-receita').addEventListener('click', gerarReceita);
+            const gerarReceitaBtn = document.getElementById('gerar-receita');
+            if (gerarReceitaBtn) {
+                gerarReceitaBtn.addEventListener('click', gerarReceita);
+            }
             
             // Botão gerar atestado
-            document.getElementById('gerar-atestado').addEventListener('click', gerarAtestado);
+            const gerarAtestadoBtn = document.getElementById('gerar-atestado');
+            if (gerarAtestadoBtn) {
+                gerarAtestadoBtn.addEventListener('click', gerarAtestado);
+            }
             
             // Botão gerar receituário
-            document.getElementById('gerar-receituario').addEventListener('click', gerarReceituario);
+            const gerarReceituarioBtn = document.getElementById('gerar-receituario');
+            if (gerarReceituarioBtn) {
+                gerarReceituarioBtn.addEventListener('click', gerarReceituario);
+            }
             
             // Botão gerar controle especial
-            document.getElementById('gerar-controle-especial').addEventListener('click', gerarControleEspecial);
+            const gerarControleEspecialBtn = document.getElementById('gerar-controle-especial');
+            if (gerarControleEspecialBtn) {
+                gerarControleEspecialBtn.addEventListener('click', gerarControleEspecial);
+            }
             
             // Botão gerar solicitação de exames
-            document.getElementById('gerar-solicitacao-exames').addEventListener('click', gerarSolicitacaoExames);
+            const gerarExamesBtn = document.getElementById('gerar-solicitacao-exames');
+            if (gerarExamesBtn) {
+                gerarExamesBtn.addEventListener('click', gerarSolicitacaoExames);
+            }
 
             // Controles de edição
-            document.getElementById('btn-edit').addEventListener('click', () => {
-                document.getElementById('print-content').contentEditable = 'true';
-                document.getElementById('print-area').classList.add('edit-mode');
-                document.getElementById('btn-edit').style.display = 'none';
-                document.getElementById('btn-save').style.display = 'inline-block';
-            });
-
-            document.getElementById('btn-save').addEventListener('click', () => {
-                document.getElementById('print-content').contentEditable = 'false';
-                document.getElementById('print-area').classList.remove('edit-mode');
-                document.getElementById('btn-edit').style.display = 'inline-block';
-                document.getElementById('btn-save').style.display = 'none';
-            });
+            const btnEdit = document.getElementById('btn-edit');
+            const btnSave = document.getElementById('btn-save');
+            
+            if (btnEdit) {
+                btnEdit.addEventListener('click', () => {
+                    const printContent = document.getElementById('print-content');
+                    if (printContent) {
+                        printContent.contentEditable = 'true';
+                        const printArea = document.getElementById('print-area');
+                        if (printArea) {
+                            printArea.classList.add('edit-mode');
+                        }
+                        btnEdit.style.display = 'none';
+                        if (btnSave) {
+                            btnSave.style.display = 'inline-block';
+                        }
+                    }
+                });
+            }
+            
+            if (btnSave) {
+                btnSave.addEventListener('click', () => {
+                    const printContent = document.getElementById('print-content');
+                    if (printContent) {
+                        printContent.contentEditable = 'false';
+                        const printArea = document.getElementById('print-area');
+                        if (printArea) {
+                            printArea.classList.remove('edit-mode');
+                        }
+                        if (btnEdit) {
+                            btnEdit.style.display = 'inline-block';
+                        }
+                        btnSave.style.display = 'none';
+                    }
+                });
+            }
 
             // Botão imprimir
-            document.getElementById('btn-print').addEventListener('click', () => {
-                window.print();
-            });
+            const btnPrint = document.getElementById('btn-print');
+            if (btnPrint) {
+                btnPrint.addEventListener('click', () => {
+                    window.print();
+                });
+            }
 
             // Botão novo paciente
-            document.getElementById('btn-new-patient').addEventListener('click', resetarFormularios);
+            const btnNewPatient = document.getElementById('btn-new-patient');
+            if (btnNewPatient) {
+                btnNewPatient.addEventListener('click', resetarFormularios);
+            }
+            
+            // Controle de lateralidade para exames
+            document.addEventListener('click', function(e) {
+                // Verifica se o clique foi em um checkbox de exame com lateralidade
+                if (e.target.classList.contains('exame-lateralidade')) {
+                    const checkbox = e.target;
+                    const lateralidadeOptions = checkbox.parentElement.querySelector('.lateralidade-options');
+                    
+                    if (checkbox.checked) {
+                        if (lateralidadeOptions) {
+                            lateralidadeOptions.style.display = 'block';
+                        }
+                    } else {
+                        if (lateralidadeOptions) {
+                            lateralidadeOptions.style.display = 'none';
+                            // Limpa a seleção quando desmarcar
+                            const select = lateralidadeOptions.querySelector('.lateralidade-select');
+                            if (select) {
+                                select.value = '';
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Controle do tipo de atestado
+            const tipoAtestadoButtons = document.querySelectorAll('.tipo-atestado-btn');
+            const acompanhanteFields = document.getElementById('acompanhante-fields');
+            
+            tipoAtestadoButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tipo = this.getAttribute('data-tipo');
+                    tipoAtestadoAtual = tipo;
+                    
+                    // Ativar botão selecionado
+                    tipoAtestadoButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar/ocultar campos de acompanhante
+                    if (acompanhanteFields) {
+                        if (tipo === 'acompanhante') {
+                            acompanhanteFields.classList.add('active');
+                        } else {
+                            acompanhanteFields.classList.remove('active');
+                        }
+                    }
+                    
+                    // Mostrar botão correto
+                    const btnAtestado = document.getElementById('gerar-atestado');
+                    const btnComprovante = document.getElementById('gerar-comprovante');
+                    const btnAcompanhante = document.getElementById('gerar-acompanhante');
+                    
+                    if (btnAtestado) {
+                        btnAtestado.style.display = tipo === 'atestado' ? 'inline-block' : 'none';
+                    }
+                    if (btnComprovante) {
+                        btnComprovante.style.display = tipo === 'comprovante' ? 'inline-block' : 'none';
+                    }
+                    if (btnAcompanhante) {
+                        btnAcompanhante.style.display = tipo === 'acompanhante' ? 'inline-block' : 'none';
+                    }
+                });
+            });
+            
+            // Botões específicos para atestado
+            const gerarComprovanteBtn = document.getElementById('gerar-comprovante');
+            if (gerarComprovanteBtn) {
+                gerarComprovanteBtn.addEventListener('click', gerarComprovante);
+            }
+            
+            const gerarAcompanhanteBtn = document.getElementById('gerar-acompanhante');
+            if (gerarAcompanhanteBtn) {
+                gerarAcompanhanteBtn.addEventListener('click', gerarAtestadoAcompanhante);
+            }
+            
+            console.log("Sistema inicializado com sucesso!");
         });
 
         function carregarDadosMedico(medico) {
+            console.log('Carregando dados do médico:', medico);
+            
             // Preencher automaticamente os campos do médico nos formulários
             const camposMedico = document.querySelectorAll('#medico, #print-medico, #print-medico2, #print-medico-assinatura');
             const camposCRM = document.querySelectorAll('#crm, #print-crm, #print-crm2, #print-crm-assinatura');
             
             // Usar os dados reais do médico logado
             let nomeMedico = medico.nome || 'MÉDICO RESPONSÁVEL';
-            let crmMedico = medico.crm || 'CRM: XXXXXX';
+            let crmMedico = medico.crm || 'CRM: ';
+            
+            console.log('Nome médico:', nomeMedico);
+            console.log('CRM médico:', crmMedico);
             
             // Garantir que o nome esteja em maiúsculas (padrão médico)
             nomeMedico = nomeMedico.toUpperCase();
             
+            // Preencher campos do médico
             camposMedico.forEach(campo => {
                 if (campo.tagName === 'INPUT') {
                     campo.value = nomeMedico;
@@ -2385,6 +3322,7 @@
                 }
             });
             
+            // Preencher campos do CRM
             camposCRM.forEach(campo => {
                 if (campo.tagName === 'INPUT') {
                     campo.value = crmMedico;
@@ -2394,17 +3332,47 @@
             });
             
             // Salvar dados do médico para uso nos documentos
-            localStorage.setItem('dadosMedico', JSON.stringify({
+            const dadosMedico = {
                 nome: nomeMedico,
                 crm: crmMedico
-            }));
+            };
+            
+            localStorage.setItem('dadosMedico', JSON.stringify(dadosMedico));
+            console.log('Dados salvos no localStorage:', dadosMedico);
+        }
+
+        function obterDadosMedico() {
+            // Primeiro tenta obter do localStorage
+            const dadosSalvos = localStorage.getItem('dadosMedico');
+            if (dadosSalvos) {
+                const dados = JSON.parse(dadosSalvos);
+                console.log('Dados obtidos do localStorage:', dados);
+                return dados;
+            }
+            
+            // Se não encontrar, tenta obter do médico logado
+            const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
+            if (medicoLogado) {
+                console.log('Dados obtidos do médico logado:', medicoLogado);
+                return {
+                    nome: medicoLogado.nome.toUpperCase(),
+                    crm: medicoLogado.crm || 'CRM: '
+                };
+            }
+            
+            // Fallback para dados padrão
+            console.log('Usando dados padrão');
+            return {
+                nome: 'MÉDICO RESPONSÁVEL',
+                crm: 'CRM: '
+            };
         }
 
         function mostrarDetalhesUnidade(unidade) {
             const unidadeDetalhes = document.getElementById('unidade-detalhes');
             const unidadeInfo = document.getElementById('unidade-info');
             
-            if (unidade && unidades[unidade]) {
+            if (unidade && unidades[unidade] && unidadeDetalhes && unidadeInfo) {
                 const dados = unidades[unidade];
                 unidadeInfo.innerHTML = `
                     <p><strong>Endereço:</strong> ${dados.endereco}</p>
@@ -2413,14 +3381,14 @@
                     <p><strong>Especialidades:</strong> ${dados.especialidades}</p>
                 `;
                 unidadeDetalhes.style.display = 'block';
-            } else {
+            } else if (unidadeDetalhes) {
                 unidadeDetalhes.style.display = 'none';
             }
         }
 
         function atualizarDadosUnidade(unidade) {
             const unidadeDados = document.getElementById('unidade-dados');
-            if (unidades[unidade]) {
+            if (unidades[unidade] && unidadeDados) {
                 const dados = unidades[unidade];
                 unidadeDados.innerHTML = `
                     <p><strong>Endereço:</strong> ${dados.endereco}</p>
@@ -2430,79 +3398,111 @@
             }
         }
 
-        // Função para obter dados do médico para assinatura
-        function obterDadosMedico() {
-            // Primeiro tenta obter do localStorage
-            const dadosSalvos = localStorage.getItem('dadosMedico');
-            if (dadosSalvos) {
-                return JSON.parse(dadosSalvos);
-            }
-            
-            // Se não encontrar, tenta obter do médico logado
-            const medicoLogado = JSON.parse(localStorage.getItem('medicoLogado'));
-            if (medicoLogado) {
-                return {
-                    nome: medicoLogado.nome.toUpperCase(),
-                    crm: medicoLogado.crm || 'CRM: XXXXXX'
-                };
-            }
-            
-            // Fallback para dados padrão
-            return {
-                nome: 'MÉDICO RESPONSÁVEL',
-                crm: 'CRM: XXXXXX'
-            };
-        }
-
-        // Função para resetar todos os formulários
         function resetarFormularios() {
             // Resetar formulário de receita
-            document.getElementById('paciente').value = '';
-            document.getElementById('doenca').value = '';
+            const pacienteInput = document.getElementById('paciente');
+            const doencaSelect = document.getElementById('doenca');
+            if (pacienteInput) pacienteInput.value = '';
+            if (doencaSelect) doencaSelect.value = '';
             
             // Resetar formulário de atestado
-            document.getElementById('paciente-atestado').value = '';
-            document.getElementById('dias-afastamento').value = '1';
-            document.getElementById('cid').value = '';
+            const pacienteAtestado = document.getElementById('paciente-atestado');
+            const diasAfastamento = document.getElementById('dias-afastamento');
+            const cid = document.getElementById('cid');
+            const nomeAcompanhante = document.getElementById('nome-acompanhante');
+            const parentesco = document.getElementById('parentesco');
+            const diasAcompanhante = document.getElementById('dias-acompanhante');
+            const motivoAcompanhante = document.getElementById('motivo-acompanhante');
+            
+            if (pacienteAtestado) pacienteAtestado.value = '';
+            if (diasAfastamento) diasAfastamento.value = '1';
+            if (cid) cid.value = '';
+            if (nomeAcompanhante) nomeAcompanhante.value = '';
+            if (parentesco) parentesco.value = '';
+            if (diasAcompanhante) diasAcompanhante.value = '1';
+            if (motivoAcompanhante) motivoAcompanhante.value = '';
             
             // Resetar formulário de receituário
-            document.getElementById('paciente-receituario').value = '';
-            document.getElementById('medicamentos').value = '';
+            const pacienteReceituario = document.getElementById('paciente-receituario');
+            const medicamentos = document.getElementById('medicamentos');
+            if (pacienteReceituario) pacienteReceituario.value = '';
+            if (medicamentos) medicamentos.value = '';
             
             // Resetar formulário de controle especial
-            document.getElementById('paciente-controle').value = '';
-            document.getElementById('endereco-paciente').value = '';
-            document.getElementById('medicamentos-controle').value = '';
+            const pacienteControle = document.getElementById('paciente-controle');
+            const enderecoPaciente = document.getElementById('endereco-paciente');
+            const medicamentosControle = document.getElementById('medicamentos-controle');
+            if (pacienteControle) pacienteControle.value = '';
+            if (enderecoPaciente) enderecoPaciente.value = '';
+            if (medicamentosControle) medicamentosControle.value = '';
             
             // Resetar formulário de exames
-            document.getElementById('paciente-exames').value = '';
-            document.getElementById('observacoes-exames').value = '';
+            const pacienteExames = document.getElementById('paciente-exames');
+            const observacoesExames = document.getElementById('observacoes-exames');
+            if (pacienteExames) pacienteExames.value = '';
+            if (observacoesExames) observacoesExames.value = '';
             
             // Desmarcar todos os checkboxes de exames
             document.querySelectorAll('#solicitacao-exames-form input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
             });
             
+            // Resetar tipo de atestado para padrão
+            tipoAtestadoAtual = 'atestado';
+            const tipoAtestadoButtons = document.querySelectorAll('.tipo-atestado-btn');
+            tipoAtestadoButtons.forEach(btn => btn.classList.remove('active'));
+            const btnAtestado = document.querySelector('.tipo-atestado-btn[data-tipo="atestado"]');
+            if (btnAtestado) {
+                btnAtestado.classList.add('active');
+            }
+            
+            const acompanhanteFields = document.getElementById('acompanhante-fields');
+            if (acompanhanteFields) {
+                acompanhanteFields.classList.remove('active');
+            }
+            
+            const btnAtestadoEl = document.getElementById('gerar-atestado');
+            const btnComprovante = document.getElementById('gerar-comprovante');
+            const btnAcompanhante = document.getElementById('gerar-acompanhante');
+            
+            if (btnAtestadoEl) btnAtestadoEl.style.display = 'inline-block';
+            if (btnComprovante) btnComprovante.style.display = 'none';
+            if (btnAcompanhante) btnAcompanhante.style.display = 'none';
+            
             // Ocultar áreas de impressão
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
-            document.getElementById('edit-controls').style.display = 'none';
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'none';
+            }
             
             // Voltar para a primeira aba (receita)
-            document.querySelectorAll('.doc-type-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.doc-type-btn[data-type="receita"]').classList.add('active');
+            const docTypeButtons = document.querySelectorAll('.doc-type-btn');
+            docTypeButtons.forEach(btn => btn.classList.remove('active'));
+            const receitaBtn = document.querySelector('.doc-type-btn[data-type="receita"]');
+            if (receitaBtn) {
+                receitaBtn.classList.add('active');
+            }
             
-            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-            document.getElementById('receita-form').classList.add('active');
+            const formSections = document.querySelectorAll('.form-section');
+            formSections.forEach(section => section.classList.remove('active'));
+            const receitaForm = document.getElementById('receita-form');
+            if (receitaForm) {
+                receitaForm.classList.add('active');
+            }
             
             // Focar no primeiro campo
-            document.getElementById('paciente').focus();
+            if (pacienteInput) {
+                pacienteInput.focus();
+            }
             
             alert('Formulários resetados. Pronto para atender um novo paciente!');
         }
 
         function gerarReceita() {
+            console.log("Gerando receita...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -2518,13 +3518,20 @@
                 return;
             }
             
-            document.getElementById('document-title').textContent = 'RECEITA MÉDICA';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'RECEITA MÉDICA';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -2549,18 +3556,29 @@
             
             contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
         function gerarAtestado() {
+            console.log("Gerando atestado...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -2577,13 +3595,20 @@
                 return;
             }
             
-            document.getElementById('document-title').textContent = 'ATESTADO MÉDICO';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'ATESTADO MÉDICO';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -2611,18 +3636,184 @@
                 <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
             `;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
+        function gerarComprovante() {
+            console.log("Gerando comprovante...");
+            const dadosMedico = obterDadosMedico();
+            
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-atestado').value;
+            const dias = document.getElementById('dias-afastamento').value;
+            
+            if (!paciente || !dias) {
+                alert('Por favor, preencha o nome do paciente e os dias de comparecimento.');
+                return;
+            }
+            
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'COMPROVANTE DE COMPARECIMENTO';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
+            
+            // Atualizar assinatura com dados do médico
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            const numeroExtenso = {
+                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
+                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
+            };
+            
+            const diasExtenso = numeroExtenso[dias] || dias;
+            
+            let contentHTML = `
+                <p>COMPROVAMOS PARA OS DEVIDOS FINS, QUE O(A) SR(A). <strong>${paciente}</strong> COMPARECEU A ESTA UNIDADE DE SAÚDE DIA ${dataAtual} PARA REALIZAÇÃO DE CONSULTA MÉDICA, SENDO NECESSÁRIO RETORNAR POR ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} CONSECUTIVOS A PARTIR DE HOJE PARA DAR CONTINUIDADE AO TRATAMENTO.</p>
+                
+                <p>O PACIENTE ESTÁ EM TRATAMENTO MÉDICO E DEVE RETORNAR CONFORME ORIENTAÇÕES ACIMA PARA REAVALIAÇÃO E CONTINUIDADE DO TRATAMENTO.</p>
+                
+                <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
+            `;
+            
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
+        }
+
+        function gerarAtestadoAcompanhante() {
+            console.log("Gerando atestado de acompanhante...");
+            const dadosMedico = obterDadosMedico();
+            
+            if (!unidadeSelecionada) {
+                alert('Por favor, configure a unidade de trabalho primeiro.');
+                return;
+            }
+            
+            const paciente = document.getElementById('paciente-atestado').value;
+            const acompanhante = document.getElementById('nome-acompanhante').value;
+            const parentesco = document.getElementById('parentesco').value;
+            const dias = document.getElementById('dias-acompanhante').value;
+            const motivo = document.getElementById('motivo-acompanhante').value;
+            const cid = document.getElementById('cid').value;
+            
+            if (!paciente || !acompanhante || !parentesco || !dias || !motivo) {
+                alert('Por favor, preencha todos os campos do atestado de acompanhante.');
+                return;
+            }
+            
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'ATESTADO MÉDICO PARA ACOMPANHANTE';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
+            
+            // Atualizar assinatura com dados do médico
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
+            
+            atualizarDadosUnidade(unidadeSelecionada);
+            
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            const numeroExtenso = {
+                '1': 'UM', '2': 'DOIS', '3': 'TRÊS', '4': 'QUATRO', '5': 'CINCO',
+                '6': 'SEIS', '7': 'SETE', '8': 'OITO', '9': 'NOVE', '10': 'DEZ'
+            };
+            
+            const diasExtenso = numeroExtenso[dias] || dias;
+            
+            let contentHTML = `
+                <p>ATESTO PARA OS DEVIDOS FINS, QUE O(A) PACIENTE <strong>${paciente}</strong> ESTÁ SOB MEUS CUIDADOS MÉDICOS NA PRESENTE UNIDADE DE SAÚDE, SENDO NECESSÁRIO ACOMPANHAMENTO POR ${dias} (${diasExtenso}) ${dias == 1 ? 'DIA' : 'DIAS'} PARA ${motivo}.</p>
+                
+                <p>PARA TANTO, SOLICITO A PRESENÇA DO(A) SR(A). <strong>${acompanhante}</strong>, ${parentesco} DO(A) PACIENTE, PARA ACOMPANHÁ-LO(A) DURANTE O PERÍODO CITADO ACIMA.</p>
+                
+                <p>O ACOMPANHANTE É NECESSÁRIO PARA AUXILIAR NAS ATIVIDADES DO PACIENTE, BEM COMO PARA DAR SUPORTE DURANTE O TRATAMENTO MÉDICO.</p>
+                
+                ${cid ? `<p><strong>CID: ${cid}</strong></p>` : ''}
+                
+                <p style="margin-top: 30px;"><strong>Data:</strong> ${dataAtual}</p>
+            `;
+            
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
+            
+            // Ocultar todas as áreas de impressão primeiro
+            document.querySelectorAll('.print-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
+        }
+
+        // As outras funções (gerarReceituario, gerarControleEspecial, gerarSolicitacaoExames) 
+        // permanecem iguais, apenas adicionando verificações de null
+        
         function gerarReceituario() {
+            console.log("Gerando receituário...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -2638,13 +3829,20 @@
                 return;
             }
             
-            document.getElementById('document-title').textContent = 'RECEITUÁRIO MÉDICO';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'RECEITUÁRIO MÉDICO';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -2655,18 +3853,29 @@
                 <p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
             `;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
         function gerarControleEspecial() {
+            console.log("Gerando controle especial...");
             const dadosMedico = obterDadosMedico();
             
             const medico = document.getElementById('medico').value;
@@ -2682,36 +3891,63 @@
             }
             
             // Atualizar dados na primeira via
-            document.getElementById('print-medico').textContent = dadosMedico.nome;
-            document.getElementById('print-medico2').textContent = dadosMedico.nome;
-            document.getElementById('print-crm').textContent = dadosMedico.crm;
-            document.getElementById('print-crm2').textContent = dadosMedico.crm;
-            document.getElementById('print-endereco-medico').textContent = enderecoMedico;
-            document.getElementById('print-endereco-medico2').textContent = enderecoMedico;
-            document.getElementById('print-paciente-controle').textContent = paciente;
-            document.getElementById('print-paciente-controle2').textContent = paciente;
-            document.getElementById('print-endereco-paciente').textContent = enderecoPaciente;
-            document.getElementById('print-endereco-paciente2').textContent = enderecoPaciente;
+            const printMedico = document.getElementById('print-medico');
+            const printMedico2 = document.getElementById('print-medico2');
+            const printCrm = document.getElementById('print-crm');
+            const printCrm2 = document.getElementById('print-crm2');
+            const printEnderecoMedico = document.getElementById('print-endereco-medico');
+            const printEnderecoMedico2 = document.getElementById('print-endereco-medico2');
+            const printPacienteControle = document.getElementById('print-paciente-controle');
+            const printPacienteControle2 = document.getElementById('print-paciente-controle2');
+            const printEnderecoPaciente = document.getElementById('print-endereco-paciente');
+            const printEnderecoPaciente2 = document.getElementById('print-endereco-paciente2');
+            const printMedicamentos = document.getElementById('print-medicamentos');
+            const printMedicamentos2 = document.getElementById('print-medicamentos2');
+            const printData = document.getElementById('print-data');
+            const printData2 = document.getElementById('print-data2');
+            
+            if (printMedico) printMedico.textContent = dadosMedico.nome;
+            if (printMedico2) printMedico2.textContent = dadosMedico.nome;
+            if (printCrm) printCrm.textContent = dadosMedico.crm;
+            if (printCrm2) printCrm2.textContent = dadosMedico.crm;
+            if (printEnderecoMedico) printEnderecoMedico.textContent = enderecoMedico;
+            if (printEnderecoMedico2) printEnderecoMedico2.textContent = enderecoMedico;
+            if (printPacienteControle) printPacienteControle.textContent = paciente;
+            if (printPacienteControle2) printPacienteControle2.textContent = paciente;
+            if (printEnderecoPaciente) printEnderecoPaciente.textContent = enderecoPaciente;
+            if (printEnderecoPaciente2) printEnderecoPaciente2.textContent = enderecoPaciente;
             
             // Formatar os medicamentos com fonte menor
-            document.getElementById('print-medicamentos').innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
-            document.getElementById('print-medicamentos2').innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            if (printMedicamentos) {
+                printMedicamentos.innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            }
+            if (printMedicamentos2) {
+                printMedicamentos2.innerHTML = `<div style="font-size: 11px;">${medicamentos.replace(/\n/g, '<br>')}</div>`;
+            }
             
             // Atualizar data
             const dataAtual = new Date().toLocaleDateString('pt-BR');
-            document.getElementById('print-data').textContent = dataAtual;
-            document.getElementById('print-data2').textContent = dataAtual;
+            if (printData) printData.textContent = dataAtual;
+            if (printData2) printData2.textContent = dataAtual;
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area-controle-especial').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printAreaControle = document.getElementById('print-area-controle-especial');
+            if (printAreaControle) {
+                printAreaControle.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
 
         function gerarSolicitacaoExames() {
+            console.log("Gerando solicitação de exames...");
             const dadosMedico = obterDadosMedico();
             
             if (!unidadeSelecionada) {
@@ -2737,16 +3973,33 @@
             }
             
             checkboxes.forEach(checkbox => {
-                examesSelecionados.push(checkbox.value);
+                let exameTexto = checkbox.value;
+                
+                // Verificar se é um exame com lateralidade
+                if (checkbox.classList.contains('exame-lateralidade')) {
+                    const lateralidadeSelect = checkbox.parentElement.querySelector('.lateralidade-select');
+                    if (lateralidadeSelect && lateralidadeSelect.value) {
+                        exameTexto += ` - ${lateralidadeSelect.value}`;
+                    }
+                }
+                
+                examesSelecionados.push(exameTexto);
             });
             
-            document.getElementById('document-title').textContent = 'SOLICITAÇÃO DE EXAMES';
-            document.getElementById('print-paciente').textContent = paciente;
-            document.getElementById('unidade-nome').textContent = unidadeSelecionada;
+            const documentTitle = document.getElementById('document-title');
+            const printPaciente = document.getElementById('print-paciente');
+            const unidadeNome = document.getElementById('unidade-nome');
+            
+            if (documentTitle) documentTitle.textContent = 'SOLICITAÇÃO DE EXAMES';
+            if (printPaciente) printPaciente.textContent = paciente;
+            if (unidadeNome) unidadeNome.textContent = unidadeSelecionada;
             
             // Atualizar assinatura com dados do médico
-            document.getElementById('print-medico-assinatura').textContent = dadosMedico.nome;
-            document.getElementById('print-crm-assinatura').textContent = dadosMedico.crm;
+            const medicoAssinatura = document.getElementById('print-medico-assinatura');
+            const crmAssinatura = document.getElementById('print-crm-assinatura');
+            
+            if (medicoAssinatura) medicoAssinatura.textContent = dadosMedico.nome;
+            if (crmAssinatura) crmAssinatura.textContent = dadosMedico.crm;
             
             atualizarDadosUnidade(unidadeSelecionada);
             
@@ -2776,15 +4029,25 @@
             
             contentHTML += `<p style="margin-top: 20px;"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>`;
             
-            document.getElementById('print-content').innerHTML = contentHTML;
+            const printContent = document.getElementById('print-content');
+            if (printContent) {
+                printContent.innerHTML = contentHTML;
+            }
             
             // Ocultar todas as áreas de impressão primeiro
             document.querySelectorAll('.print-area').forEach(area => {
                 area.style.display = 'none';
             });
             
-            document.getElementById('print-area').style.display = 'block';
-            document.getElementById('edit-controls').style.display = 'flex';
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                printArea.style.display = 'block';
+            }
+            
+            const editControls = document.getElementById('edit-controls');
+            if (editControls) {
+                editControls.style.display = 'flex';
+            }
         }
     </script>
 </body>
