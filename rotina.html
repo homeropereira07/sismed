@@ -504,7 +504,20 @@
             margin-top: 15px;
             font-size: 11px;
         }
-        
+
+        /* CSS para o botão Fluxos Emergência */
+        #fluxos-btn i {
+            color: #e74c3c; /* Vermelho para destacar emergência */
+        }
+
+        #fluxos-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }        
+
+        #fluxos-btn:hover i {
+            color: #c0392b;
+        }        
+
         /* Exames */
         .exames-container {
             display: grid;
@@ -902,16 +915,17 @@
                     <i class="fas fa-hospital"></i>
                     Unidade
                 </div>
+
                 <!-- No sidebar, adicione este botão após o botão "Extras" -->
                 <div class="doc-type-btn" data-type="fluxos" id="fluxos-btn" style="display: none;">
                     <i class="fas fa-project-diagram"></i>
-                   Fluxos Emergência
-                </div>                
+                    Fluxos Emergência
+                </div>
+                
                 <div class="doc-type-btn" data-type="configuracoes" id="configuracoes-btn" style="display: none;">
                     <i class="fas fa-cog"></i>
                     Extras
                 </div>
-                
             </div>
             
             <div class="content-area">
@@ -1939,6 +1953,11 @@
                         </button>
                     </div>
                 </div>
+
+<div class="doc-type-btn" data-type="fluxos" id="fluxos-btn" style="display: none;">
+    <i class="fas fa-project-diagram"></i>
+    Fluxos Emergência
+</div>
                 
                 <!-- Formulário para Configurações -->
                 <div id="configuracoes-form" class="form-section">
@@ -3070,6 +3089,24 @@
                 });
             }
 
+// ADICIONE ESTE CÓDIGO PARA O BOTÃO FLUXOS EMERGÊNCIA
+// Mostrar botão Fluxos Emergência para todos os médicos ou condicionalmente
+const fluxosBtn = document.getElementById('fluxos-btn');
+if (fluxosBtn) {
+    fluxosBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open('https://homeropereira07.github.io/sismed/fluxos.html', '_blank');
+    });
+    
+    // Mostrar o botão (pode ser para todos ou apenas para emergencistas)
+    fluxosBtn.style.display = 'flex';
+    
+    // Se quiser mostrar apenas para médicos de emergência, use este código:
+    // if (medicoLogado.especialidade === 'emergencia' || medicoLogado.tipo === 'desenvolvedor') {
+    //     fluxosBtn.style.display = 'flex';
+    // }
+}
             // Alternar entre tipos de documento
             const docTypeButtons = document.querySelectorAll('.doc-type-btn');
             const formSections = document.querySelectorAll('.form-section');
